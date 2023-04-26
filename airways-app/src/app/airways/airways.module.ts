@@ -8,7 +8,9 @@ import { ShoppingCartPageComponent } from './pages/shopping-cart-page/shopping-c
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/main', pathMatch: 'full' },
   { path: 'main', component: MainPageComponent, },
+  { path: 'booking', redirectTo: '/booking/step1', pathMatch: 'full' },
   { path: 'booking/step1', component: SelectFlightPageComponent, },
   { path: 'booking/step2', component: PassengersPageComponent, },
   { path: 'booking/step3', component: SummaryPageComponent, },
