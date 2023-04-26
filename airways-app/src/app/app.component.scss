@@ -1,0 +1,25 @@
+.app__container {
+    position: relative;
+    padding: 0 8.75%;
+    height: 100vh;
+
+    &::before {
+        content: "";
+        position: absolute;
+        background: url("../assets/images/main_background.png");
+        background-size: 100%;
+        background-repeat: no-repeat;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+    }
+
+    &__wrapper {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 78.33%;
+    }
+}

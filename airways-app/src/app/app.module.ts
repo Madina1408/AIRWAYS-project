@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { FooterComponent } from './core/components/footer/footer.component';
-import { PainPageComponent } from './airways/pages/pain-page/pain-page.component';
 import { SelectFlightPageComponent } from './airways/pages/booking-pages/select-flight-page/select-flight-page.component';
 import { PassengersPageComponent } from './airways/pages/booking-pages/passengers-page/passengers-page.component';
 import { MainPageComponent } from './airways/pages/main-page/main-page.component';
@@ -21,7 +20,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    PainPageComponent,
     SelectFlightPageComponent,
     PassengersPageComponent,
     MainPageComponent,
