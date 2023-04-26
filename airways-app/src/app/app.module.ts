@@ -14,6 +14,7 @@ import { ShoppingCartPageComponent } from './airways/pages/shopping-cart-page/sh
 import { TabComponent } from './auth/components/tab/tab.component';
 import { SigninComponent } from './auth/components/signin/signin.component';
 import { SignupComponent } from './auth/components/signup/signup.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SignupComponent } from './auth/components/signup/signup.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
