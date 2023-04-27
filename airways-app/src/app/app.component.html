@@ -1,11 +1,11 @@
 <!-- in app__container will be ngIf about changing background -->
 <div class="app__container">
-  <div class="app__wrapper">
-    <app-header></app-header>
-    <main>
+  <app-header></app-header>
+  <main>
+    <div class="main__container">
       <router-outlet></router-outlet>
-    </main>
-    <app-footer></app-footer>
-  </div>
+    </div>
+  </main>
+  <app-footer></app-footer>
 </div>
 

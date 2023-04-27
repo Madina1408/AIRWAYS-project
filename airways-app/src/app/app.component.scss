@@ -1,6 +1,5 @@
 .app__container {
     position: relative;
-    padding: 0 8.75%;
     height: 100vh;
 
     &::before {
@@ -15,11 +14,14 @@
         left: 0px;
     }
 
-    &__wrapper {
-        position: relative;
+    main {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        max-width: 78.33%;
+        padding: 0 8.75%;
+
+        .main__container {
+            margin-top: 9.75rem;
+        }
     }
 }
