@@ -12,6 +12,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -20,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [],
   imports: [
     CommonModule,
+    MatButtonModule,
     MatFormFieldModule,
     MatToolbarModule,
     MatInputModule,
@@ -35,6 +37,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
   ],
   exports: [
+    MatButtonModule,
     MatFormFieldModule,
     MatToolbarModule,
     MatInputModule,
@@ -45,6 +48,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatStepperModule,
     MatMenuModule,
+    RouterModule,
     MatBadgeModule,
     FormsModule,
     ReactiveFormsModule,
