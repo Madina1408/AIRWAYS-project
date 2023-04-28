@@ -1,46 +1,54 @@
-<div class="header__container">
-    <img class="header__logo" src="../../../../assets/images/main_logo.png" alt="airways-logo" routerLink="">
-    <div class="header__options">
-        <p>Book flights</p>
-        <mat-horizontal-stepper #stepper style="display: none;">
-            <mat-step label="Flights" state="edit"></mat-step>
-            <mat-step label="Passengers"></mat-step>
-            <mat-step label="Review & Payment"></mat-step>
-        </mat-horizontal-stepper>
-        <button mat-button
-            [matMenuTriggerFor]="dateSelect"
-            class="header__date-format"
-        >{{ selectedDateFormat }} <mat-icon>arrow_drop_down</mat-icon></button>
-        <mat-menu #dateSelect="matMenu" class="header__date-list">
-            <button
-                class="header__date-selected"
-                (click)="onSelectDateFormat(option)"
-                *ngFor="let option of dateOptions"
-                mat-menu-item
-            >{{ option.label }} <img
-                *ngIf="option.selected"
-                class="header__logo" src="../../../../assets/icons/icon-select.svg" alt="icon-select">
+<header class="header" [class]="headerClass">
+    <div class="header__container">
+        <img class="header__logo" src="../../../../assets/images/main_logo.png" alt="airways-logo" routerLink="">
+        <div class="header__options">
+            <p *ngIf="isShowBookFlights">Book flights</p>
+            <mat-horizontal-stepper #stepper *ngIf="isShowProgressBar" class="stepper">
+                <mat-step label="Flights" state="edit"></mat-step>
+                <mat-step label="Passengers"></mat-step>
+                <mat-step label="Review & Payment"></mat-step>
+            </mat-horizontal-stepper>
+            <button mat-button
+                [matMenuTriggerFor]="dateSelect"
+                class="header__date-format"
+                [class]="headerClass"
+            >{{ selectedDateFormat }} <mat-icon>arrow_drop_down</mat-icon></button>
+            <mat-menu #dateSelect="matMenu" class="header__date-list">
+                <button
+                    class="header__date-selected"
+                    (click)="onSelectDateFormat(option)"
+                    *ngFor="let option of dateOptions"
+                    mat-menu-item
+                >{{ option.label }} <img
+                    *ngIf="option.selected"
+                    class="header__logo" src="../../../../assets/icons/icon-select.svg" alt="icon-select">
+                </button>
+            </mat-menu>
+            <button mat-button
+                [matMenuTriggerFor]="CurrencySelect"
+                class="header__currency-format"
+                [class]="headerClass"
+            >{{ selectedCurrencyFormat }}</button>
+            <mat-menu #CurrencySelect="matMenu" class="header__currency-list">
+                <button
+                    class="header__currency-selected"
+                    (click)="onSelectCurrencyFormat(option)"
+                    *ngFor="let option of currencyOptions"
+                    mat-menu-item
+                >{{ option.label }}</button>
+            </mat-menu>
+            <button mat-button
+                class="header__signin-btn"
+                [class]="headerClass">
+                <img *ngIf="isMainPage" src="../../../../assets/icons/user_icon.svg" alt="user-icon">
+                <img *ngIf="!isMainPage" src="../../../../assets/icons/user_icon_dark.svg" alt="user-icon">
+                Sign In
             </button>
-        </mat-menu>
-        <button mat-button
-            [matMenuTriggerFor]="CurrencySelect"
-            class="header__currency-format"
-        >{{ selectedCurrencyFormat }}</button>
-        <mat-menu #CurrencySelect="matMenu" class="header__currency-list">
-            <button
-                class="header__currency-selected"
-                (click)="onSelectCurrencyFormat(option)"
-                *ngFor="let option of currencyOptions"
-                mat-menu-item
-            >{{ option.label }}</button>
-        </mat-menu>
-        <button mat-button class="header__signin-btn">
-            <img src="../../../../assets/icons/user_icon.svg" alt="user-icon">
-            Sign In
-        </button>
-        <button mat-button class="header__cart-bth" matBadge="15" matBadgeColor="warn">
-            <img src="../../../../assets/icons/shopping_basket.svg" alt="cart-icon">
-        </button>
+            <button mat-button class="header__cart-btn" matBadge="15" matBadgeColor="warn">
+                <img *ngIf="isMainPage" src="../../../../assets/icons/shopping_basket.svg" alt="cart-icon">
+                <img *ngIf="!isMainPage" src="../../../../assets/icons/shopping_basket_dark.svg" alt="cart-icon">
+            </button>
+        </div>
     </div>
-</div>
+</header>
 

@@ -1,4 +1,4 @@
-import { ISelectFormat } from "../interfaces/select-format-interface";
+import { ISelectFormat } from "../../../shared/models/interfaces/select-format-interface";
 
 const currencyFormatMenu: ISelectFormat[] = [
     { label: 'EUR' },
