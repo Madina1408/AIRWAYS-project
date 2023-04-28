@@ -1,0 +1,70 @@
+@use './../../../../colors';
+
+footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 92px;
+  background-color: colors.$light-grey;
+  font-weight: 400;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .footer__content {
+    display: flex;
+    width: 85%;
+    margin: auto;
+    align-items: center;
+    justify-content: space-between;
+    .footer__copyright {
+      color: colors.$primary;
+    }
+    .footer__content__contributers{
+      display: flex;
+      gap: 20px;
+      .contributors{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        img{
+          width: 30px;
+          border-radius: 50%;
+        }
+        .contributors__info{
+          a{
+            text-decoration: none;
+            color: black;
+          }
+          h4{
+            font-weight: 400;
+            font-size: 14px;
+            cursor: pointer;
+            // color: colors.$primary;
+
+          }
+          p{
+            font-size: 12px;
+            padding-left: 4px;
+          }
+        }
+      }
+    }
+    .footer__payment-methods{
+      display: flex;
+      margin-left: 10px;
+      align-items: center;
+      gap:24px;
+      .payment-methods__cards{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+    }
+  }
+
+
+
+}
