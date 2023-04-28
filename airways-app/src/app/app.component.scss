@@ -2,26 +2,10 @@
     position: relative;
     height: 100vh;
 
-    &::before {
-        content: "";
-        position: absolute;
-        background: url("../assets/images/main_background.png");
-        background-size: 100%;
-        background-repeat: no-repeat;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 0px;
-    }
-
     main {
         display: flex;
         flex-direction: column;
         justify-content: center;
         padding: 0 8.75%;
-
-        .main__container {
-            margin-top: 9.75rem;
-        }
     }
 }
