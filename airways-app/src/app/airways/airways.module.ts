@@ -6,6 +6,7 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 import { SummaryPageComponent } from './pages/booking-pages/summary-page/summary-page.component';
 import { ShoppingCartPageComponent } from './pages/shopping-cart-page/shopping-cart-page.component';
 import { RouterModule, Routes } from '@angular/router';
+import { EditFlightSearchComponent } from './components/edit-flight-search/edit-flight-search.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
     MainPageComponent,
     SummaryPageComponent,
     ShoppingCartPageComponent,
+    EditFlightSearchComponent,
   ],
   imports: [
     CommonModule,
