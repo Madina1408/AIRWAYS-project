@@ -21,11 +21,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currencyOptions: ISelectFormat[] = currencyFormatMenu;
   selectedCurrencyFormat: string = currencyFormatMenu[0].label;
+  isCurrencySelected = false;
 
   isShowBookFlights = false;
   isShowProgressBar = false;
   isMainPage = true;
   headerClass = '';
+
 
   subscriptions: Subscription[] = [];
 
@@ -81,6 +83,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onSelectCurrencyFormat(option: ISelectFormat) {
     this.selectedCurrencyFormat = option.label;
+    this.isCurrencySelected = true;
   }
 
   ngOnDestroy(): void {
