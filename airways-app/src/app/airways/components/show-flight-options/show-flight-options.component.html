@@ -1,0 +1,78 @@
+<div class="wrapper">
+  <div class="fromto">
+    <img src="../../../../assets/icons/plane_icon.svg" alt="plane icon" />
+    <p>Dublin to</p>
+    <p>Warsaw Modlin</p>
+  </div>
+  <div class="selection-container">
+    <div class="slider">
+      <div
+        class="slides"
+      >
+        <div class="slide" *ngFor="let item of visibleItems">
+          <p>{{item.date}}</p>
+          <h4>{{item.weekday}}</h4>
+          <h5>{{item.price}}</h5>
+        </div>
+      </div>
+      <div class="buttons">
+        <img
+          class="prev"
+          src="../../../../assets/icons/prev_icon.svg"
+          (click)="prev()"
+          alt=""
+        />
+
+        <img
+          class="next"
+          (click)="next()"
+          src="../../../../assets/icons/next_icon.svg"
+          alt=""
+        />
+      </div>
+    </div>
+    <div class="selected-flight-info">
+      <div class="flight-info-container">
+        <div class="departure-date-time">
+          <p class="date">Sat, 18 Mar 2023</p>
+          <div class="time">
+            <h4>7:40</h4>
+            <p>UTC +1</p>
+          </div>
+          <p>Warsaw Modlin</p>
+        </div>
+        <div class="flight-duration">
+          <p>2h 50m</p>
+          <div class="plane-style">
+            <span></span>
+            <img src="../../../../assets/icons/direct_plane_svg.svg" alt="">
+            <span></span>
+          </div>
+          <p>Direct</p>
+        </div>
+        <div class="landing-date-time">
+          <p class="date">Sat, 18 Mar 2023</p>
+          <div class="time">
+            <h4>7:40</h4>
+            <p>UTC +1</p>
+          </div>
+          <p>Warsaw Modlin</p>
+        </div>
+        <div class="flight-number">
+          <p>Flight no.</p>
+          <h4>FR 1925</h4>
+        </div>
+        <span class="dashed"></span>
+        <div class="price-info">
+          <div class="seats">
+            <div>20 seats available</div>
+          </div>
+          <p>Price</p>
+          <h4>€110.61</h4>
+        </div>
+        <button>Select</button>
+      </div>
+    </div>
+  </div>
+
+</div>

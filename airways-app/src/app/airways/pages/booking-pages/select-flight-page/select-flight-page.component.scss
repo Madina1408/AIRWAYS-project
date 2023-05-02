@@ -1,0 +1,36 @@
+@use '../../../../../colors';
+.wrapper {
+  max-height: 1000px;
+  padding-top: 48px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: colors.$light-grey;
+  width: 100%;
+}
+
+.bottom-buttons {
+  margin: auto;
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    width: 126px;
+    height: 60px;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 24px;
+    border: none;
+    background: transparent;
+    font-weight: 500;
+  }
+  .btn-continue{
+    background-color: colors.$primary;
+    color: white;
+  }
+  .btn-back{
+    color: colors.$primary;
+  }
+}
