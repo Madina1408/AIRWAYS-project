@@ -7,12 +7,13 @@ import { SummaryPageComponent } from './pages/booking-pages/summary-page/summary
 import { ShoppingCartPageComponent } from './pages/shopping-cart-page/shopping-cart-page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { EditFlightSearchComponent } from './components/edit-flight-search/edit-flight-search.component';
-
+import { ShowFlightOptionsComponent } from './components/show-flight-options/show-flight-options.component';
+import { FlightDataResolver } from './flight-data.resolver';
 const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },
   { path: 'main', component: MainPageComponent, },
   { path: 'booking', redirectTo: '/booking/step1', pathMatch: 'full' },
-  { path: 'booking/step1', component: SelectFlightPageComponent, },
+  { path: 'booking/step1', component: SelectFlightPageComponent, resolve:{flights:FlightDataResolver} },
   { path: 'booking/step2', component: PassengersPageComponent, },
   { path: 'booking/step3', component: SummaryPageComponent, },
   { path: 'shopping-cart', component: ShoppingCartPageComponent, },
@@ -26,6 +27,7 @@ const routes: Routes = [
     SummaryPageComponent,
     ShoppingCartPageComponent,
     EditFlightSearchComponent,
+    ShowFlightOptionsComponent,
   ],
   imports: [
     CommonModule,
