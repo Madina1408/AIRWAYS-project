@@ -1,0 +1,11 @@
+@use '../../../../colors';
+
+::ng-deep .date__start .mat-date-range-input .mat-date-range-input-content {
+    width: 150px;
+  }
+
+.date__round-field {
+    width: 19.44rem;
+    border-color: colors.$neutral-30;
+    background-color: colors.$secondary-90;
+}
