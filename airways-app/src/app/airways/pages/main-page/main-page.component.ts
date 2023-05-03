@@ -1,11 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DepartureFromComponent } from '../../components/departure-from/departure-from.component';
 import { DestinationComponent } from '../../components/destination/destination.component';
-import { AirportService } from '../../services/airport.service';
+import { AirportService } from '../../services/airport/airport.service';
 import { Router } from '@angular/router';
 import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
 import { RoutesPaths } from 'src/app/core/data/enums/routes-paths';
+import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,7 +15,9 @@ import { RoutesPaths } from 'src/app/core/data/enums/routes-paths';
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.scss']
 })
-export class MainPageComponent {
+export class MainPageComponent implements OnInit, OnDestroy {
+
+  selectAirport: ISelectAirport[] = [];
 
   isOneWayTrip = false;
 
@@ -22,6 +26,8 @@ export class MainPageComponent {
   dateOneWayValue = '';
   dateRoundValue!: { start: string, end: string; };
   passengersValue = '';
+
+  subscriptions: Subscription[] = [];
 
   @ViewChild(DepartureFromComponent) departureFromComponent!: DepartureFromComponent;
   @ViewChild(DestinationComponent) destinationComponent!: DestinationComponent;
@@ -34,6 +40,12 @@ export class MainPageComponent {
     private airportService: AirportService,
     private router: Router
   ) {}
+
+  ngOnInit() {
+    this.subscriptions.push(
+      this.airportService.getAirports().subscribe(data => this.selectAirport = data)
+    );
+  }
 
   onFlightTypeChange() {
     this.isOneWayTrip = !this.isOneWayTrip;
@@ -67,12 +79,12 @@ export class MainPageComponent {
     this.departureFromComponent.selectDeparture.setValue(this.departureValue);
     this.destinationComponent.selectDestination.setValue(this.destinationValue);
 
-    this.departureFromComponent.selectAirport = this.airportService.airportItems.filter(airport => {
+    this.departureFromComponent.selectAirport = this.selectAirport.filter(airport => {
       const airportKeyValue = airport.city + ' ' + airport.key;
       return airportKeyValue !== this.destinationValue;
     });
 
-    this.destinationComponent.selectAirport = this.airportService.airportItems.filter(airport => {
+    this.destinationComponent.selectAirport = this.selectAirport.filter(airport => {
       const airportKeyValue = airport.city + ' ' + airport.key;
       return airportKeyValue !== this.departureValue
     });
@@ -103,5 +115,9 @@ export class MainPageComponent {
     } else {
       this.flightSearchForm.markAllAsTouched();
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subs => subs.unsubscribe);
   }
 }

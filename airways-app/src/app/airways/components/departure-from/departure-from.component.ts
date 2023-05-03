@@ -1,21 +1,30 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
-import { AirportService } from '../../services/airport.service';
+import { AirportService } from '../../services/airport/airport.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-departure-from',
   templateUrl: './departure-from.component.html',
   styleUrls: ['./departure-from.component.scss']
 })
-export class DepartureFromComponent {
-  selectAirport: ISelectAirport[] = this.airportService.airportItems;
+export class DepartureFromComponent implements OnInit, OnDestroy {
+  selectAirport: ISelectAirport[] = [];
 
   selectDeparture = new FormControl('', [Validators.required]);
 
   @Output() departureValueChange = new EventEmitter<string>();
 
+  subscriptions: Subscription[] = [];
+
   constructor(private airportService: AirportService){}
+
+  ngOnInit() {
+    this.subscriptions.push(
+      this.airportService.getAirports().subscribe(data => this.selectAirport = data)
+    );
+  }
 
   filterOptions(value: string) {
     if (!value) {
@@ -43,5 +52,9 @@ export class DepartureFromComponent {
 
   onSelectDeparture(value: string) {
     this.departureValueChange.emit(value);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subs => subs.unsubscribe);
   }
 }
