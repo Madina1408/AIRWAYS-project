@@ -42,8 +42,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.airportService.getAirportsList();
     this.subscriptions.push(
-      this.airportService.getAirports().subscribe(data => this.selectAirport = data)
+      this.airportService.airportsList$$.subscribe(data => this.selectAirport = data)
     );
   }
 

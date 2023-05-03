@@ -12,6 +12,8 @@ import { Subscription } from 'rxjs';
 export class DepartureFromComponent implements OnInit, OnDestroy {
   selectAirport: ISelectAirport[] = [];
 
+  searchAirport = '';
+
   selectDeparture = new FormControl('', [Validators.required]);
 
   @Output() departureValueChange = new EventEmitter<string>();
@@ -22,23 +24,14 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
-      this.airportService.getAirports().subscribe(data => this.selectAirport = data)
+      this.airportService.airportsList$$.subscribe(data => this.selectAirport = data),
+      this.airportService.searchItem.subscribe(
+        (data) => (this.searchAirport = data))
     );
   }
 
   filterOptions(value: string) {
-    if (!value) {
-      this.selectAirport = this.airportService.airportItems;
-    }
-
-    this.selectAirport = this.selectAirport.filter(airport =>
-      airport.city.toLowerCase().includes(value.toLowerCase()) &&
-      airport.key.toLowerCase().includes(value.toLowerCase()));
-    if (this.selectAirport.length > 0) {
-      this.selectDeparture.setErrors(null);
-    } else {
-      this.selectDeparture.setErrors({ incorrect: true });
-    }
+    this.airportService.searchItem.next(value);
   }
 
   getDepartureFromErrorMessage() {

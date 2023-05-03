@@ -10,7 +10,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./destination.component.scss']
 })
 export class DestinationComponent implements OnInit, OnDestroy {
-  selectAirport: ISelectAirport[] = this.airportService.airportItems;
+  selectAirport: ISelectAirport[] = [];
+
+  searchAirport = '';
 
   selectDestination = new FormControl('', [Validators.required]);
 
@@ -22,23 +24,12 @@ export class DestinationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
-      this.airportService.getAirports().subscribe(data => this.selectAirport = data)
+      this.airportService.airportsList$$.subscribe(data => this.selectAirport = data)
     );
   }
 
   filterOptions(value: string) {
-    if (!value) {
-      this.selectAirport = this.airportService.airportItems;
-    }
-
-    this.selectAirport = this.selectAirport.filter(airport =>
-      airport.city.toLowerCase().includes(value.toLowerCase()) &&
-      airport.key.toLowerCase().includes(value.toLowerCase()));
-    if (this.selectAirport.length > 0) {
-      this.selectDestination.setErrors(null);
-    } else {
-      this.selectDestination.setErrors({ incorrect: true });
-    }
+    this.airportService.searchItem.next(value);
   }
 
   getDestinationErrorMessage() {
