@@ -1,0 +1,70 @@
+@use '../../../../colors';
+
+::ng-deep .passengers__menu  {
+    margin-top: -1.3rem !important;
+    width: 12.56rem !important;
+    border-radius: 0 !important;
+  }
+
+.passengers__field {
+    width: 12.56rem;
+    border-color: colors.$neutral-30;
+    background-color: colors.$secondary-90;
+}
+
+.passengers__list {
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 8px;
+    padding: 0.875rem 1rem;
+
+    .passenger__info {
+        width: 5rem;
+
+        .passenger__type {
+            color: colors.$primary;
+            font-size: 16px;
+
+            &.min-count  {
+                color: colors.$neutral-0;
+            }
+        }
+
+        .passenger__age {
+            color: colors.$neutral-30;
+            font-size: 14px;
+        }
+    }
+
+    .passengers__total-count {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-left: auto;
+        gap: 1rem;
+
+        .passenger__count {
+            color: colors.$primary;
+
+            &.disabled {
+                color: colors.$neutral-30;
+            }
+        }
+
+        .add-btn, .remove-btn {
+            min-width: 1rem;
+            min-height: 1rem;
+            padding: 0;
+
+            mat-icon {
+                margin: 0;
+            }
+        }
+    }
+}
+
+
+
+
