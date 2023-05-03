@@ -86,8 +86,9 @@ export class MainPageComponent {
         forwardDate: new Date(this.dateOneWayValue).toISOString(),
         passengers: this.passengersValue,
       };
-      console.log(queryParams);
-      this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
+      if (queryParams) {
+        this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
+      }
     } else if (this.flightSearchForm.valid && !this.isOneWayTrip) {
       const queryParams: ISearchFlight = {
         fromKey: this.departureValue.slice(-3, this.departureValue.length),
@@ -96,8 +97,9 @@ export class MainPageComponent {
         backDate: new Date(this.dateRoundValue.end).toISOString(),
         passengers: this.passengersValue,
       };
-      console.log(queryParams);
-      this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
+      if (queryParams) {
+        this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
+      }
     } else {
       this.flightSearchForm.markAllAsTouched();
     }

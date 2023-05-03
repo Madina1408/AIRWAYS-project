@@ -10,7 +10,7 @@ import { HeaderService } from 'src/app/core/services/header.service';
   styleUrls: ['./date-one.component.scss']
 })
 export class DateOneComponent implements OnInit, OnDestroy {
-  selectDateOne = new FormControl('', [Validators.required]);
+  selectDateOne = new FormControl('', Validators.required);
 
   minDate = new Date();
 
