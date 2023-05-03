@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
 import { AirportService } from '../../services/airport/airport.service';
@@ -9,8 +9,8 @@ import { Subscription } from 'rxjs';
   templateUrl: './departure-from.component.html',
   styleUrls: ['./departure-from.component.scss']
 })
-export class DepartureFromComponent implements OnInit, OnDestroy {
-  selectAirport: ISelectAirport[] = [];
+export class DepartureFromComponent {
+  @Input() selectAirport!: ISelectAirport[];
 
   searchAirport = '';
 
@@ -21,14 +21,6 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor(private airportService: AirportService){}
-
-  ngOnInit() {
-    this.subscriptions.push(
-      this.airportService.airportsList$$.subscribe(data => this.selectAirport = data),
-      this.airportService.searchItem.subscribe(
-        (data) => (this.searchAirport = data))
-    );
-  }
 
   filterOptions(value: string) {
     this.airportService.searchItem.next(value);
@@ -45,9 +37,5 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
 
   onSelectDeparture(value: string) {
     this.departureValueChange.emit(value);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(subs => subs.unsubscribe);
   }
 }
