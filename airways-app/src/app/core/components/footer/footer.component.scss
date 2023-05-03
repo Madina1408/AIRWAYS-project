@@ -1,10 +1,11 @@
 @use './../../../../colors';
 
 footer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  border-top: 1px solid #D0D9DF;
+  // position: fixed;
+  // bottom: 0;
+  // right: 0;
+  // left: 0;
   height: 92px;
   background-color: colors.$light-grey;
   font-weight: 400;
