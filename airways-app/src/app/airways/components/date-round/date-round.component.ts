@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { HeaderService } from 'src/app/core/services/header.service';
 

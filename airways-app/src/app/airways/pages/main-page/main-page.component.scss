@@ -1,7 +1,8 @@
 @use '../../../../colors';
 
 .mainpage__container {
-    margin-top: 9.375rem;
+    width: 85%;
+    margin: 9.375rem auto 0 auto;
 
     form {
         display: flex;
