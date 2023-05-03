@@ -35,13 +35,7 @@ export class DateRoundComponent {
       this.headerService.selectedValueDateFormat$$.subscribe(value => {
         this.selectedValueDateFormat = value;
         if (this.selectDateRound.valid) {
-          const start = moment(new Date(this.selectedDateValue?.start)).format(this.selectedValueDateFormat);
-          const end = moment(new Date(this.selectedDateValue?.end)).format(this.selectedValueDateFormat);
-          const inputElementStart = this.elementRef.nativeElement.querySelector('.date__start');
-          const inputElementEnd = this.elementRef.nativeElement.querySelector('.date__end');
-          inputElementStart.value = start;
-          inputElementEnd.value = end;
-          this.dateRoundValueChange.emit({ start: start, end: end });
+          this.formatAndSetValue();
         }
       }),
     )
@@ -49,7 +43,23 @@ export class DateRoundComponent {
 
   onDatesChange(start: string, end: string) {
     this.selectedDateValue = { start: start, end: end };
-    this.dateRoundValueChange.emit({start: start, end: end});
+    this.formatAndSetValue();
+  }
+
+  formatAndSetValue() {
+    const start = moment(new Date(this.selectedDateValue?.start)).format(this.selectedValueDateFormat);
+    const end = moment(new Date(this.selectedDateValue?.end)).format(this.selectedValueDateFormat);
+    const inputElementStart = this.elementRef.nativeElement.querySelector('.date__start');
+    const inputElementEnd = this.elementRef.nativeElement.querySelector('.date__end');
+    inputElementStart.value = start;
+    inputElementEnd.value = end;
+    if (this.selectedValueDateFormat === 'YYYY/DD/MM') {
+      const start = moment(new Date(this.selectedDateValue?.start)).format('MM/DD/YYYY');
+      const end = moment(new Date(this.selectedDateValue?.end)).format('MM/DD/YYYY');
+      this.dateRoundValueChange.emit({ start: start, end: end });
+    } else {
+      this.dateRoundValueChange.emit({ start: start, end: end });
+    }
   }
 
   ngOnDestroy() {

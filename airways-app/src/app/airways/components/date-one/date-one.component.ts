@@ -31,17 +31,28 @@ export class DateOneComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.subscribe(value => {
         this.selectedValueDateFormat = value;
-        const date = moment(new Date(this.selectedDateValue)).format(this.selectedValueDateFormat);
-        const inputElement = this.elementRef.nativeElement.querySelector('input');
-        inputElement.value = date;
-        this.dateOneWayValueChange.emit(date);
+          if (this.selectDateOne.valid) {
+            this.formatAndSetValue();
+          }
       })
     )
   }
 
   onDateChange(value: string) {
     this.selectedDateValue = value;
-    this.dateOneWayValueChange.emit(value);
+    this.formatAndSetValue();
+  }
+
+  formatAndSetValue() {
+    const date = moment(new Date(this.selectedDateValue)).format(this.selectedValueDateFormat);
+    const inputElement = this.elementRef.nativeElement.querySelector('input');
+    inputElement.value = date;
+    if (this.selectedValueDateFormat === 'YYYY/DD/MM') {
+      const date = moment(new Date(this.selectedDateValue)).format('MM/DD/YYYY');
+      this.dateOneWayValueChange.emit(date);
+    } else {
+      this.dateOneWayValueChange.emit(date);
+    }
   }
 
   ngOnDestroy() {

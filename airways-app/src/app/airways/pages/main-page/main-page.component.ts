@@ -24,7 +24,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   departureValue = '';
   destinationValue = '';
   dateOneWayValue = '';
-  dateRoundValue!: { start: string, end: string; };
+  dateRoundValue!: { start: string, end: string };
   passengersValue = '';
 
   subscriptions: Subscription[] = [];
