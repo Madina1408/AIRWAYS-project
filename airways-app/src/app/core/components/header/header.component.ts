@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ISelectFormat } from '../../../shared/models/interfaces/select-format-interface';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import currencyFormatMenu from '../../data/constants/currency-format';
@@ -6,6 +6,7 @@ import dateFormatMenu from '../../data/constants/date-format';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutesPaths } from '../../data/enums/routes-paths';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +18,10 @@ import { RoutesPaths } from '../../data/enums/routes-paths';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   dateOptions: ISelectFormat[] = dateFormatMenu;
-  selectedDateFormat: string = dateFormatMenu[0].label;
+  selectedDateFormat: string = this.dateOptions[0].label;
 
   currencyOptions: ISelectFormat[] = currencyFormatMenu;
-  selectedCurrencyFormat: string = currencyFormatMenu[0].label;
+  selectedCurrencyFormat: string = this.currencyOptions[0].label;
   isCurrencySelected = false;
 
   isShowBookFlights = false;
@@ -28,17 +29,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isMainPage = true;
   headerClass = '';
 
-
   subscriptions: Subscription[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private headerService: HeaderService) {}
 
   ngOnInit(): void {
     this.subscriptions.push(
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           const currentUrl = event.url;
-          console.log(currentUrl);
 
           switch (currentUrl.split('/')[1]) {
             case RoutesPaths.MainPage:
@@ -79,11 +78,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         item.selected = false;
       }
     });
+    this.headerService.setSelectedValueDateFormat(option.label)
   }
 
   onSelectCurrencyFormat(option: ISelectFormat) {
     this.selectedCurrencyFormat = option.label;
     this.isCurrencySelected = true;
+    this.headerService.setSelectedValueCurrencyFormat(option.label);
   }
 
   ngOnDestroy(): void {

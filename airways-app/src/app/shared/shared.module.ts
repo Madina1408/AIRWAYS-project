@@ -12,13 +12,18 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatListModule } from '@angular/material/list';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { SearchPipe } from './pipes/search.pipe';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    SearchPipe
+  ],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -33,6 +38,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatStepperModule,
     MatMenuModule,
     MatBadgeModule,
+    MatRadioModule,
+    MatListModule,
+    MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
   ],
@@ -50,8 +58,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatMenuModule,
     RouterModule,
     MatBadgeModule,
+    MatRadioModule,
+    MatListModule,
+    MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
+    SearchPipe
   ],
 })
 export class SharedModule { }

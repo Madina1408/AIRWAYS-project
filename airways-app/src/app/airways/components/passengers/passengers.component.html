@@ -1,0 +1,31 @@
+<mat-form-field appearance="outline" class="passengers__field" [matMenuTriggerFor]="passengersMenu">
+    <mat-label>Passengers</mat-label>
+    <input matInput [formControl]="selectListPassengers"
+        [value]="getPassengersCount()" readonly>
+    <mat-icon matSuffix>arrow_drop_down</mat-icon>
+    <mat-error *ngIf="selectListPassengers.invalid">Please select passengers</mat-error>
+</mat-form-field>
+<mat-menu #passengersMenu="matMenu" hasBackdrop="false" class="passengers__menu">
+    <div *ngFor="let passenger of selectPassengers" class="passengers__list">
+        <div class="passenger__info">
+            <p class="passenger__type"
+                [class.min-count]="passenger.count === 0">
+                {{ passenger.type }}
+            </p>
+            <p class="passenger__age">{{ passenger.age }}</p>
+        </div>
+        <div class="passengers__total-count">
+            <button class="add-btn" mat-button
+                (click)="decreasePassengerCount(passenger); $event.stopPropagation()"
+                [disabled]="passenger.count === getMinCountPassangers(passenger)">
+                <mat-icon>remove</mat-icon>
+        </button>
+        <span class="passenger__count"
+            [class.disabled]="passenger.count === 0">{{ passenger.count }}</span>
+        <button class="remove-btn" mat-button
+            (click)="increasePassengerCount(passenger); $event.stopPropagation()">
+            <mat-icon>add</mat-icon>
+        </button>
+        </div>
+    </div>
+</mat-menu>

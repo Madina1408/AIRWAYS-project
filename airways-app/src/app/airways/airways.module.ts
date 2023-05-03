@@ -9,6 +9,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { EditFlightSearchComponent } from './components/edit-flight-search/edit-flight-search.component';
 import { ShowFlightOptionsComponent } from './components/show-flight-options/show-flight-options.component';
 import { FlightDataResolver } from './flight-data.resolver';
+import { SharedModule } from '../shared/shared.module';
+import { DepartureFromComponent } from './components/departure-from/departure-from.component';
+import { DestinationComponent } from './components/destination/destination.component';
+import { DateRoundComponent } from './components/date-round/date-round.component';
+import { PassengersComponent } from './components/passengers/passengers.component';
+import { DateOneComponent } from './components/date-one/date-one.component';
+
+
 const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },
   { path: 'main', component: MainPageComponent, },
@@ -28,10 +36,17 @@ const routes: Routes = [
     ShoppingCartPageComponent,
     EditFlightSearchComponent,
     ShowFlightOptionsComponent,
+    DepartureFromComponent,
+    DestinationComponent,
+    DateRoundComponent,
+    PassengersComponent,
+    DateOneComponent,
+
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    SharedModule,
   ],
   exports: [
     SelectFlightPageComponent,

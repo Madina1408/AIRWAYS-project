@@ -1,0 +1,13 @@
+<mat-form-field appearance="outline" class="date__one-field">
+    <mat-label>Date</mat-label>
+    <input matInput #dateOneWay
+        [min]="minDate"
+        [matDatepicker]="picker"
+        [formControl]="selectDateOne"
+        (dateChange)="onDateChange(dateOneWay.value)">
+    <mat-hint>{{ selectedValueDateFormat }}</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="selectDateOne.invalid">Please select a date or invalid date.
+        <br>Date format should be {{ selectedValueDateFormat }}</mat-error>
+</mat-form-field>

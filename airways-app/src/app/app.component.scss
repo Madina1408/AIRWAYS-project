@@ -1,9 +1,10 @@
 .app__container {
-    position: relative;
-    height: 100vh;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 
     main {
-        display: flex;
+        flex: 1 1 auto;
         flex-direction: column;
         justify-content: center;
     }

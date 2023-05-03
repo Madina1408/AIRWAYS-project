@@ -1,5 +1,6 @@
-import {IGotFlightData} from './flight-data'
 export interface ISelectAirport {
+    key: string;
+    country: string;
     city: string;
-    airport: string;
+    name: string;
 }

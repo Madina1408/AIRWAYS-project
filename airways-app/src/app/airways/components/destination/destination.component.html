@@ -1,0 +1,18 @@
+<mat-form-field appearance="outline" class="destination__field">
+    <mat-label>Destination</mat-label>
+    <input #searchInput type="text"
+           placeholder="Choose your destination"
+           aria-label="Destination"
+           matInput
+           [formControl]="selectDestination"
+           [matAutocomplete]="auto"
+           (input)="filterOptions(searchInput.value)">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectDestination($event.option.value)">
+      <mat-option *ngFor="let airportTo of selectAirport | search: searchAirport"
+        [value]="airportTo.city + ' ' + airportTo.key">
+        <p class="city">{{ airportTo.city }} <span class="city">({{ airportTo.key }})</span></p>
+        <p class="airport">{{ airportTo.country }}, <span class="airport">{{ airportTo.name}}</span></p>
+      </mat-option>
+    </mat-autocomplete>
+    <mat-error>{{ getDestinationErrorMessage() }}</mat-error>
+</mat-form-field>
