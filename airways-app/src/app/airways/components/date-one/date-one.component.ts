@@ -48,15 +48,11 @@ export class DateOneComponent implements OnInit, OnDestroy {
     const inputElement = this.elementRef.nativeElement.querySelector('input');
     inputElement.value = date;
     if (this.selectedValueDateFormat === 'YYYY/DD/MM') {
-      const date = moment(new Date(this.selectedDateValue)).format('MM/DD/YYYY');
+      const date = moment(new Date(this.selectedDateValue)).format('YYYY/MM/DD');
       this.dateOneWayValueChange.emit(date);
     } else {
       this.dateOneWayValueChange.emit(date);
     }
-  }
-
-  formatDate(date: Date, format: string): string {
-   return moment(date).format(format.replace('MM', 'M').replace('DD', 'D').replace('YYYY', 'Y'));
   }
 
   ngOnDestroy() {

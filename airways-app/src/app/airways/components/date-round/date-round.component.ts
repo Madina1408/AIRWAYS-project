@@ -56,8 +56,8 @@ export class DateRoundComponent {
     inputElementStart.value = start;
     inputElementEnd.value = end;
     if (this.selectedValueDateFormat === 'YYYY/DD/MM') {
-      const start =this.formatDate(new Date(this.selectedDateValue?.start), 'MM/DD/YYYY');
-      const end = this.formatDate(new Date(this.selectedDateValue?.end),'MM/DD/YYYY');
+      const start =this.formatDate(new Date(this.selectedDateValue?.start), 'YYYY/MM/DD');
+      const end = this.formatDate(new Date(this.selectedDateValue?.end),'YYYY/MM/DD');
       this.dateRoundValueChange.emit({ start: start, end: end });
     } else {
       this.dateRoundValueChange.emit({ start: start, end: end });
