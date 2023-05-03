@@ -47,20 +47,26 @@ export class DateRoundComponent {
   }
 
   formatAndSetValue() {
-    const start = moment(new Date(this.selectedDateValue?.start)).format(this.selectedValueDateFormat);
-    const end = moment(new Date(this.selectedDateValue?.end)).format(this.selectedValueDateFormat);
+    const start = this.formatDate(new Date(this.selectedDateValue?.start), this.selectedValueDateFormat);
+    const end = this.formatDate(new Date(this.selectedDateValue?.end), (this.selectedValueDateFormat));
+
     const inputElementStart = this.elementRef.nativeElement.querySelector('.date__start');
     const inputElementEnd = this.elementRef.nativeElement.querySelector('.date__end');
+
     inputElementStart.value = start;
     inputElementEnd.value = end;
     if (this.selectedValueDateFormat === 'YYYY/DD/MM') {
-      const start = moment(new Date(this.selectedDateValue?.start)).format('MM/DD/YYYY');
-      const end = moment(new Date(this.selectedDateValue?.end)).format('MM/DD/YYYY');
+      const start =this.formatDate(new Date(this.selectedDateValue?.start), 'MM/DD/YYYY');
+      const end = this.formatDate(new Date(this.selectedDateValue?.end),'MM/DD/YYYY');
       this.dateRoundValueChange.emit({ start: start, end: end });
     } else {
       this.dateRoundValueChange.emit({ start: start, end: end });
     }
   }
+
+  formatDate(date: Date, format: string): string {
+    return moment(date).format(format.replace('MM', 'M').replace('DD', 'D').replace('YYYY', 'Y'));
+   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subs => subs.unsubscribe());

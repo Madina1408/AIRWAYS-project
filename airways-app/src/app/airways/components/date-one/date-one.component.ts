@@ -55,6 +55,10 @@ export class DateOneComponent implements OnInit, OnDestroy {
     }
   }
 
+  formatDate(date: Date, format: string): string {
+   return moment(date).format(format.replace('MM', 'M').replace('DD', 'D').replace('YYYY', 'Y'));
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(subs => subs.unsubscribe());
   }
