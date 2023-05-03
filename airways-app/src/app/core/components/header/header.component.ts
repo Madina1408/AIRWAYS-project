@@ -17,11 +17,11 @@ import { HeaderService } from '../../services/header.service';
   }]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  dateOptions: ISelectFormat[] = dateFormatMenu;
-  selectedDateFormat: string = this.dateOptions[0].label;
+  dateOptions: ISelectFormat[] = [];
+  selectedDateFormat: string = '';
 
-  currencyOptions: ISelectFormat[] = currencyFormatMenu;
-  selectedCurrencyFormat: string = this.currencyOptions[0].label;
+  currencyOptions: ISelectFormat[] = [];
+  selectedCurrencyFormat: string = '';
   isCurrencySelected = false;
 
   isShowBookFlights = false;
@@ -34,7 +34,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private headerService: HeaderService) {}
 
   ngOnInit(): void {
+    this.dateOptions = this.headerService.dateFormats;
+    this.currencyOptions = this.headerService.currancyFormats;
+
     this.subscriptions.push(
+      this.headerService.selectedValueDateFormat$$.subscribe(data => {
+        this.selectedDateFormat = data;
+      }),
+      this.headerService.selectedValueCurrencyFormat$$.subscribe(currancy => {
+        this.selectedCurrencyFormat = currancy;
+      }),
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           const currentUrl = event.url;
