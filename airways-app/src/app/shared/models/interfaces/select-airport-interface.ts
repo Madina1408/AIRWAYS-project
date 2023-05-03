@@ -1,4 +1,6 @@
 export interface ISelectAirport {
+    key: string;
+    country: string;
     city: string;
-    airport: string;
+    name: string;
 }

@@ -1,1 +1,23 @@
-<p>main-page works!</p>
+<div class="mainpage__container">
+    <form [formGroup]="flightSearchForm" (ngSubmit)="onFormSubmit()">
+    <mat-radio-group formControlName="flightType" class="flight__type" (change)="onFlightTypeChange()">
+        <mat-radio-button color="primary" value="round-trip">Round Trip</mat-radio-button>
+        <mat-radio-button color="primary" value="one-way">One Way</mat-radio-button>
+    </mat-radio-group>
+
+    <app-departure-from (departureValueChange)="onDepartureChange($event)"></app-departure-from>
+    <app-destination (destinationValueChange)="onDestinationChange($event)"></app-destination>
+
+    <button mat-icon-button class="swap__btn" (click)="onSwapAirports()">
+      <img src="../../../../assets/icons/swap_arrow_icon.svg" alt="icon-swap">
+    </button>
+
+    <app-date-round *ngIf="!isOneWayTrip" (dateRoundValueChange)="onDateRoundChange($event)"></app-date-round>
+    <app-date-one *ngIf="isOneWayTrip" (dateOneWayValueChange)="onDateOneWayChange($event)"></app-date-one>
+
+    <app-passengers (passengersValueChange)="onPassengersChange($event)"></app-passengers>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="!flightSearchForm.valid" class="search__btn">Search</button>
+  </form>
+</div>
+

@@ -6,6 +6,13 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 import { SummaryPageComponent } from './pages/booking-pages/summary-page/summary-page.component';
 import { ShoppingCartPageComponent } from './pages/shopping-cart-page/shopping-cart-page.component';
 import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
+import { DepartureFromComponent } from './components/departure-from/departure-from.component';
+import { DestinationComponent } from './components/destination/destination.component';
+import { DateRoundComponent } from './components/date-round/date-round.component';
+import { PassengersComponent } from './components/passengers/passengers.component';
+import { DateOneComponent } from './components/date-one/date-one.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -24,10 +31,16 @@ const routes: Routes = [
     MainPageComponent,
     SummaryPageComponent,
     ShoppingCartPageComponent,
+    DepartureFromComponent,
+    DestinationComponent,
+    DateRoundComponent,
+    PassengersComponent,
+    DateOneComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    SharedModule,
   ],
   exports: [
     SelectFlightPageComponent,
