@@ -1,13 +1,16 @@
 <header class="header" [class]="headerClass">
     <div class="header__container">
         <img class="header__logo" src="../../../../assets/images/main_logo.png" alt="airways-logo" routerLink="">
+
         <mat-horizontal-stepper #stepper *ngIf="isShowProgressBar" class="stepper">
             <mat-step label="Flights" state="edit"></mat-step>
             <mat-step label="Passengers"></mat-step>
             <mat-step label="Review & Payment"></mat-step>
         </mat-horizontal-stepper>
+
         <div class="header__options">
             <p *ngIf="isShowBookFlights">Book flights</p>
+
             <button mat-button
                 [matMenuTriggerFor]="dateSelect"
                 class="header__date-format"
@@ -24,6 +27,7 @@
                     class="header__logo" src="../../../../assets/icons/icon-select.svg" alt="icon-select">
                 </button>
             </mat-menu>
+
             <button mat-button
                 [matMenuTriggerFor]="CurrencySelect"
                 class="header__currency-format"
@@ -38,6 +42,7 @@
                     mat-menu-item
                 >{{ option.label }}</button>
             </mat-menu>
+
             <button mat-button
                 class="header__signin-btn"
                 [class]="headerClass">
@@ -45,6 +50,7 @@
                 <img *ngIf="!isMainPage" src="../../../../assets/icons/user_icon_dark.svg" alt="user-icon">
                 Sign In
             </button>
+
             <a class="header__cart-btn" matBadge="15" matBadgeColor="warn">
                 <img *ngIf="isMainPage" src="../../../../assets/icons/shopping_basket.svg" alt="cart-icon">
                 <img *ngIf="!isMainPage" src="../../../../assets/icons/shopping_basket_dark.svg" alt="cart-icon">

@@ -15,6 +15,7 @@
 
 ::ng-deep .header__date-list {
     width: 10.125rem;
+    border-radius: 0 !important;
 
     .header__date-selected {
         display: flex;
