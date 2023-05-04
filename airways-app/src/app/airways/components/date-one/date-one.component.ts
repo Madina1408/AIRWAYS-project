@@ -30,7 +30,7 @@ export class DateOneComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.subscribe(value => {
-        this.selectedValueDateFormat = value;
+        this.selectedValueDateFormat = value.label;
           if (this.selectDateOne.valid) {
             this.formatAndSetValue();
           }
