@@ -5,7 +5,8 @@
             formControlName="start" placeholder="Departure date">
         <input class="date__end" #dateRangeEnd matEndDate
             formControlName="end" placeholder="Return date"
-            (dateChange)="onDatesChange(dateRangeStart.value, dateRangeEnd.value)">
+            (dateChange)="onDatesChange(dateRangeStart.value, dateRangeEnd.value)"
+            (blur)="onDatesChange(dateRangeStart.value, dateRangeEnd.value)">
     </mat-date-range-input>
     <mat-hint>{{ selectedValueDateFormat }} - {{ selectedValueDateFormat }}</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

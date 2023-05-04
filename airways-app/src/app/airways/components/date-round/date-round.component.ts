@@ -33,7 +33,7 @@ export class DateRoundComponent {
   ngOnInit() {
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.subscribe(value => {
-        this.selectedValueDateFormat = value;
+        this.selectedValueDateFormat = value.label;
         if (this.selectDateRound.valid) {
           this.formatAndSetValue();
         }

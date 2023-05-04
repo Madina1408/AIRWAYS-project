@@ -1,8 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ISelectFormat } from '../../../shared/models/interfaces/select-format-interface';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import currencyFormatMenu from '../../data/constants/currency-format';
-import dateFormatMenu from '../../data/constants/date-format';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutesPaths } from '../../data/enums/routes-paths';
@@ -39,10 +37,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.subscribe(data => {
-        this.selectedDateFormat = data;
+        this.selectedDateFormat = data.label;
       }),
       this.headerService.selectedValueCurrencyFormat$$.subscribe(currancy => {
-        this.selectedCurrencyFormat = currancy;
+        this.selectedCurrencyFormat = currancy.label;
       }),
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
@@ -87,13 +85,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         item.selected = false;
       }
     });
-    this.headerService.setSelectedValueDateFormat(option.label)
+    this.headerService.setSelectedValueDateFormat(option)
   }
 
   onSelectCurrencyFormat(option: ISelectFormat) {
     this.selectedCurrencyFormat = option.label;
     this.isCurrencySelected = true;
-    this.headerService.setSelectedValueCurrencyFormat(option.label);
+    this.headerService.setSelectedValueCurrencyFormat(option);
   }
 
   ngOnDestroy(): void {

@@ -5,6 +5,7 @@
         [matDatepicker]="picker"
         [formControl]="selectDateOne"
         (dateChange)="onDateChange(dateOneWay.value)"
+        (blur)="onDateChange(dateOneWay.value)"
         placeholder="Departure date">
     <mat-hint>{{ selectedValueDateFormat }}</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
