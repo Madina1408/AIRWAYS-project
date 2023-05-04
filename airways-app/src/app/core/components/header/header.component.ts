@@ -92,7 +92,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.selectedCurrencyFormat = option.label;
     this.isCurrencySelected = true;
     this.headerService.setSelectedValueCurrencyFormat(option);
-    console.log(option.sign);
   }
 
   ngOnDestroy(): void {
