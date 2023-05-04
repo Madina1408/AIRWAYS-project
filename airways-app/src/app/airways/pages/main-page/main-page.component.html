@@ -5,8 +5,8 @@
         <mat-radio-button color="primary" value="one-way">One Way</mat-radio-button>
     </mat-radio-group>
 
-    <app-departure-from (departureValueChange)="onDepartureChange($event)"></app-departure-from>
-    <app-destination (destinationValueChange)="onDestinationChange($event)"></app-destination>
+    <app-departure-from [selectAirport]="selectAirport" (departureValueChange)="onDepartureChange($event)"></app-departure-from>
+    <app-destination [selectAirport]="selectAirport" (destinationValueChange)="onDestinationChange($event)"></app-destination>
 
     <button type="button" mat-icon-button class="swap__btn" (click)="onSwapAirports()">
       <img src="../../../../assets/icons/swap_arrow_icon.svg" alt="icon-swap">

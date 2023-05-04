@@ -1,9 +1,11 @@
 <mat-form-field appearance="outline" class="date__round-field">
     <mat-label>Dates</mat-label>
-    <mat-date-range-input [rangePicker]="picker" [formGroup]="selectDateRound" [min]="minDate" >
-        <input #dateRangeStart matStartDate formControlName="start">
-        <input #dateRangeEnd matEndDate formControlName="end"
-        (dateChange)="onDatesChange(dateRangeStart.value, dateRangeEnd.value)">
+    <mat-date-range-input [rangePicker]="picker" [formGroup]="selectDateRound" [min]="minDate">
+        <input class="date__start" #dateRangeStart matStartDate
+            formControlName="start" placeholder="Departure date">
+        <input class="date__end" #dateRangeEnd matEndDate
+            formControlName="end" placeholder="Return date"
+            (dateChange)="onDatesChange(dateRangeStart.value, dateRangeEnd.value)">
     </mat-date-range-input>
     <mat-hint>{{ selectedValueDateFormat }} - {{ selectedValueDateFormat }}</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

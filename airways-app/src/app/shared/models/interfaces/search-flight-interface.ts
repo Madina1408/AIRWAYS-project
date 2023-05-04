@@ -3,5 +3,5 @@ export interface ISearchFlight {
     toKey: string;
     forwardDate: string;
     backDate?: string;
-    passengers?: string;
+    passengers: string;
 }

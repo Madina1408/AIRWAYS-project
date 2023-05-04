@@ -35,13 +35,7 @@ export class DateRoundComponent {
       this.headerService.selectedValueDateFormat$$.subscribe(value => {
         this.selectedValueDateFormat = value;
         if (this.selectDateRound.valid) {
-          const start = moment(new Date(this.selectedDateValue?.start)).format(this.selectedValueDateFormat);
-          const end = moment(new Date(this.selectedDateValue?.end)).format(this.selectedValueDateFormat);
-          const inputElementStart = this.elementRef.nativeElement.querySelector('.date__start');
-          const inputElementEnd = this.elementRef.nativeElement.querySelector('.date__end');
-          inputElementStart.value = start;
-          inputElementEnd.value = end;
-          this.dateRoundValueChange.emit({ start: start, end: end });
+          this.formatAndSetValue();
         }
       }),
     )
@@ -49,8 +43,30 @@ export class DateRoundComponent {
 
   onDatesChange(start: string, end: string) {
     this.selectedDateValue = { start: start, end: end };
-    this.dateRoundValueChange.emit({start: start, end: end});
+    this.formatAndSetValue();
   }
+
+  formatAndSetValue() {
+    const start = this.formatDate(new Date(this.selectedDateValue?.start), this.selectedValueDateFormat);
+    const end = this.formatDate(new Date(this.selectedDateValue?.end), (this.selectedValueDateFormat));
+
+    const inputElementStart = this.elementRef.nativeElement.querySelector('.date__start');
+    const inputElementEnd = this.elementRef.nativeElement.querySelector('.date__end');
+
+    inputElementStart.value = start;
+    inputElementEnd.value = end;
+    if (this.selectedValueDateFormat === 'YYYY/DD/MM') {
+      const start =this.formatDate(new Date(this.selectedDateValue?.start), 'YYYY/MM/DD');
+      const end = this.formatDate(new Date(this.selectedDateValue?.end),'YYYY/MM/DD');
+      this.dateRoundValueChange.emit({ start: start, end: end });
+    } else {
+      this.dateRoundValueChange.emit({ start: start, end: end });
+    }
+  }
+
+  formatDate(date: Date, format: string): string {
+    return moment(date).format(format.replace('MM', 'M').replace('DD', 'D').replace('YYYY', 'Y'));
+   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subs => subs.unsubscribe());
