@@ -1,8 +1,10 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ISelectPassengers } from 'src/app/shared/models/interfaces/select-passangers-interface';
-import passengersList from '../../data/constants/passengers';
 import { FormControl, Validators } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
+import { Subscription } from 'rxjs';
+import passengersList from '../../data/constants/passengers';
 
 @Component({
   selector: 'app-passengers',
@@ -11,29 +13,33 @@ import { MatMenuTrigger } from '@angular/material/menu';
 })
 export class PassengersComponent {
   selectPassengers: ISelectPassengers[] = passengersList;
-  defaultValue: string = `${this.selectPassengers[0].count} ${this.selectPassengers[0].type}`;
+  selectedTypesPassengers = this.selectPassengers.filter(passenger => passenger.count > 0);
+  selectedPassengersValue = this.selectedTypesPassengers
+    .map(passenger => `${passenger.count} ${passenger.type}`).join(', ');
 
-  selectListPassengers = new FormControl(this.defaultValue, Validators.required);
+  selectListPassengers = new FormControl(this.selectedPassengersValue, Validators.required);
 
   @ViewChild(MatMenuTrigger, { static: true }) menuTrigger!: MatMenuTrigger;
 
-  @Output() passengersValueChange = new EventEmitter<string>();
+  subscriptions: Subscription[] = [];
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(
+    private elementRef: ElementRef,
+    private flightSearch: FlightSearchDataService) {}
 
   getPassengersCount(): string {
-    this.defaultValue = '';
+    this.selectedPassengersValue = '';
     const selectedTypesPassengers = this.selectPassengers.filter(passenger => passenger.count > 0);
     selectedTypesPassengers.forEach((passenger, index) => {
       if (passenger.count > 0) {
-        this.defaultValue += `${passenger.count} ${passenger.type}`;
+        this.selectedPassengersValue += `${passenger.count} ${passenger.type}`;
         if (index < selectedTypesPassengers.length - 1) {
-          this.defaultValue += ', ';
+          this.selectedPassengersValue += ', ';
         }
       };
     });
-    this.passengersValueChange.emit(this.defaultValue);
-    return this.defaultValue;
+    this.flightSearch.setSelectedValuePassengers(this.selectedPassengersValue);
+    return this.selectedPassengersValue;
   }
 
   getMinCountPassangers(passenger: ISelectPassengers): number {

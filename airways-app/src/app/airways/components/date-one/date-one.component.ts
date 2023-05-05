@@ -1,8 +1,9 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { HeaderService } from 'src/app/core/services/header.service';
+import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 
 @Component({
   selector: 'app-date-one',
@@ -10,49 +11,50 @@ import { HeaderService } from 'src/app/core/services/header.service';
   styleUrls: ['./date-one.component.scss']
 })
 export class DateOneComponent implements OnInit, OnDestroy {
-  selectDateOne = new FormControl('', Validators.required);
-
   minDate = new Date();
 
   selectedValueDateFormat = '';
 
-  selectedDateValue = '';
+  selectedDateValue!: Date | null;
+
+  selectDateOne = new FormControl(this.selectedDateValue, Validators.required);
 
   subscriptions: Subscription[] = [];
 
-  @Output() dateOneWayValueChange = new EventEmitter<string>();
-
   constructor(
     private headerService: HeaderService,
+    private flightSearch: FlightSearchDataService,
     private elementRef: ElementRef
   ) {}
 
   ngOnInit() {
     this.subscriptions.push(
-      this.headerService.selectedValueDateFormat$$.subscribe(value => {
+      this.headerService.selectedValueDateFormat$$.asObservable().subscribe(value => {
         this.selectedValueDateFormat = value.label;
           if (this.selectDateOne.valid) {
             this.formatAndSetValue();
           }
-      })
-    )
+      }),
+      this.flightSearch.selectedValueDateFrom$$.asObservable()
+        .subscribe(value => {
+          this.selectedDateValue = value;
+        }),
+      this.selectDateOne.valueChanges
+        .subscribe(value => this.flightSearch.setSelectedValueDateFrom(value!)),
+    );
+    this.selectDateOne.setValue(this.selectedDateValue);
   }
 
-  onDateChange(value: string) {
-    this.selectedDateValue = value;
+  onDateChange() {
+    this.selectedDateValue = this.selectDateOne.value;
     this.formatAndSetValue();
   }
 
-  formatAndSetValue() {
-    const date = moment(new Date(this.selectedDateValue)).format(this.selectedValueDateFormat);
+  private formatAndSetValue() {
+    console.log(this.selectedDateValue);
+    const date = moment(this.selectedDateValue).format(this.selectedValueDateFormat);
     const inputElement = this.elementRef.nativeElement.querySelector('input');
     inputElement.value = date;
-    if (this.selectedValueDateFormat === 'YYYY/DD/MM') {
-      const date = moment(new Date(this.selectedDateValue)).format('YYYY/MM/DD');
-      this.dateOneWayValueChange.emit(date);
-    } else {
-      this.dateOneWayValueChange.emit(date);
-    }
   }
 
   ngOnDestroy() {
