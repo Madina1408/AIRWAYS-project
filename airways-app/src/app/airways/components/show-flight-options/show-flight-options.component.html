@@ -1,18 +1,28 @@
 <div class="wrapper">
-  <div class="fromto">
+  <div *ngIf="isForward" class="fromto">
     <img src="../../../../assets/icons/plane_icon.svg" alt="plane icon" />
-    <p>Dublin to</p>
-    <p>Warsaw Modlin</p>
+    <p>{{departureCity}} to</p>
+    <p>{{destinationCity}}</p>
+  </div>
+  <div *ngIf="!isForward" class="fromto">
+    <img src="../../../../assets/icons/plane_backward_icon.svg" alt="plane icon" />
+    <p>{{destinationCity}} to</p>
+    <p>{{departureCity}}</p>
   </div>
   <div class="selection-container">
     <div class="slider">
-      <div
-        class="slides"
-      >
-        <div class="slide" *ngFor="let item of visibleItems">
-          <p>{{item.date}}</p>
-          <h4>{{item.weekday}}</h4>
-          <h5>{{item.price}}</h5>
+      <div class="slides">
+        <div
+          class="slide"
+          *ngFor="let item of visibleItems"
+          (click)="showDetailedFlightInfo(item.flightNumber)"
+        >
+          <p>{{item.takeoffDate | date:'dd MMM'}}</p>
+          <h4>{{item.takeoffDate | date: 'EEEE'}}</h4>
+          <h5>{{currencySign}}{{getSelectedItemPrice(item) | number:'2.1-2'}}</h5>
+          <span
+            [ngStyle]="{'background-color': detailedInfo.flightNumber==item.flightNumber? (detailedInfo.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'):'white'}"
+          ></span>
         </div>
       </div>
       <div class="buttons">
@@ -34,45 +44,59 @@
     <div class="selected-flight-info">
       <div class="flight-info-container">
         <div class="departure-date-time">
-          <p class="date">Sat, 18 Mar 2023</p>
+          <p class="date">{{detailedInfo.takeoffDate|date:'EEE, MMM d y'}}</p>
           <div class="time">
-            <h4>7:40</h4>
-            <p>UTC +1</p>
+            <h4>{{detailedInfo.takeoffDate|date:'HH:MM'}}</h4>
+            <p>{{detailedInfo.takeoffDate|date:'z'}}</p>
           </div>
-          <p>Warsaw Modlin</p>
+          <p *ngIf="isForward">{{departureCity}}</p>
+          <p *ngIf="!isForward">{{destinationCity}}</p>
         </div>
         <div class="flight-duration">
-          <p>2h 50m</p>
+          <p *ngIf="isForward">{{detailedInfo.timeMins|duration}}</p>
+          <p *ngIf="!isForward">{{detailedInfo.timeMins|duration}}</p>
           <div class="plane-style">
             <span></span>
-            <img src="../../../../assets/icons/direct_plane_svg.svg" alt="">
+            <img
+              *ngIf="isForward"
+              src="../../../../assets/icons/direct_plane_svg.svg"
+              alt="plane"
+            />
+            <img
+              *ngIf="!isForward"
+              src="../../../../assets/icons/plane_back_icon.svg"
+              alt="plane_back_icon"
+            />
             <span></span>
           </div>
           <p>Direct</p>
         </div>
         <div class="landing-date-time">
-          <p class="date">Sat, 18 Mar 2023</p>
+          <p class="date">{{detailedInfo.landingDate|date:'EEE, MMM d y'}}</p>
           <div class="time">
-            <h4>7:40</h4>
-            <p>UTC +1</p>
+            <h4>{{detailedInfo.landingDate|date:'HH:MM'}}</h4>
+            <p>{{detailedInfo.landingDate|date:'z'}}</p>
           </div>
-          <p>Warsaw Modlin</p>
+          <p *ngIf="isForward">{{destinationCity}}</p>
+          <p *ngIf="!isForward">{{departureCity}}</p>
         </div>
         <div class="flight-number">
           <p>Flight no.</p>
-          <h4>FR 1925</h4>
+          <h4>{{detailedInfo.flightNumber}}</h4>
         </div>
         <span class="dashed"></span>
         <div class="price-info">
-          <div class="seats">
-            <div>20 seats available</div>
+          <div
+            class="seats"
+            [ngStyle]="{'background-color': detailedInfo.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'}"
+          >
+            <div>{{detailedInfo.avaible}} seats available</div>
           </div>
           <p>Price</p>
-          <h4>€110.61</h4>
+          <h4>{{currencySign}}{{detailedInfo.price.usd | number:'2.1-2'}}</h4>
         </div>
-        <button>Select</button>
+        <button type="button">Select</button>
       </div>
     </div>
   </div>
-
 </div>

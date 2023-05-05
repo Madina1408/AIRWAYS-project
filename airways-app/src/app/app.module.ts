@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FlightDataResolver } from './airways/flight-data.resolver';
-
 @NgModule({
   declarations: [
     AppComponent,

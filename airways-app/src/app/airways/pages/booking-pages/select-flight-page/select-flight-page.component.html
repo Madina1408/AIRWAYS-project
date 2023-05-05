@@ -1,10 +1,23 @@
-<app-edit-flight-search></app-edit-flight-search>
+<app-edit-flight-search [flightData]="flightData"></app-edit-flight-search>
 <div class="wrapper">
-  <app-show-flight-options></app-show-flight-options>
-  <app-show-flight-options></app-show-flight-options>
+  <form *ngIf="isEditing" class="edit-flight-search">
+    <app-departure-from></app-departure-from>
+    <app-destination></app-destination>
+    <app-date-one *ngIf="flightTypeValue === 'one-way'"></app-date-one>
+    <app-date-round *ngIf="flightTypeValue === 'round-trip'"></app-date-round>
+    <app-passengers></app-passengers>
+  </form>
+  <app-show-flight-options
+    [flightData]="forwardFlightData"
+    [isForward]="true"
+  ></app-show-flight-options>
+  <app-show-flight-options
+    *ngIf="backFlightData[0]!==undefined"
+    [flightData]="backFlightData"
+    [isForward]="false"
+  ></app-show-flight-options>
   <div class="bottom-buttons">
-    <button class="btn-back">Back</button>
-    <button class="btn-continue">Continue</button>
+    <button type="button" class="btn-back" [routerLink]="['']">Back</button>
+    <button type="button" class="btn-continue">Continue</button>
   </div>
 </div>
-

@@ -135,6 +135,7 @@
           padding: 8px 16px;
           border: 1px solid #11397e;
           border-radius: 4px;
+          cursor: pointer;
         }
         .dashed {
           width: 2px;
@@ -148,8 +149,6 @@
 .slides {
   display: flex;
   width: 100%;
-  // gap: 1px;
-  overflow: hidden;
   transition: transform 0.2s ease-in-out;
 }
 .slide {
@@ -163,13 +162,17 @@
   justify-content: center;
   align-items: center;
   font-size: 30px;
+  cursor: pointer;
   border-left: 1px solid #cecece;
   transition: transform ease 400ms;
+  span {
+    width: 204px;
+    margin-top: 10px;
+    height: 4px;
+    border-radius: 0px;
+  }
   &:hover {
-    transform: scale(1.1);
-    // margin-top: -10px;
     transform: translate(0, -10px);
-    z-index: 1;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   }
   p {
