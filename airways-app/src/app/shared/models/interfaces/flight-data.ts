@@ -1,5 +1,5 @@
 export interface IGotFlightData {
-  available: number;
+  avaible: number;
   flightNumber: string;
   timeMins: number;
   takeoffDate: string;

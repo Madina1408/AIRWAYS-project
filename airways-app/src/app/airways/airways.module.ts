@@ -15,7 +15,7 @@ import { DestinationComponent } from './components/destination/destination.compo
 import { DateRoundComponent } from './components/date-round/date-round.component';
 import { PassengersComponent } from './components/passengers/passengers.component';
 import { DateOneComponent } from './components/date-one/date-one.component';
-
+import { DurationPipe } from './pipes/duration.pipe';
 
 const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -41,7 +41,7 @@ const routes: Routes = [
     DateRoundComponent,
     PassengersComponent,
     DateOneComponent,
-
+    DurationPipe
   ],
   imports: [
     CommonModule,
