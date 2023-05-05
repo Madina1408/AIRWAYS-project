@@ -1,26 +1,48 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
 import { AirportService } from '../../services/airport/airport.service';
 import { Subscription } from 'rxjs';
+import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-destination',
   templateUrl: './destination.component.html',
   styleUrls: ['./destination.component.scss']
 })
-export class DestinationComponent {
-  @Input() selectAirport!: ISelectAirport[];
+export class DestinationComponent implements OnInit, OnDestroy {
+  selectAirport: ISelectAirport[] = [];
 
   searchAirport = '';
 
-  selectDestination = new FormControl('', [Validators.required]);
+  selectedDestinationValue!: string;
 
-  @Output() destinationValueChange = new EventEmitter<string>();
+  selectDestination = new FormControl('', [Validators.required]);
 
   subscriptions: Subscription[] = [];
 
-  constructor(private airportService: AirportService){}
+  isMainPage = true;
+
+  constructor(
+    private airportService: AirportService,
+    private flightSearch: FlightSearchDataService,
+    private route: ActivatedRoute){}
+
+  ngOnInit() {
+    this.subscriptions.push(
+      this.airportService.airportsList$$.subscribe(data => this.selectAirport = data),
+      this.airportService.searchItem.subscribe(data => this.searchAirport = data),
+      this.flightSearch.selectedValueDestination$$.asObservable()
+        .subscribe(value => this.selectedDestinationValue = value),
+      this.selectDestination.valueChanges
+        .subscribe(value => this.flightSearch.setSelectedValueDestination(value!)),
+        this.route.url.subscribe(url => {
+          this.isMainPage = url[0].path === 'main';
+        })
+    );
+    this.selectDestination.setValue(this.selectedDestinationValue);
+  }
 
   filterOptions(value: string) {
     this.airportService.searchItem.next(value);
@@ -35,7 +57,7 @@ export class DestinationComponent {
     return '';
   }
 
-  onSelectDestination(value: string) {
-    this.destinationValueChange.emit(value);
+  ngOnDestroy() {
+    this.subscriptions.forEach(subs => subs.unsubscribe);
   }
 }

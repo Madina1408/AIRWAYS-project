@@ -8,6 +8,7 @@ import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-in
 import { RoutesPaths } from 'src/app/core/data/enums/routes-paths';
 import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
 import { Subscription } from 'rxjs';
+import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 
 
 @Component({
@@ -19,13 +20,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   selectAirport: ISelectAirport[] = [];
 
-  isOneWayTrip = false;
+  flightTypeValue!: string;
 
-  departureValue = '';
-  destinationValue = '';
-  dateOneWayValue = '';
-  dateRoundValue!: { start: string, end: string };
-  passengersValue = '';
+  departureValue!: string;
+  destinationValue!: string;
+  dateFromValue!: Date | null;
+  dateReturnValue!: Date | null;
+  passengersValue!: string;
 
   subscriptions: Subscription[] = [];
 
@@ -33,43 +34,31 @@ export class MainPageComponent implements OnInit, OnDestroy {
   @ViewChild(DestinationComponent) destinationComponent!: DestinationComponent;
 
   flightSearchForm = new FormGroup({
-    flightType: new FormControl('round-trip', Validators.required),
+    flightType: new FormControl(this.flightTypeValue, Validators.required),
   });
 
   constructor(
     private airportService: AirportService,
+    private flightSearch: FlightSearchDataService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.airportService.getAirportsList();
     this.subscriptions.push(
-      this.airportService.airportsList$$.subscribe(data => this.selectAirport = data)
+      this.airportService.airportsList$$.subscribe(data => this.selectAirport = data),
+      this.flightSearch.selectedFlightType$$.asObservable().subscribe(value => this.flightTypeValue = value),
+      this.flightSearchForm.valueChanges.subscribe(value => this.flightSearch.setSelectedFlightType(value.flightType!)),
+
+      this.flightSearch.selectedValueDeparture$$.asObservable().subscribe(value => this.departureValue = value),
+      this.flightSearch.selectedValueDestination$$.asObservable().subscribe(value => this.destinationValue = value),
+      this.flightSearch.selectedValueDateFrom$$.asObservable().subscribe( value => this.dateFromValue = value),
+      this.flightSearch.selectedValueDateReturn$$.asObservable().subscribe( value => this.dateReturnValue = value),
+      this.flightSearch.selectedValuePassengers$$.asObservable().subscribe( value => this.passengersValue = value),
     );
-  }
-
-  onFlightTypeChange() {
-    this.isOneWayTrip = !this.isOneWayTrip;
-  }
-
-  onDepartureChange(value: string) {
-    this.departureValue = value;
-  }
-
-  onDestinationChange(value: string) {
-      this.destinationValue = value;
-  }
-
-  onDateRoundChange(value: { start: string, end: string; }) {
-    this.dateRoundValue = value;
-  }
-
-  onDateOneWayChange(value: string) {
-    this.dateOneWayValue = value;
-  }
-
-  onPassengersChange(value: string) {
-    this.passengersValue = value;
+    this.flightSearchForm.setValue({
+      flightType: this.flightTypeValue
+    });
   }
 
   onSwapAirports() {
@@ -92,22 +81,22 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onFormSubmit() {
-    if (this.flightSearchForm.valid && this.isOneWayTrip) {
+    if (this.flightSearchForm.valid && this.flightTypeValue === 'one-way') {
       const queryParams: ISearchFlight = {
         fromKey: this.departureValue.slice(-3, this.departureValue.length),
         toKey: this.destinationValue.slice(-3, this.destinationValue.length),
-        forwardDate: new Date(this.dateOneWayValue).toISOString(),
+        forwardDate: this.dateFromValue!.toISOString(),
         passengers: this.passengersValue,
       };
       if (queryParams) {
         this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
       }
-    } else if (this.flightSearchForm.valid && !this.isOneWayTrip) {
+    } else if (this.flightSearchForm.valid && this.flightTypeValue === 'round-trip') {
       const queryParams: ISearchFlight = {
         fromKey: this.departureValue.slice(-3, this.departureValue.length),
         toKey: this.destinationValue.slice(-3, this.destinationValue.length),
-        forwardDate: new Date(this.dateRoundValue.start).toISOString(),
-        backDate: new Date(this.dateRoundValue.end).toISOString(),
+        forwardDate: this.dateFromValue!.toISOString(),
+        backDate: this.dateReturnValue!.toISOString(),
         passengers: this.passengersValue,
       };
       if (queryParams) {

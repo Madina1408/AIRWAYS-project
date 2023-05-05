@@ -1,11 +1,11 @@
 <mat-form-field appearance="outline" class="date__one-field">
     <mat-label>Date</mat-label>
-    <input matInput #dateOneWay
+    <input matInput
         [min]="minDate"
         [matDatepicker]="picker"
         [formControl]="selectDateOne"
-        (dateChange)="onDateChange(dateOneWay.value)"
-        (blur)="onDateChange(dateOneWay.value)"
+        (dateChange)="onDateChange()"
+        (blur)="onDateChange()"
         placeholder="Departure date">
     <mat-hint>{{ selectedValueDateFormat }}</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

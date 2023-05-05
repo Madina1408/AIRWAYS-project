@@ -1,4 +1,4 @@
-<mat-form-field appearance="outline" class="departure__field">
+<mat-form-field appearance="outline" class="departure__field" [ngClass]="{'booking': !isMainPage}">
     <mat-label>From</mat-label>
     <input #searchInput type="text"
            placeholder="Choose your departure from"
@@ -7,7 +7,7 @@
            [formControl]="selectDeparture"
            [matAutocomplete]="auto"
            (input)="filterOptions(searchInput.value)">
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectDeparture($event.option.value)">
+    <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let airportFrom of selectAirport | search: searchAirport"
         [value]="airportFrom.city + ' ' + airportFrom.key">
         <p class="city">{{ airportFrom.city }} <span class="city">({{ airportFrom.key }})</span></p>

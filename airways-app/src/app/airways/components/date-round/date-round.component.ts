@@ -1,8 +1,9 @@
-import { Component, ElementRef, EventEmitter, Output } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { HeaderService } from 'src/app/core/services/header.service';
+import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 
 @Component({
   selector: 'app-date-round',
@@ -10,25 +11,24 @@ import { HeaderService } from 'src/app/core/services/header.service';
   styleUrls: ['./date-round.component.scss']
 })
 export class DateRoundComponent {
-  selectDateRound = new FormGroup({
-    start: new FormControl('', Validators.required),
-    end: new FormControl('', Validators.required),
-  });
-
   minDate = new Date();
 
   selectedValueDateFormat = '';
 
-  selectedDateValue!: { start: string, end: string };
+  selectedDateValue: { start: Date | null, end: Date | null} = { start: null, end: null };
 
   subscriptions: Subscription[] = [];
 
-  @Output() dateRoundValueChange = new EventEmitter<{ start: string, end: string }>();
+  selectDateRound = new FormGroup({
+    start: new FormControl(this.selectedDateValue.start, Validators.required),
+    end: new FormControl(this.selectedDateValue.end, Validators.required),
+  });
 
   constructor(
     private headerService: HeaderService,
+    private flightSearch: FlightSearchDataService,
     private elementRef: ElementRef
-    ) {}
+  ) {}
 
   ngOnInit() {
     this.subscriptions.push(
@@ -38,33 +38,42 @@ export class DateRoundComponent {
           this.formatAndSetValue();
         }
       }),
-    )
+      this.flightSearch.selectedValueDateFrom$$.asObservable()
+      .subscribe(value => {
+        this.selectedDateValue.start = value;
+      }),
+      this.flightSearch.selectedValueDateReturn$$.asObservable()
+      .subscribe(value => {
+        this.selectedDateValue.end = value;
+      }),
+    this.selectDateRound.valueChanges
+      .subscribe(value => {
+        this.flightSearch.setSelectedValueDateFrom(value.start!);
+        this.flightSearch.setSelectedValueDateReturn(value.end!);
+      }),
+  );
+  this.selectDateRound.setValue({ start: this.selectedDateValue.start, end: this.selectedDateValue.end });
   }
 
-  onDatesChange(start: string, end: string) {
-    this.selectedDateValue = { start: start, end: end };
+  onDatesChange() {
+    const startValue = this.selectDateRound.get('start')?.value;
+    const endValue = this.selectDateRound.get('end')?.value;
+    this.selectedDateValue = { start: startValue!, end: endValue!};
     this.formatAndSetValue();
   }
 
-  formatAndSetValue() {
-    const start = this.formatDate(new Date(this.selectedDateValue?.start), this.selectedValueDateFormat);
-    const end = this.formatDate(new Date(this.selectedDateValue?.end), (this.selectedValueDateFormat));
+  private formatAndSetValue() {
+    const start = this.formatDate(this.selectedDateValue.start!, this.selectedValueDateFormat);
+    const end = this.formatDate(this.selectedDateValue.end!, (this.selectedValueDateFormat));
 
     const inputElementStart = this.elementRef.nativeElement.querySelector('.date__start');
     const inputElementEnd = this.elementRef.nativeElement.querySelector('.date__end');
 
     inputElementStart.value = start;
     inputElementEnd.value = end;
-    if (this.selectedValueDateFormat === 'YYYY/DD/MM') {
-      const start =this.formatDate(new Date(this.selectedDateValue?.start), 'YYYY/MM/DD');
-      const end = this.formatDate(new Date(this.selectedDateValue?.end),'YYYY/MM/DD');
-      this.dateRoundValueChange.emit({ start: start, end: end });
-    } else {
-      this.dateRoundValueChange.emit({ start: start, end: end });
-    }
   }
 
-  formatDate(date: Date, format: string): string {
+  private formatDate(date: Date, format: string): string {
     return moment(date).format(format.replace('MM', 'M').replace('DD', 'D').replace('YYYY', 'Y'));
    }
 
