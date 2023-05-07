@@ -6,8 +6,8 @@
   </div>
   <div *ngIf="!isForward" class="fromto">
     <img src="../../../../assets/icons/plane_backward_icon.svg" alt="plane icon" />
-    <p>{{destinationCity}} to</p>
-    <p>{{departureCity}}</p>
+    <p>{{departureCity}} to</p>
+    <p>{{destinationCity}}</p>
   </div>
   <div class="selection-container">
     <div class="slider">
@@ -21,7 +21,7 @@
           <h4>{{item.takeoffDate | date: 'EEEE'}}</h4>
           <h5>{{currencySign}}{{getSelectedItemPrice(item) | number:'2.1-2'}}</h5>
           <span
-            [ngStyle]="{'background-color': detailedInfo.flightNumber==item.flightNumber? (detailedInfo.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'):'white'}"
+            [ngStyle]="{'background-color': detailedInfo.flightNumber==item.flightNumber? (detailedInfo.seats.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'):'white'}"
           ></span>
         </div>
       </div>
@@ -88,12 +88,12 @@
         <div class="price-info">
           <div
             class="seats"
-            [ngStyle]="{'background-color': detailedInfo.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'}"
+            [ngStyle]="{'background-color': detailedInfo.seats.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'}"
           >
-            <div>{{detailedInfo.avaible}} seats available</div>
+            <div>{{detailedInfo.seats.avaible}} seats available</div>
           </div>
           <p>Price</p>
-          <h4>{{currencySign}}{{detailedInfo.price.usd | number:'2.1-2'}}</h4>
+          <h4>{{currencySign}}{{getSelectedItemPrice(detailedInfo) | number:'2.1-2'}}</h4>
         </div>
         <button type="button">Select</button>
       </div>

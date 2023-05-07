@@ -1,22 +1,34 @@
 export interface IGotFlightData {
-  avaible: number;
+  seats: {
+    total: number;
+    avaible: number;
+  };
   flightNumber: string;
   timeMins: number;
+  form: {
+    key: string;
+    name: string;
+    city: string;
+    gmt: string;
+    country: string;
+  };
+  to: {
+    key: string;
+    name: string;
+    city: string;
+    gmt: string;
+    country: string;
+  };
   takeoffDate: string;
   landingDate: string;
-  prices: {
-    [key: string]: {
-      eur: number;
-      usd: number;
-      rub: number;
-      pln: number;
-    };
-  };
   price: {
     eur: number;
     usd: number;
     rub: number;
     pln: number;
+  };
+  otherFlights?: {
+    [key: string]: IGotFlightData;
   };
 }
 
