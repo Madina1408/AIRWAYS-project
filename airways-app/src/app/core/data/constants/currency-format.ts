@@ -2,7 +2,7 @@ import { ISelectFormat } from "../../../shared/models/interfaces/select-format-i
 
 const currencyFormatMenu: ISelectFormat[] = [
     { label: 'EUR', sign: '€' },
-    { label: 'USA', sign: '$' },
+    { label: 'USD', sign: '$' },
     { label: 'RUB', sign: '₽' },
     { label: 'PLN', sign: 'zł' },
 ];
