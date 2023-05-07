@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone   } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IGotFlightData } from '../../../../shared/models/interfaces/flight-data';
 import { SharedService } from 'src/app/airways/services/shared/shared.service';
@@ -11,10 +11,11 @@ import { FlightdataService } from 'src/app/airways/services/flightdata/flightdat
   styleUrls: ['./select-flight-page.component.scss'],
 })
 export class SelectFlightPageComponent implements OnInit {
-  flightData: IGotFlightData[][];
+  flightData!: IGotFlightData[][];
   forwardFlightData: IGotFlightData[] = [];
   backFlightData: IGotFlightData[] = [];
   isEditing: boolean = false;
+  isSaving: boolean = false;
   flightTypeValue!: string;
   editSearchData: IPostFlightData = {
     fromKey: '',
@@ -27,8 +28,24 @@ export class SelectFlightPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private sharedService: SharedService,
     private flightSearchDataService: FlightSearchDataService,
-    private flightDataService: FlightdataService
+    private flightDataService: FlightdataService,
+    private ngZone: NgZone
   ) {
+    // this.sharedService.currentEditableStatus.subscribe((status) => {
+    //   this.isEditing = !status;
+    // });
+    // this.flightSearchDataService.selectedFlightType$$.subscribe((val) => {
+    //   this.flightTypeValue = val;
+    // });
+    // this.flightData = this.activatedRoute.snapshot.data['flights'];
+    // console.log(this.flightData);
+
+    // for (let i = 0; i < this.flightData.length; i++) {
+    //   this.forwardFlightData.push(this.flightData[i][0]);
+    //   this.backFlightData.push(this.flightData[i][1]);
+    // }
+  }
+  ngOnInit(): void {
     this.sharedService.currentEditableStatus.subscribe((status) => {
       this.isEditing = !status;
     });
@@ -36,23 +53,47 @@ export class SelectFlightPageComponent implements OnInit {
       this.flightTypeValue = val;
     });
     this.flightData = this.activatedRoute.snapshot.data['flights'];
-    console.log(this.flightData);
-
     for (let i = 0; i < this.flightData.length; i++) {
       this.forwardFlightData.push(this.flightData[i][0]);
       this.backFlightData.push(this.flightData[i][1]);
     }
   }
-  ngOnInit(): void {
-    // this.flightSearchDataService.selectedValueDeparture$$.subscribe(res=>{
-    //   this.fromKey=res
-    //   console.log(this.fromKey);
-    // })
-  }
-  updatePostRequestAfterSaveButtonClicked() {
-    this.flightSearchDataService.selectedValueDeparture$$.subscribe((res) => {
-      this.editSearchData.fromKey = res;
-      console.log(this.editSearchData.fromKey);
+
+  updateSearchData(): void {
+    this.flightSearchDataService.selectedValueDeparture$$.asObservable().subscribe((res) => {
+      this.editSearchData.fromKey = res.slice(-3);
     });
+    this.flightSearchDataService.selectedValueDestination$$.asObservable().subscribe(
+      (res) => {
+        this.editSearchData.toKey = res.slice(-3);
+      }
+    );
+    this.flightSearchDataService.selectedValueDateFrom$$.asObservable().subscribe((res) => {
+      this.editSearchData.forwardDate! = res!.toISOString();
+    });
+    this.flightSearchDataService.selectedValueDateReturn$$.asObservable().subscribe(
+      (res) => {
+        this.editSearchData.backDate! = res!.toISOString();
+      }
+    );
+  }
+
+
+  updatePostRequestAfterSaveButtonClicked():void {
+    this.isSaving=true;
+    if (this.isSaving) {
+      this.updateSearchData();
+      this.flightDataService
+        .getFlightData(this.editSearchData)
+        .subscribe((res) => {
+          this.flightData = [res];
+          console.log(res);
+          for (let i = 0; i < this.flightData.length; i++) {
+            this.forwardFlightData.push(this.flightData[i][0]);
+            this.backFlightData.push(this.flightData[i][1]);
+          }
+          this.ngZone.run(() => {});
+        });
+    }
   }
 }

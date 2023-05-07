@@ -166,14 +166,30 @@
   border-left: 1px solid #cecece;
   transition: transform ease 400ms;
   span {
-    width: 204px;
+    width: 215px;
     margin-top: 10px;
     height: 4px;
     border-radius: 0px;
   }
   &:hover {
+    height: 75px;
     transform: translate(0, -10px);
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    p {
+      font-size: 20px;
+      font-weight: 700;
+      color: colors.$primary;
+    }
+    h4 {
+      font-weight: 400;
+      color: colors.$neutral-20;
+      font-size: 14px;
+    }
+    h5 {
+      font-weight: 700;
+      font-size: 24px;
+      color: colors.$primary;
+    }
   }
   p {
     font-weight: 500;
