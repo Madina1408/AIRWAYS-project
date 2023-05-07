@@ -9,8 +9,8 @@ import {IRecieveFormData} from '../../../shared/models/interfaces/post-flight-in
 })
 export class FlightdataService {
   data: IPostFlightData = {
-    fromKey: 'dsa',
-    toKey: 'dsa',
+    fromKey: 'AMS',
+    toKey: 'DSA',
     forwardDate: '2023-09-21T00:00:00.000Z',
     backDate: '2023-10-11T00:00:00.000Z',
   };
@@ -30,15 +30,15 @@ export class FlightdataService {
 
       if (postFlightData.backDate===undefined){
         dates.push({
-          fromKey: this.data.fromKey,
-          toKey: this.data.toKey,
+          fromKey: postFlightData.fromKey,
+          toKey: postFlightData.toKey,
           forwardDate: newForwardDate.toISOString(),
           backDate:''
         })
       } else{
         dates.push({
-        fromKey: this.data.fromKey,
-        toKey: this.data.toKey,
+        fromKey: postFlightData.fromKey,
+        toKey: postFlightData.toKey,
         forwardDate: newForwardDate.toISOString(),
         backDate: newBackDate.toISOString(),
       });

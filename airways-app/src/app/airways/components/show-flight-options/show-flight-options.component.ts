@@ -4,6 +4,7 @@ import { AirportService } from '../../services/airport/airport.service';
 import { ActivatedRoute } from '@angular/router';
 import { HeaderService } from 'src/app/core/services/header.service';
 import { SharedService } from '../../services/shared/shared.service';
+import { IPostFlightData } from 'src/app/shared/models/interfaces/post-flight-interface';
 @Component({
   selector: 'app-show-flight-options',
   templateUrl: './show-flight-options.component.html',
@@ -18,7 +19,6 @@ export class ShowFlightOptionsComponent implements OnInit {
   currencySign?: string;
   currencyLabel: string = '';
   visibleItems: IGotFlightData[] = [];
-  selectedFlightPrice!: number;
   currentPosition = 0;
   constructor(
     private airportService: AirportService,
@@ -39,16 +39,8 @@ export class ShowFlightOptionsComponent implements OnInit {
       this.activatedRoute.queryParams.subscribe((params) => {
         fromKey = params['fromKey'];
         toKey = params['toKey'];
-
-        const departureCityData = res.filter(
-          (airport) => airport.key == fromKey
-        );
-        const destinationCityData = res.filter(
-          (airport) => airport.key == toKey
-        );
-
-        this.departureCity = departureCityData[0].city;
-        this.destinationCity = destinationCityData[0].city;
+        this.departureCity=this.flightData[0].form.city;
+        this.destinationCity=this.flightData[1].to.city;
         this.sharedService.getCities(this.destinationCity,this.departureCity);
       });
     });
