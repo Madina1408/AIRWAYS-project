@@ -1,5 +1,5 @@
 <div class="mainpage__container">
-    <form [formGroup]="flightSearchForm" (ngSubmit)="onFormSubmit()">
+  <form [formGroup]="flightSearchForm" (ngSubmit)="onFormSubmit()">
     <mat-radio-group formControlName="flightType" class="flight__type">
         <mat-radio-button color="primary" value="round-trip">Round Trip</mat-radio-button>
         <mat-radio-button color="primary" value="one-way">One Way</mat-radio-button>
