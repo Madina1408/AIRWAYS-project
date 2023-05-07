@@ -10,7 +10,7 @@ export class AirportService {
 
   airportsList$$ = new BehaviorSubject<ISelectAirport[]>([]);
 
-  searchItem = new BehaviorSubject<string>('');
+  searchItem$$ = new BehaviorSubject<string>('');
 
   constructor(private requestBuilderService: RequestBuilderService) {}
 

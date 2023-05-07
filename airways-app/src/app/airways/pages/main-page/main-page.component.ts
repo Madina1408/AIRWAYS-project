@@ -44,9 +44,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.airportService.getAirportsList();
     this.subscriptions.push(
-      this.airportService.airportsList$$.subscribe(data => this.selectAirport = data),
+      this.airportService.airportsList$$.asObservable().subscribe(data => this.selectAirport = data),
       this.flightSearch.selectedFlightType$$.asObservable().subscribe(value => this.flightTypeValue = value),
       this.flightSearchForm.valueChanges.subscribe(value => this.flightSearch.setSelectedFlightType(value.flightType!)),
 
