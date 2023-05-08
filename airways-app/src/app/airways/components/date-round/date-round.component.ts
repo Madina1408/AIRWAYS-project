@@ -1,5 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { HeaderService } from 'src/app/core/services/header.service';
@@ -64,7 +64,7 @@ export class DateRoundComponent {
 
   private formatAndSetValue() {
     const start = this.formatDate(this.selectedDateValue.start!, this.selectedValueDateFormat);
-    const end = this.formatDate(this.selectedDateValue.end!, (this.selectedValueDateFormat));
+    const end = this.formatDate(this.selectedDateValue.end!, this.selectedValueDateFormat);
 
     const inputElementStart = this.elementRef.nativeElement.querySelector('.date__start');
     const inputElementEnd = this.elementRef.nativeElement.querySelector('.date__end');
@@ -75,7 +75,7 @@ export class DateRoundComponent {
 
   private formatDate(date: Date, format: string): string {
     return moment(date).format(format.replace('MM', 'M').replace('DD', 'D').replace('YYYY', 'Y'));
-   }
+  }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subs => subs.unsubscribe());

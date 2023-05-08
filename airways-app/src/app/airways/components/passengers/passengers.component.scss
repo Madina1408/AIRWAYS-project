@@ -1,15 +1,14 @@
-@use '../../../../colors';
+@use '../../../../styles/colors';
+@use '../../../../styles/form-fields';
 
 ::ng-deep .passengers__menu  {
-    margin-top: -1.3rem !important;
     width: 12.56rem !important;
     border-radius: 0 !important;
   }
 
 .passengers__field {
+    margin-top: 1.2rem;
     width: 12.56rem;
-    border-color: colors.$neutral-30;
-    background-color: colors.$secondary-90;
 }
 
 .passengers__list {

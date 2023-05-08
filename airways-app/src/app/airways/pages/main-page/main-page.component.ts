@@ -81,7 +81,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   onFormSubmit() {
     if (this.flightSearchForm.valid && this.flightTypeValue === 'one-way') {
-      const queryParams: ISearchFlight = {
+        const queryParams: ISearchFlight = {
         fromKey: this.departureValue.slice(-3, this.departureValue.length),
         toKey: this.destinationValue.slice(-3, this.destinationValue.length),
         forwardDate: this.dateFromValue!.toISOString(),
@@ -91,7 +91,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
       }
     } else if (this.flightSearchForm.valid && this.flightTypeValue === 'round-trip') {
-      const queryParams: ISearchFlight = {
+        const queryParams: ISearchFlight = {
         fromKey: this.departureValue.slice(-3, this.departureValue.length),
         toKey: this.destinationValue.slice(-3, this.destinationValue.length),
         forwardDate: this.dateFromValue!.toISOString(),
@@ -107,6 +107,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subs => subs.unsubscribe);
+    this.subscriptions.forEach(subs => subs.unsubscribe());
   }
 }

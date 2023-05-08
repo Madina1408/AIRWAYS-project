@@ -18,7 +18,7 @@ export class DestinationComponent implements OnInit, OnDestroy {
 
   selectedDestinationValue!: string;
 
-  selectDestination = new FormControl('', [Validators.required]);
+  selectDestination = new FormControl('', Validators.required);
 
   subscriptions: Subscription[] = [];
 
@@ -59,6 +59,6 @@ export class DestinationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subs => subs.unsubscribe);
+    this.subscriptions.forEach(subs => subs.unsubscribe());
   }
 }

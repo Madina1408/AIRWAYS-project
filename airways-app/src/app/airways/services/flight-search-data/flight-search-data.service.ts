@@ -11,7 +11,6 @@ export class FlightSearchDataService {
 
   selectedFlightType$$ = new BehaviorSubject<string>('round-trip');
   selectedValueDeparture$$ = new BehaviorSubject<string>('');
-  // currentDeparture = this.selectedValueDeparture$$.asObservable();
   selectedValueDestination$$ = new BehaviorSubject<string>('');
   selectedValueDateFrom$$ = new BehaviorSubject<Date | null>(null);
   selectedValueDateReturn$$ = new BehaviorSubject<Date | null>(null);

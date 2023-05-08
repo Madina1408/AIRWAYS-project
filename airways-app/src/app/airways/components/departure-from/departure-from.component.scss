@@ -1,15 +1,16 @@
-@use '../../../../colors';
+@use '../../../../styles/colors';
+@use '../../../../styles/form-fields';
 
 .departure__field {
     width: 33.25rem;
-    border-color: colors.$neutral-30;
-    background-color: colors.$secondary-90;
-}
 
-.departure__field.booking {
-    width: 15.94rem;
-    border-color: colors.$neutral-30;
-    background-color:colors.$secondary-90;
+    &.booking {
+        width: 15.94rem;
+
+        mat-error {
+            margin-bottom: -1.2rem;
+        }
+    }
 }
 
 .airport {
