@@ -24,8 +24,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   departureValue!: string;
   destinationValue!: string;
-  dateFromValue!: Date | null;
-  dateReturnValue!: Date | null;
+  dateOneWayValue!: Date | null;
+  dateRoundValue!: { start: Date | null, end: Date | null; };
   passengersValue!: string;
 
   subscriptions: Subscription[] = [];
@@ -49,11 +49,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
       this.flightSearch.selectedFlightType$$.asObservable().subscribe(value => this.flightTypeValue = value),
       this.flightSearchForm.valueChanges.subscribe(value => this.flightSearch.setSelectedFlightType(value.flightType!)),
 
-      this.flightSearch.selectedValueDeparture$$.asObservable().subscribe(value => this.departureValue = value),
-      this.flightSearch.selectedValueDestination$$.asObservable().subscribe(value => this.destinationValue = value),
-      this.flightSearch.selectedValueDateFrom$$.asObservable().subscribe( value => this.dateFromValue = value),
-      this.flightSearch.selectedValueDateReturn$$.asObservable().subscribe( value => this.dateReturnValue = value),
-      this.flightSearch.selectedValuePassengers$$.asObservable().subscribe( value => this.passengersValue = value),
+      // this.flightSearch.selectedValueDeparture$$.asObservable().subscribe(value => this.departureValue = value),
+      // this.flightSearch.selectedValueDestination$$.asObservable().subscribe(value => this.destinationValue = value),
+      // this.flightSearch.selectedValueDateFrom$$.asObservable().subscribe( value => this.dateFromValue = value),
+      // this.flightSearch.selectedValueDateReturn$$.asObservable().subscribe( value => this.dateReturnValue = value),
+      // this.flightSearch.selectedValuePassengers$$.asObservable().subscribe( value => this.passengersValue = value),
     );
     this.flightSearchForm.setValue({
       flightType: this.flightTypeValue
@@ -79,25 +79,47 @@ export class MainPageComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDepartureChange(value: string) {
+    this.departureValue = value;
+  }
+
+  onDestinationChange(value: string) {
+      this.destinationValue = value;
+  }
+
+  onDateRoundChange(value: { start: Date | null, end: Date | null; }) {
+    this.dateRoundValue = value;
+  }
+
+  onDateOneWayChange(value: Date | null) {
+    this.dateOneWayValue = value;
+  }
+
+  onPassengersChange(value: string) {
+    this.passengersValue = value;
+  }
+
   onFormSubmit() {
     if (this.flightSearchForm.valid && this.flightTypeValue === 'one-way') {
-      const queryParams: ISearchFlight = {
+        const queryParams: ISearchFlight = {
         fromKey: this.departureValue.slice(-3, this.departureValue.length),
         toKey: this.destinationValue.slice(-3, this.destinationValue.length),
-        forwardDate: this.dateFromValue!.toISOString(),
+        forwardDate: this.dateOneWayValue!.toISOString(),
         passengers: this.passengersValue,
       };
+      console.log(queryParams);
       if (queryParams) {
         this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
       }
     } else if (this.flightSearchForm.valid && this.flightTypeValue === 'round-trip') {
-      const queryParams: ISearchFlight = {
+        const queryParams: ISearchFlight = {
         fromKey: this.departureValue.slice(-3, this.departureValue.length),
         toKey: this.destinationValue.slice(-3, this.destinationValue.length),
-        forwardDate: this.dateFromValue!.toISOString(),
-        backDate: this.dateReturnValue!.toISOString(),
+        forwardDate: this.dateRoundValue.start!.toISOString(),
+        backDate: this.dateRoundValue.end!.toISOString(),
         passengers: this.passengersValue,
       };
+      console.log(queryParams);
       if (queryParams) {
         this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
       }
@@ -107,6 +129,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subs => subs.unsubscribe);
+    this.subscriptions.forEach(subs => subs.unsubscribe());
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -20,6 +20,8 @@ export class DateOneComponent implements OnInit, OnDestroy {
   selectDateOne = new FormControl(this.selectedDateValue, Validators.required);
 
   subscriptions: Subscription[] = [];
+
+  @Output() dateOneWayValueChange = new EventEmitter<Date | null>();
 
   constructor(
     private headerService: HeaderService,
@@ -43,11 +45,13 @@ export class DateOneComponent implements OnInit, OnDestroy {
         .subscribe(value => this.flightSearch.setSelectedValueDateFrom(value!)),
     );
     this.selectDateOne.setValue(this.selectedDateValue);
+    this.dateOneWayValueChange.emit(this.selectedDateValue);
   }
 
   onDateChange() {
     this.selectedDateValue = this.selectDateOne.value;
     this.formatAndSetValue();
+    this.dateOneWayValueChange.emit(this.selectedDateValue);
   }
 
   private formatAndSetValue() {
