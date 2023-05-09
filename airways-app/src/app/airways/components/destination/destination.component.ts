@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
 import { AirportService } from '../../services/airport/airport.service';
 import { Subscription } from 'rxjs';
@@ -24,6 +24,8 @@ export class DestinationComponent implements OnInit, OnDestroy {
 
   isMainPage = true;
 
+  @Output() destinationValueChange = new EventEmitter<string>();
+
   constructor(
     private airportService: AirportService,
     private flightSearch: FlightSearchDataService,
@@ -37,7 +39,10 @@ export class DestinationComponent implements OnInit, OnDestroy {
       this.flightSearch.selectedValueDestination$$.asObservable()
         .subscribe(value => this.selectedDestinationValue = value),
       this.selectDestination.valueChanges
-        .subscribe(value => this.flightSearch.setSelectedValueDestination(value!)),
+        .subscribe(value => {
+          this.flightSearch.setSelectedValueDestination(value!);
+          this.destinationValueChange.emit(value!);
+        }),
         this.route.url.subscribe(url => {
           this.isMainPage = url[0].path === 'main';
         })
@@ -48,6 +53,17 @@ export class DestinationComponent implements OnInit, OnDestroy {
   filterOptions(value: string) {
     this.airportService.searchItem$$.next(value);
   }
+
+  // selectedValueValidator(control: AbstractControl): ValidationErrors | null {
+  //   const value = control.value;
+  //   const match = this.selectAirport.find(airport => airport.key.toLowerCase() === value || airport.name.toLowerCase().includes(value));
+  //   if (!match) {
+  //     return { incorrect: true };
+  //   } else if (value === this.selectedDestinationValue) {
+  //     return null;
+  //   }
+  //   return { incorrect: true };
+  // }
 
   getDestinationErrorMessage() {
     if (this.selectDestination.hasError('required')) {

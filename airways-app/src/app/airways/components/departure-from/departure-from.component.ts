@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
 import { AirportService } from '../../services/airport/airport.service';
 import { Subscription } from 'rxjs';
 import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-departure-from',
@@ -19,11 +18,13 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
 
   selectedDepartureValue!: string;
 
-  selectDeparture = new FormControl('', [Validators.required, this.airportValidator.bind(this)]);
+  selectDeparture = new FormControl('', Validators.required);
 
   subscriptions: Subscription[] = [];
 
   isMainPage = true;
+
+  @Output() departureValueChange = new EventEmitter<string>();
 
   constructor(
     private airportService: AirportService,
@@ -42,6 +43,7 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
       this.selectDeparture.valueChanges
         .subscribe(value => {
           this.flightSearch.setSelectedValueDeparture(value!);
+          this.departureValueChange.emit(value!);
         }),
       this.route.url.subscribe(url => {
         this.isMainPage = url[0].path === 'main';
@@ -63,14 +65,16 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  airportValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    const match = this.selectAirport.find(airport => airport.key.toLowerCase() === value || airport.name.toLowerCase().includes(value));
-    if (!match) {
-      return { incorrect: true };
-    }
-    return null;
-  }
+  // selectedValueValidator(control: AbstractControl): ValidationErrors | null {
+  //   const value = control.value;
+  //   const match = this.selectAirport.find(airport => airport.key.toLowerCase() === value || airport.name.toLowerCase().includes(value));
+  //   if (!match) {
+  //     return { incorrect: true };
+  //   } else if (value === this.selectedDepartureValue) {
+  //     return null;
+  //   }
+  //   return { incorrect: true };
+  // }
 
   onOptionSelected() {
     this.selectDeparture.setErrors(null);

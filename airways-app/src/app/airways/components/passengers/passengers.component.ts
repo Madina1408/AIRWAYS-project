@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 import { ISelectPassengers } from 'src/app/shared/models/interfaces/select-passangers-interface';
 import { FormControl, Validators } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -23,6 +23,8 @@ export class PassengersComponent {
 
   subscriptions: Subscription[] = [];
 
+  @Output() passengersValueChange = new EventEmitter<string>();
+
   constructor(
     private elementRef: ElementRef,
     private flightSearch: FlightSearchDataService) {}
@@ -39,6 +41,7 @@ export class PassengersComponent {
       };
     });
     this.flightSearch.setSelectedValuePassengers(this.selectedPassengersValue);
+    this.passengersValueChange.emit(this.selectedPassengersValue);
     return this.selectedPassengersValue;
   }
 

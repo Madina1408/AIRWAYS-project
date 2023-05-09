@@ -6,17 +6,21 @@
           <mat-radio-button color="primary" value="one-way">One Way</mat-radio-button>
       </mat-radio-group>
 
-      <app-departure-from></app-departure-from>
-      <app-destination></app-destination>
+      <app-departure-from (departureValueChange)="onDepartureChange($event)"></app-departure-from>
+      <app-destination (destinationValueChange)="onDestinationChange($event)"></app-destination>
 
       <button type="button" mat-icon-button class="swap__btn" (click)="onSwapAirports()">
         <img src="../../../../assets/icons/swap_arrow_icon.svg" alt="icon-swap">
       </button>
 
-      <app-date-round *ngIf="flightTypeValue === 'round-trip'"></app-date-round>
-      <app-date-one *ngIf="flightTypeValue === 'one-way'"></app-date-one>
+      <app-date-round *ngIf="flightTypeValue === 'round-trip'"
+        (dateRoundValueChange)="onDateRoundChange($event)">
+      </app-date-round>
+      <app-date-one *ngIf="flightTypeValue === 'one-way'"
+        (dateOneWayValueChange)="onDateOneWayChange($event)">
+      </app-date-one>
 
-      <app-passengers></app-passengers>
+      <app-passengers (passengersValueChange)="onPassengersChange($event)"></app-passengers>
 
       <button mat-raised-button color="primary" type="submit"
         [disabled]="!flightSearchForm.valid" class="search__btn">Search</button>

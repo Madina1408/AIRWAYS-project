@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -18,6 +18,8 @@ export class DateRoundComponent {
   selectedDateValue: { start: Date | null, end: Date | null} = { start: null, end: null };
 
   subscriptions: Subscription[] = [];
+
+  @Output() dateRoundValueChange = new EventEmitter<{ start: Date | null, end: Date | null}>();
 
   selectDateRound = new FormGroup({
     start: new FormControl(this.selectedDateValue.start, Validators.required),
@@ -51,8 +53,9 @@ export class DateRoundComponent {
         this.flightSearch.setSelectedValueDateFrom(value.start!);
         this.flightSearch.setSelectedValueDateReturn(value.end!);
       }),
-  );
-  this.selectDateRound.setValue({ start: this.selectedDateValue.start, end: this.selectedDateValue.end });
+    );
+    this.selectDateRound.setValue(this.selectedDateValue);
+    this.dateRoundValueChange.emit(this.selectedDateValue);
   }
 
   onDatesChange() {
@@ -60,6 +63,7 @@ export class DateRoundComponent {
     const endValue = this.selectDateRound.get('end')?.value;
     this.selectedDateValue = { start: startValue!, end: endValue!};
     this.formatAndSetValue();
+    this.dateRoundValueChange.emit(this.selectedDateValue);
   }
 
   private formatAndSetValue() {
