@@ -9,8 +9,8 @@
       <p>{{destinationCity}}</p>
     </div>
     <div class="date-info">
-      <p *ngIf="backFlightData">Return</p>
-      <img *ngIf="backFlightData"
+      <p *ngIf="backDate">Return</p>
+      <img *ngIf="backDate"
         src="../../../../assets/icons/blue_span_icon.svg"
         alt="blue span icon"
       />
@@ -18,7 +18,7 @@
         {{forwardDate|date: 'MMM d' }} -
         {{backDate|date: 'MMM d' }}
       </p>
-      <img *ngIf="backFlightData"
+      <img *ngIf="backDate"
         src="../../../../assets/icons/blue_span_icon.svg"
         alt="blue span icon"
       />

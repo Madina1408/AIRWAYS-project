@@ -24,8 +24,8 @@ export class EditFlightSearchComponent implements OnInit {
   ngOnInit(): void {
     this.departureCity=this.flightData[0][0].form.city;
     this.destinationCity=this.flightData[0][0].to.city;
-    this.forwardDate=this.flightData[0][0].takeoffDate;
-    this.backDate = this.flightData[0][0].landingDate;
+    this.forwardDate=this.flightData[0][0].landingDate;
+    this.backDate = this.flightData[0][1].takeoffDate;
     this.activateRoute.queryParams.subscribe((params) => {
       this.passengers = params['passengers'];
     });
