@@ -17,13 +17,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SearchPipe } from './pipes/search.pipe';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
-  declarations: [
-    SearchPipe
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -43,6 +41,7 @@ import { SearchPipe } from './pipes/search.pipe';
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTabsModule,
   ],
   exports: [
     MatButtonModule,
@@ -63,7 +62,7 @@ import { SearchPipe } from './pipes/search.pipe';
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
-    SearchPipe
+    MatTabsModule,
   ],
 })
 export class SharedModule { }
