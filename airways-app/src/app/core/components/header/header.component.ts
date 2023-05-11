@@ -3,8 +3,10 @@ import { ISelectFormat } from '../../../shared/models/interfaces/select-format-i
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { RoutesPaths } from '../../data/enums/routes-paths';
+import { RoutesPaths } from '../../../shared/models/enums/routes-paths';
 import { HeaderService } from '../../services/header.service';
+import { MatdialogService } from 'src/app/auth/services/matdialog/matdialog.service';
+import { TabComponent } from 'src/app/auth/components/tab/tab.component';
 
 @Component({
   selector: 'app-header',
@@ -29,7 +31,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-  constructor(private router: Router, private headerService: HeaderService) {}
+  @Output() emitConfirm: EventEmitter<boolean> = new EventEmitter();
+
+  constructor(private router: Router, private headerService: HeaderService, private dialogService: MatdialogService) {}
 
   ngOnInit(): void {
     this.dateOptions = this.headerService.dateFormats;
@@ -92,6 +96,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.selectedCurrencyFormat = option.label;
     this.isCurrencySelected = true;
     this.headerService.setSelectedValueCurrencyFormat(option);
+  }
+
+  openModalDialog(): void {
+    this.dialogService.openDialog(TabComponent).subscribe((result) => {
+      this.emitConfirm.emit(result);
+    });
   }
 
   ngOnDestroy(): void {

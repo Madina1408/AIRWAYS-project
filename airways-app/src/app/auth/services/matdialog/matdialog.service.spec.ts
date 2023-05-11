@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthService } from './auth.service';
+import { MatdialogService } from './matdialog.service';
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('MatdialogService', () => {
+  let service: MatdialogService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthService);
+    service = TestBed.inject(MatdialogService);
   });
 
   it('should be created', () => {

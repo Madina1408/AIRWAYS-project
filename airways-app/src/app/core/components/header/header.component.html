@@ -45,7 +45,8 @@
 
             <button mat-button
                 class="header__signin-btn"
-                [class]="headerClass">
+                [class]="headerClass"
+                (click)="openModalDialog()">
                 <img *ngIf="isMainPage" src="../../../../assets/icons/user_icon.svg" alt="user-icon">
                 <img *ngIf="!isMainPage" src="../../../../assets/icons/user_icon_dark.svg" alt="user-icon">
                 Sign In
