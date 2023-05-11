@@ -15,13 +15,13 @@ export class DateRoundComponent {
 
   selectedValueDateFormat = '';
 
-  selectedDateValue: { start: Date | null, end: Date | null} = { start: null, end: null };
+  selectedDateValue: { start: Date | null; end: Date | null} = { start: null, end: null };
 
   subscriptions: Subscription[] = [];
 
-  @Output() dateRoundValueChange = new EventEmitter<{ start: Date | null, end: Date | null}>();
+  @Output() dateRoundValueChange = new EventEmitter<{ start: Date | null; end: Date | null}>();
 
-  selectDateRound = new FormGroup({
+  dateRoundControl = new FormGroup({
     start: new FormControl(this.selectedDateValue.start, Validators.required),
     end: new FormControl(this.selectedDateValue.end, Validators.required),
   });
@@ -36,7 +36,7 @@ export class DateRoundComponent {
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.subscribe(value => {
         this.selectedValueDateFormat = value.label;
-        if (this.selectDateRound.valid) {
+        if (this.dateRoundControl.valid) {
           this.formatAndSetValue();
         }
       }),
@@ -48,19 +48,19 @@ export class DateRoundComponent {
       .subscribe(value => {
         this.selectedDateValue.end = value;
       }),
-    this.selectDateRound.valueChanges
+    this.dateRoundControl.valueChanges
       .subscribe(value => {
         this.flightSearch.setSelectedValueDateFrom(value.start!);
         this.flightSearch.setSelectedValueDateReturn(value.end!);
       }),
     );
-    this.selectDateRound.setValue(this.selectedDateValue);
+    this.dateRoundControl.setValue(this.selectedDateValue);
     this.dateRoundValueChange.emit(this.selectedDateValue);
   }
 
   onDatesChange() {
-    const startValue = this.selectDateRound.get('start')?.value;
-    const endValue = this.selectDateRound.get('end')?.value;
+    const startValue = this.dateRoundControl.get('start')?.value;
+    const endValue = this.dateRoundControl.get('end')?.value;
     this.selectedDateValue = { start: startValue!, end: endValue!};
     this.formatAndSetValue();
     this.dateRoundValueChange.emit(this.selectedDateValue);

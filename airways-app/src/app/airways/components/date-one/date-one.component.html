@@ -3,13 +3,13 @@
     <input matInput
         [min]="minDate"
         [matDatepicker]="picker"
-        [formControl]="selectDateOne"
+        [formControl]="dateOneControl"
         (dateChange)="onDateChange()"
         (blur)="onDateChange()"
         placeholder="Departure date">
     <mat-hint>{{ selectedValueDateFormat }}</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="selectDateOne.invalid">Please select dates / Invalid dates.
+    <mat-error *ngIf="dateOneControl.invalid">Please select dates / Invalid dates.
         <br>Date format should be {{ selectedValueDateFormat }}</mat-error>
 </mat-form-field>

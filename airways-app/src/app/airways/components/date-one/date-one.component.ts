@@ -17,7 +17,7 @@ export class DateOneComponent implements OnInit, OnDestroy {
 
   selectedDateValue!: Date | null;
 
-  selectDateOne = new FormControl(this.selectedDateValue, Validators.required);
+  dateOneControl = new FormControl(this.selectedDateValue, Validators.required);
 
   subscriptions: Subscription[] = [];
 
@@ -33,7 +33,7 @@ export class DateOneComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.asObservable().subscribe(value => {
         this.selectedValueDateFormat = value.label;
-          if (this.selectDateOne.valid) {
+          if (this.dateOneControl.valid) {
             this.formatAndSetValue();
           }
       }),
@@ -41,21 +41,20 @@ export class DateOneComponent implements OnInit, OnDestroy {
         .subscribe(value => {
           this.selectedDateValue = value;
         }),
-      this.selectDateOne.valueChanges
+      this.dateOneControl.valueChanges
         .subscribe(value => this.flightSearch.setSelectedValueDateFrom(value!)),
     );
-    this.selectDateOne.setValue(this.selectedDateValue);
+    this.dateOneControl.setValue(this.selectedDateValue);
     this.dateOneWayValueChange.emit(this.selectedDateValue);
   }
 
   onDateChange() {
-    this.selectedDateValue = this.selectDateOne.value;
+    this.selectedDateValue = this.dateOneControl.value;
     this.formatAndSetValue();
     this.dateOneWayValueChange.emit(this.selectedDateValue);
   }
 
   private formatAndSetValue() {
-    console.log(this.selectedDateValue);
     const date = moment(this.selectedDateValue).format(this.selectedValueDateFormat);
     const inputElement = this.elementRef.nativeElement.querySelector('input');
     inputElement.value = date;

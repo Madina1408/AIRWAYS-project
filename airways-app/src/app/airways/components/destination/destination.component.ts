@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
 import { AirportService } from '../../services/airport/airport.service';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -18,11 +18,13 @@ export class DestinationComponent implements OnInit, OnDestroy {
 
   selectedDestinationValue!: string;
 
-  selectDestination = new FormControl('', Validators.required);
+  destinationControl = new FormControl(this.selectedDestinationValue, Validators.required);
 
   subscriptions: Subscription[] = [];
 
   isMainPage = true;
+
+  isAirportSelected = false;
 
   @Output() destinationValueChange = new EventEmitter<string>();
 
@@ -32,46 +34,65 @@ export class DestinationComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute){}
 
   ngOnInit() {
-    this.airportService.getAirportsList();
+    this.airportService.getAirportsListDestination();
     this.subscriptions.push(
-      this.airportService.airportsList$$.asObservable().subscribe(data => this.selectAirport = data),
-      this.airportService.searchItem$$.asObservable().subscribe(data => this.searchAirport = data),
+      this.airportService.airportsListDestination$$.asObservable().subscribe(data => this.selectAirport = data),
+      this.airportService.searchItemDestination$$.asObservable().subscribe(data => this.searchAirport = data),
+
+      this.airportService.searchItemDestination$$
+        .pipe(
+          distinctUntilChanged(),
+          debounceTime(300),
+          filter((value) => value.length >= 3),
+          switchMap((query) => this.airportService.getSearchAirport(query)),
+        )
+        .subscribe((data: ISelectAirport[]) => {
+          this.airportService.airportsListDestination$$.next(data);
+          const matchAirport: ISelectAirport[] = data;
+          if (!matchAirport.length && !this.isAirportSelected) {
+            this.destinationControl.setErrors({ incorrect: true });
+          } else if (!matchAirport.length  && this.isAirportSelected) {
+            this.destinationControl.setErrors(null);
+          } else {
+            this.destinationControl.setErrors(null);
+          }
+        }),
+
       this.flightSearch.selectedValueDestination$$.asObservable()
         .subscribe(value => this.selectedDestinationValue = value),
-      this.selectDestination.valueChanges
+
+      this.destinationControl.valueChanges
         .subscribe(value => {
           this.flightSearch.setSelectedValueDestination(value!);
           this.destinationValueChange.emit(value!);
         }),
-        this.route.url.subscribe(url => {
-          this.isMainPage = url[0].path === 'main';
-        })
+
+      this.route.url.subscribe(url => {
+        this.isMainPage = url[0].path === 'main';
+      })
     );
-    this.selectDestination.setValue(this.selectedDestinationValue);
+    this.destinationControl.setValue(this.selectedDestinationValue);
   }
 
   filterOptions(value: string) {
-    this.airportService.searchItem$$.next(value);
+    this.isAirportSelected = false;
+    this.airportService.searchItemDestination$$.next(value);
+    if (value === '') {
+      this.airportService.getAirportsListDestination();
+    }
   }
 
-  // selectedValueValidator(control: AbstractControl): ValidationErrors | null {
-  //   const value = control.value;
-  //   const match = this.selectAirport.find(airport => airport.key.toLowerCase() === value || airport.name.toLowerCase().includes(value));
-  //   if (!match) {
-  //     return { incorrect: true };
-  //   } else if (value === this.selectedDestinationValue) {
-  //     return null;
-  //   }
-  //   return { incorrect: true };
-  // }
-
   getDestinationErrorMessage() {
-    if (this.selectDestination.hasError('required')) {
+    if (this.destinationControl.hasError('required')) {
       return 'Please select destination';
-    } else if (this.selectDestination.hasError('incorrect')) {
+    } else if (this.destinationControl.hasError('incorrect')) {
       return 'No airports found';
     }
     return '';
+  }
+
+  onSelectedOption() {
+    this.isAirportSelected = true;
   }
 
   ngOnDestroy() {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ISelectPassengers } from 'src/app/shared/models/interfaces/select-passangers-interface';
-import passengersList from '../../data/constants/passengers';
+import passengersList from '../../../shared/models/constants/passengers';
 
 @Injectable({
   providedIn: 'root'

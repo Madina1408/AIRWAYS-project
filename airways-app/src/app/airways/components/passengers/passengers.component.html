@@ -1,9 +1,8 @@
 <mat-form-field appearance="fill" class="passengers__field" [matMenuTriggerFor]="passengersMenu">
     <mat-label>Passengers</mat-label>
-    <input matInput [formControl]="selectListPassengers"
+    <input matInput [formControl]="passengersControl"
         [value]="getPassengersCount()" readonly>
     <mat-icon matSuffix>arrow_drop_down</mat-icon>
-    <mat-error *ngIf="selectListPassengers.invalid">Please select passengers</mat-error>
 </mat-form-field>
 <mat-menu #passengersMenu="matMenu" hasBackdrop="false" class="passengers__menu">
     <div *ngFor="let passenger of selectPassengers" class="passengers__list">
