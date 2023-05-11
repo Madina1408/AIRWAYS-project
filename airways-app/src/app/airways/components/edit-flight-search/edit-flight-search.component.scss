@@ -7,7 +7,7 @@
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
   padding-left: 8.75%;
   .container {
-    width: 50%;
+    width: 60%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,10 +31,18 @@
       font-size: 14px;
     }
   }
-  a {
+  .edit-buttons{
+    display: flex;
+    gap: 15px;
+   a {
     color: colors.$primary;
     font-weight: 500;
     font-size: 16px;
     cursor: pointer;
+    background-color:#F4F6F9;
+    padding: 4px 8px;
+    border-radius: 4px;
   }
+  }
+
 }

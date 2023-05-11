@@ -1,4 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
 import { AirportService } from '../../services/airport/airport.service';
 import { ActivatedRoute } from '@angular/router';
@@ -10,9 +19,11 @@ import { IPostFlightData } from 'src/app/shared/models/interfaces/post-flight-in
   templateUrl: './show-flight-options.component.html',
   styleUrls: ['./show-flight-options.component.scss'],
 })
-export class ShowFlightOptionsComponent implements OnInit {
+export class ShowFlightOptionsComponent implements OnInit, OnChanges {
   @Input() flightData: IGotFlightData[] = [];
   @Input() isForward: boolean = true;
+  @Output() isSelect = new EventEmitter<boolean>();
+  @Output() disabledOutput = new EventEmitter<boolean>();
   detailedInfo!: IGotFlightData;
   departureCity: string = '';
   destinationCity: string = '';
@@ -20,6 +31,9 @@ export class ShowFlightOptionsComponent implements OnInit {
   currencyLabel: string = '';
   visibleItems: IGotFlightData[] = [];
   currentPosition = 0;
+  isSelected: boolean = false;
+  selectedFlightsArray: IGotFlightData[] = [];
+  disabled: boolean = true;
   constructor(
     private airportService: AirportService,
     private activatedRoute: ActivatedRoute,
@@ -31,19 +45,27 @@ export class ShowFlightOptionsComponent implements OnInit {
       this.currencySign = res.sign;
       this.currencyLabel = res.label;
     });
-    let fromKey: string = '';
-    let toKey: string = '';
-    this.visibleItems = this.flightData.slice(0, 5);
-    this.detailedInfo = this.flightData[2];
-    this.airportService.getAirportsFromServer().subscribe((res) => {
-      this.activatedRoute.queryParams.subscribe((params) => {
-        fromKey = params['fromKey'];
-        toKey = params['toKey'];
-        this.departureCity=this.flightData[0].form.city;
-        this.destinationCity=this.flightData[1].to.city;
-        this.sharedService.getCities(this.destinationCity,this.departureCity);
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['flightData']) {
+      const currentFlightData = changes['flightData'].currentValue;
+      let fromKey: string = '';
+      let toKey: string = '';
+      this.visibleItems = currentFlightData.slice(0, 5);
+      this.detailedInfo = currentFlightData[2];
+      this.airportService.getAirportsFromServer().subscribe((res) => {
+        this.activatedRoute.queryParams.subscribe((params) => {
+          fromKey = params['fromKey'];
+          toKey = params['toKey'];
+          this.departureCity = this.flightData[0].form.city;
+          this.destinationCity = this.flightData[1].to.city;
+          this.sharedService.getCities(
+            this.destinationCity,
+            this.departureCity
+          );
+        });
       });
-    });
+    }
   }
 
   updateVisibleItems(): void {
@@ -75,7 +97,7 @@ export class ShowFlightOptionsComponent implements OnInit {
 
   getSelectedItemPrice(selectedFlight: IGotFlightData) {
     switch (this.currencyLabel) {
-      case 'USA':
+      case 'USD':
         return selectedFlight.price.usd;
       case 'EUR':
         return selectedFlight.price.eur;
@@ -85,5 +107,14 @@ export class ShowFlightOptionsComponent implements OnInit {
         return selectedFlight.price.pln;
     }
     return 0;
+  }
+
+  selectFlight() {
+    this.isSelected = true;
+    this.isSelect.emit(true);
+  }
+  editFlightSearch() {
+    this.isSelected = false;
+    this.isSelect.emit(false);
   }
 }

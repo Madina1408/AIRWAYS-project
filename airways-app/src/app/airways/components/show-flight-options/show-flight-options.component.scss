@@ -123,7 +123,7 @@
             color: colors.$primary;
           }
         }
-        button {
+        .btn-select {
           color: white;
           background: linear-gradient(
             108.75deg,
@@ -136,6 +136,15 @@
           border: 1px solid #11397e;
           border-radius: 4px;
           cursor: pointer;
+        }
+        .btn-edit {
+          color: colors.$primary;
+          font-weight: 500;
+          font-size: 16px;
+          border: none;
+          background-color:#F4F6F9;
+          padding: 4px 8px;
+          border-radius: 4px;
         }
         .dashed {
           width: 2px;

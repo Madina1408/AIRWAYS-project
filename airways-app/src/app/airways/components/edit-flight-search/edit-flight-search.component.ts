@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
 import { SharedService } from '../../services/shared/shared.service';
@@ -9,8 +9,9 @@ import { SharedService } from '../../services/shared/shared.service';
 })
 export class EditFlightSearchComponent implements OnInit {
   @Input() flightData!: IGotFlightData[][];
-  forwardDate!:string
-  backDate!:string;
+  @Output() callParentMethod: EventEmitter<any> = new EventEmitter();
+  forwardDate!: string;
+  backDate!: string;
   backFlightData!: string;
   passengers!: number;
   departureCity: string = '';
@@ -33,6 +34,15 @@ export class EditFlightSearchComponent implements OnInit {
   editPostRequest() {
     this.sharedService.getEditableStatus(!this.isEditable);
     this.isEditable = !this.isEditable;
-    this.saveButtonStatus = !this.saveButtonStatus;
+    this.saveButtonStatus = true;
+  }
+  saveSearchResults() {
+    this.callParentMethod.emit();
+    this.saveButtonStatus = false;
+  }
+  cancelSearchresults() {
+    this.sharedService.getEditableStatus(!this.isEditable);
+    this.isEditable = !this.isEditable;
+    this.saveButtonStatus = false;
   }
 }

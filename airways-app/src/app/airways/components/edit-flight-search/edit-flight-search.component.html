@@ -10,22 +10,26 @@
     </div>
     <div class="date-info">
       <p *ngIf="backDate">Return</p>
-      <img *ngIf="backDate"
+      <img
+        *ngIf="backDate"
         src="../../../../assets/icons/blue_span_icon.svg"
         alt="blue span icon"
       />
       <p class="departure-date">
-        {{forwardDate|date: 'MMM d' }} -
-        {{backDate|date: 'MMM d' }}
+        {{forwardDate|date: 'MMM d' }} - {{backDate|date: 'MMM d' }}
       </p>
-      <img *ngIf="backDate"
+      <img
+        *ngIf="backDate"
         src="../../../../assets/icons/blue_span_icon.svg"
         alt="blue span icon"
       />
       <p class="number-of-passengers">{{passengers}}</p>
       <img src="../../../../assets/icons/passenger_icon.svg" alt="user_icon" />
     </div>
-    <a (click)="editPostRequest()">Edit</a>
-    <a *ngIf="saveButtonStatus">Save</a>
+    <div class="edit-buttons">
+      <a *ngIf="!saveButtonStatus" (click)="editPostRequest()">Edit</a>
+      <a *ngIf="saveButtonStatus" (click)="saveSearchResults()">Save</a>
+      <a *ngIf="saveButtonStatus" (click)="cancelSearchresults()">Cancel</a>
+    </div>
   </div>
 </div>

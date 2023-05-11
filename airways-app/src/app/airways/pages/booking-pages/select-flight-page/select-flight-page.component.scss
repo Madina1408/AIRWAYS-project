@@ -43,6 +43,9 @@
     background-color: colors.$primary;
     color: white;
   }
+  button:disabled{
+    opacity: 0.7;
+  }
   .btn-back {
     color: colors.$primary;
   }
