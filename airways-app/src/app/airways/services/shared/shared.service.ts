@@ -17,6 +17,8 @@ export class SharedService {
   currentDestination = this.destination.asObservable();
   private editableStatus = new BehaviorSubject<boolean>(true);
   currentEditableStatus = this.editableStatus.asObservable()
+  // private disabled = new BehaviorSubject<boolean>(true);
+  // currentStatusOnDisabled=this.disabled.asObservable()
 
   getCities(destination: string, deparrtureCity: string) {
     this.destination.next(destination);
@@ -26,5 +28,9 @@ export class SharedService {
   getEditableStatus(status:boolean){
     this.editableStatus.next(status);
   }
+
+  // updateDisabledStatus(status:boolean){
+  //   this.disabled.next(status);
+  // }
 
 }

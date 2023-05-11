@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },
   { path: 'main', component: MainPageComponent, },
   { path: 'booking', redirectTo: '/booking/step1', pathMatch: 'full' },
-  { path: 'booking/step1', component: SelectFlightPageComponent, resolve:{flights:FlightDataResolver} },
+  { path: 'booking/step1', component: SelectFlightPageComponent, resolve:{flights:FlightDataResolver}, runGuardsAndResolvers:'paramsOrQueryParamsChange'},
   { path: 'booking/step2', component: PassengersPageComponent, },
   { path: 'booking/step3', component: SummaryPageComponent, },
   { path: 'shopping-cart', component: ShoppingCartPageComponent, },

@@ -10,7 +10,7 @@
     <p>{{destinationCity}}</p>
   </div>
   <div class="selection-container">
-    <div class="slider">
+    <div *ngIf="!isSelected" class="slider">
       <div class="slides">
         <div
           class="slide"
@@ -84,18 +84,19 @@
           <p>Flight no.</p>
           <h4>{{detailedInfo.flightNumber}}</h4>
         </div>
-        <span class="dashed"></span>
+        <span *ngIf="!isSelected" class="dashed"></span>
         <div class="price-info">
-          <div
+          <div *ngIf="!isSelected"
             class="seats"
             [ngStyle]="{'background-color': detailedInfo.seats.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'}"
           >
             <div>{{detailedInfo.seats.avaible}} seats available</div>
           </div>
-          <p>Price</p>
+          <p *ngIf="!isSelected">Price</p>
           <h4>{{currencySign}}{{getSelectedItemPrice(detailedInfo) | number:'2.1-2'}}</h4>
         </div>
-        <button type="button">Select</button>
+        <button *ngIf="isSelected" class="btn-edit" (click)="editFlightSearch()">Edit</button>
+        <button *ngIf="!isSelected" type="button" class="btn-select" (click)="selectFlight()">Select</button>
       </div>
     </div>
   </div>

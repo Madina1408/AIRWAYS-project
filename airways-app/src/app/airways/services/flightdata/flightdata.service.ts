@@ -10,7 +10,7 @@ import {IRecieveFormData} from '../../../shared/models/interfaces/post-flight-in
 export class FlightdataService {
   constructor(private http: HttpClient) {}
 
-  getFlightData(postFlightData:any):Observable<IGotFlightData[]> {
+  getFlightData(postFlightData:any):Observable<IGotFlightData[][]> {
     const dates: IPostFlightData[] = [];
 
     for (let i = 0; i < 7; i++) {
@@ -38,10 +38,9 @@ export class FlightdataService {
       }
 
     }
-    const requests: Observable<IGotFlightData>[] = dates.map(date =>
-      this.http.post<IGotFlightData>('https://api.air-ways.online/search/flight', date)
+    const requests: Observable<IGotFlightData[]>[] = dates.map(date =>
+      this.http.post<IGotFlightData[]>('https://api.air-ways.online/search/flight', date)
     );
-
     return forkJoin(requests);
     };
   }
