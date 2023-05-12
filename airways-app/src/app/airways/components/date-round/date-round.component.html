@@ -1,6 +1,6 @@
 <mat-form-field appearance="fill" class="date__round-field">
     <mat-label>Dates</mat-label>
-    <mat-date-range-input [rangePicker]="picker" [formGroup]="selectDateRound" [min]="minDate">
+    <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRoundControl" [min]="minDate">
         <input class="date__start" matStartDate
             formControlName="start" placeholder="Departure date">
         <input class="date__end" matEndDate
@@ -11,7 +11,7 @@
     <mat-hint>{{ selectedValueDateFormat }} - {{ selectedValueDateFormat }}</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>
-    <mat-error *ngIf="selectDateRound.invalid">Please select dates / Invalid dates.
+    <mat-error *ngIf="dateRoundControl.invalid">Please select dates / Invalid dates.
         <br>Date format should be {{ selectedValueDateFormat }}</mat-error>
 </mat-form-field>
 

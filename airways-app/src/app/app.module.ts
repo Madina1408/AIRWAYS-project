@@ -6,6 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FlightDataResolver } from './airways/flight-data.resolver';
+import { AuthModule } from './auth/auth.module';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,7 +18,8 @@ import { FlightDataResolver } from './airways/flight-data.resolver';
     AppRoutingModule,
     BrowserAnimationsModule,
     CoreModule,
-    HttpClientModule
+    HttpClientModule,
+    AuthModule
   ],
   providers: [FlightDataResolver],
   bootstrap: [AppComponent]

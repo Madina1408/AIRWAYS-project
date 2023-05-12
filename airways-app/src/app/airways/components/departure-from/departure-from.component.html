@@ -4,11 +4,11 @@
            placeholder="Choose your departure from"
            aria-label="Departure"
            matInput
-           [formControl]="selectDeparture"
+           [formControl]="departureControl"
            [matAutocomplete]="auto"
            (input)="filterOptions(searchInput.value)">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let airportFrom of selectAirport | search: searchAirport"
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectedOption()">
+      <mat-option *ngFor="let airportFrom of selectAirport"
         [value]="airportFrom.city + ' ' + airportFrom.key">
         <p class="city">{{ airportFrom.city }} <span class="city">({{ airportFrom.key }})</span></p>
         <p class="airport">{{ airportFrom.country }}, <span class="airport">{{ airportFrom.name }}</span></p>

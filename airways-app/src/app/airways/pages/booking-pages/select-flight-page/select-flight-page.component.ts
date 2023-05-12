@@ -5,7 +5,7 @@ import { SharedService } from 'src/app/airways/services/shared/shared.service';
 import { FlightSearchDataService } from 'src/app/airways/services/flight-search-data/flight-search-data.service';
 import { IPostFlightData } from 'src/app/shared/models/interfaces/post-flight-interface';
 import { FlightdataService } from 'src/app/airways/services/flightdata/flightdata.service';
-import { RoutesPaths } from 'src/app/core/data/enums/routes-paths';
+import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { Router } from '@angular/router';
 import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
 @Component({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import dateFormatMenu from '../data/constants/date-format';
-import currencyFormatMenu from '../data/constants/currency-format';
+import dateFormatMenu from '../../shared/models/constants/date-format';
+import currencyFormatMenu from '../../shared/models/constants/currency-format';
 import { ISelectFormat } from 'src/app/shared/models/interfaces/select-format-interface';
 
 @Injectable({

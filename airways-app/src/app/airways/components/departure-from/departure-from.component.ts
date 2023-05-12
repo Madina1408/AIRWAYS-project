@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
 import { AirportService } from '../../services/airport/airport.service';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -18,11 +18,13 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
 
   selectedDepartureValue!: string;
 
-  selectDeparture = new FormControl('', Validators.required);
+  departureControl = new FormControl(this.selectedDepartureValue, Validators.required);
 
   subscriptions: Subscription[] = [];
 
   isMainPage = true;
+
+  isAirportSelected = false;
 
   @Output() departureValueChange = new EventEmitter<string>();
 
@@ -32,15 +34,33 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute){}
 
   ngOnInit() {
-    this.airportService.getAirportsList();
+    this.airportService.getAirportsListDeparture();
     this.subscriptions.push(
-      this.airportService.airportsList$$.asObservable().subscribe(data => this.selectAirport = data),
-      this.airportService.searchItem$$.asObservable().subscribe(data => this.searchAirport = data),
+      this.airportService.airportsListDeparture$$.asObservable().subscribe(data => this.selectAirport = data),
+      this.airportService.searchItemDeparture$$.asObservable().subscribe(data => this.searchAirport = data),
+
+        this.airportService.searchItemDeparture$$
+        .pipe(
+          distinctUntilChanged(),
+          debounceTime(300),
+          filter((value) => value.length >= 3),
+          switchMap((query) => this.airportService.getSearchAirport(query)),
+        )
+        .subscribe((data: ISelectAirport[]) => {
+          this.airportService.airportsListDeparture$$.next(data);
+          const matchAirport: ISelectAirport[] = data;
+          if (!matchAirport.length && !this.isAirportSelected) {
+            this.departureControl.setErrors({ incorrect: true });
+          } else if (!matchAirport.length  && this.isAirportSelected) {
+            this.departureControl.setErrors(null);
+          } else {
+            this.departureControl.setErrors(null);
+          }
+        }),
+
       this.flightSearch.selectedValueDeparture$$.asObservable()
-        .subscribe(value => {
-           this.selectedDepartureValue = value;
-          }),
-      this.selectDeparture.valueChanges
+        .subscribe(value => this.selectedDepartureValue = value),
+      this.departureControl.valueChanges
         .subscribe(value => {
           this.flightSearch.setSelectedValueDeparture(value!);
           this.departureValueChange.emit(value!);
@@ -49,35 +69,28 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
         this.isMainPage = url[0].path === 'main';
       })
     );
-    this.selectDeparture.setValue(this.selectedDepartureValue);
+    this.departureControl.setValue(this.selectedDepartureValue);
   }
 
   filterOptions(value: string) {
-    this.airportService.searchItem$$.next(value);
+    this.isAirportSelected = false;
+    this.airportService.searchItemDeparture$$.next(value);
+    if (value === '') {
+      this.airportService.getAirportsListDeparture();
+    }
   }
 
   getDepartureFromErrorMessage() {
-    if (this.selectDeparture.hasError('required')) {
+    if (this.departureControl.hasError('required')) {
       return 'Please select from';
-    } else if (this.selectDeparture.hasError('incorrect')) {
+    } else if (this.departureControl.hasError('incorrect')) {
       return 'No airports found';
     }
     return '';
   }
 
-  // selectedValueValidator(control: AbstractControl): ValidationErrors | null {
-  //   const value = control.value;
-  //   const match = this.selectAirport.find(airport => airport.key.toLowerCase() === value || airport.name.toLowerCase().includes(value));
-  //   if (!match) {
-  //     return { incorrect: true };
-  //   } else if (value === this.selectedDepartureValue) {
-  //     return null;
-  //   }
-  //   return { incorrect: true };
-  // }
-
-  onOptionSelected() {
-    this.selectDeparture.setErrors(null);
+  onSelectedOption() {
+    this.isAirportSelected = true;
   }
 
   ngOnDestroy() {

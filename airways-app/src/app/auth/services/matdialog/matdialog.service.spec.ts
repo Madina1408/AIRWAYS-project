@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SharedService } from './shared.service';
+import { MatdialogService } from './matdialog.service';
 
-describe('SharedService', () => {
-  let service: SharedService;
+describe('MatdialogService', () => {
+  let service: MatdialogService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SharedService);
+    service = TestBed.inject(MatdialogService);
   });
 
   it('should be created', () => {
