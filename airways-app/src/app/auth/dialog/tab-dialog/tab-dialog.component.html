@@ -1,0 +1,14 @@
+<button mat-icon-button class="close-button" mat-dialog-close>
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div mat-dialog-content class="auth__container">
+    <mat-tab-group dynamicHeight class="group__container" mat-align-tabs="center" animationDuration="0ms" [selectedIndex] = "index">
+        <mat-tab class="login__tab" label="Log In">
+            <app-signin></app-signin>
+        </mat-tab>
+        <mat-tab class="signup__tab" label="Sign Up">
+            <app-signup></app-signup>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+

@@ -48,8 +48,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
-      // this.airportService.getAirportsListDeparture(),
-      // this.airportService.airportsListDestination$$.asObservable().subscribe(data => this.selectAirportTo = data),
       this.flightSearch.selectedFlightType$$.asObservable().subscribe(value => this.flightTypeValue = value),
       this.flightSearchForm.valueChanges.subscribe(value => this.flightSearch.setSelectedFlightType(value.flightType!)),
     );
@@ -111,7 +109,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
           passengers: this.passengersValue,
         };
         if (queryParams) {
-          console.log(queryParams);
           this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
         }
       }
@@ -127,7 +124,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
             passengers: this.passengersValue,
           }
           if (queryParams) {
-            console.log(queryParams);
             this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
           }
         } else {

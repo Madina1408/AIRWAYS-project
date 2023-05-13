@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { RoutesPaths } from '../../../shared/models/enums/routes-paths';
 import { HeaderService } from '../../services/header.service';
 import { MatdialogService } from 'src/app/auth/services/matdialog/matdialog.service';
-import { TabComponent } from 'src/app/auth/components/tab/tab.component';
+import { TabDialogComponent } from 'src/app/auth/dialog/tab-dialog/tab-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -99,7 +99,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openModalDialog(): void {
-    this.dialogService.openDialog(TabComponent).subscribe((result) => {
+    this.dialogService.openDialog(TabDialogComponent).subscribe((result) => {
       this.emitConfirm.emit(result);
     });
   }

@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TabComponent } from './components/tab/tab.component';
-import { SigninComponent } from './components/signin/signin.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { TabDialogComponent } from './dialog/tab-dialog/tab-dialog.component';
+import { SigninComponent } from './dialog/signin/signin.component';
+import { SignupComponent } from './dialog/signup/signup.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
 
 
-
 @NgModule({
   declarations: [
-    TabComponent,
+    TabDialogComponent,
     SigninComponent,
     SignupComponent,
   ],
@@ -20,7 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule
   ],
   exports: [
-    TabComponent,
+    TabDialogComponent,
     SigninComponent,
     SignupComponent,
   ],

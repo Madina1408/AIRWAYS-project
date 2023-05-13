@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ComponentType } from '@angular/cdk/overlay';
+import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,12 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class MatdialogService {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private overlay: Overlay) { }
 
   openDialog(component: ComponentType<any>): Observable<boolean> {
     return this.dialog.open(component, {
-      width: '30.875rem',
-      panelClass: 'dialog',
+      width: '30.88rem',
+      scrollStrategy: this.overlay.scrollStrategies.block(),
       disableClose: true
     }).afterClosed();
   }

@@ -18,6 +18,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
+    MatTooltipModule,
   ],
   exports: [
     MatButtonModule,
@@ -63,6 +65,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
+    MatTooltipModule,
   ],
 })
 export class SharedModule { }

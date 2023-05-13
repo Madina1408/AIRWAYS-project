@@ -3,11 +3,11 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-tab',
-  templateUrl: './tab.component.html',
-  styleUrls: ['./tab.component.scss']
+  selector: 'app-tab-dialog',
+  templateUrl: './tab-dialog.component.html',
+  styleUrls: ['./tab-dialog.component.scss']
 })
-export class TabComponent implements OnInit, OnDestroy {
+export class TabDialogComponent implements OnInit, OnDestroy {
   index = 0;
   subscription!: Subscription;
 

@@ -1,0 +1,62 @@
+<div class="signin__container">
+    <form [formGroup]="signInForm">
+        <button class="auth__btn" mat-stroked-button>
+            <img class="auth-btn-google__img" src="../../../../assets/icons/google_icon.svg" alt="google"/>
+            Continue with Google
+        </button>
+        <button class="auth__btn" mat-stroked-button>
+            <img class="auth-btn-facebook__img" src="../../../../assets/icons/facebook_icon.svg" alt="facebook"/>
+            Continue with Facebook
+        </button>
+        <div class="message">
+            <div class="message__line"></div>
+            <p class="message__text">or log in with your email</p>
+            <div class="message__line"></div>
+          </div>
+
+          <mat-form-field class="form__field" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input
+                matInput #inputEmail
+                type="email"
+                placeholder="e.g. example@email.com"
+                formControlName="email"
+                autocomplete="on"
+            />
+            <mat-error class="hint" *ngIf="emailControl?.invalid">
+                <span *ngIf="emailControl?.errors?.['required']">Please enter your email</span>
+                <span *ngIf="emailControl?.errors?.['email']">The email is invalid</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form__field password" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput #inputPass
+                [type]="hide ? 'password' : 'text'"
+                type="password"
+                placeholder="Enter a password"
+                formControlName="password"
+                maxlength="20"
+                autocomplete="on"
+            />
+            <button class="icon__btn"
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+            >
+                <mat-icon class="icon-btn__eye">{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+            <mat-error *ngIf="passwordControl?.errors">
+                    {{ getPasswordErrorMessage() }}
+            </mat-error>
+          </mat-form-field>
+
+          <a class="forgot-pass__link" routerLink="">Forgot password?</a>
+
+          <button type="submit" class="submit__btn" mat-flat-button color="primary">Log in</button>
+    </form>
+</div>
+

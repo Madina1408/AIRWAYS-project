@@ -1,0 +1,105 @@
+@use '../../../../styles/colors';
+@use '../../../../styles/form-fields';
+
+.signin__container {
+    margin-top: 2.25rem;
+
+    form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        .auth__btn {
+                width: 100%;
+                height: 3.5rem;
+                background-color: colors.$secondary-90;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1rem;
+                font-weight: bold;
+                text-align: center;
+                letter-spacing: 0.1px;
+                line-height: 1.25rem;
+                color: colors.$neutral-10;
+
+                .auth-btn-google__img {
+                    margin-right: 0.5rem;
+                    width: 1.125rem;
+                    height: 1.125rem;
+                }
+
+                .auth-btn-facebook__img {
+                    margin-right: 0.5rem;
+                    width: 1.3rem;
+                    height: 1.125rem;
+                }
+        }
+
+        .message {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+
+            .message__line {
+                margin: 0;
+                width: 8.8rem;
+                border-bottom: 1px solid colors.$secondary-50;
+            }
+
+            p {
+                margin: 0;
+                font-size: 0.75rem;
+                line-height: 1rem;
+                color: colors.$neutral-black;
+                letter-spacing: 0.025rem;
+            }
+        }
+
+        .form__field {
+            width: 100%;
+            height: 4.5rem;
+
+            mat-error {
+                margin-top: -0.2rem;
+            }
+        }
+
+        .password {
+            margin-top: -1.2rem;
+        }
+
+        .icon__btn {
+            width: 3rem;
+            height: 3rem;
+
+            .icon-btn__eye {
+                color: colors.$neutral-60;
+            }
+        }
+
+        .forgot-pass__link {
+            margin: -0.25rem 0 0.8rem auto;
+            font-size: 0.88rem;
+            line-height: 1.25rem;
+            color: colors.$primary;
+            font-weight: bold;
+            letter-spacing: 0.1px;
+        }
+
+        .submit__btn {
+            width: 100%;
+            height: 2.75rem;
+            font-size: 1rem;
+            line-height: 1.25rem;
+            letter-spacing: 0.1px;
+        }
+    }
+}

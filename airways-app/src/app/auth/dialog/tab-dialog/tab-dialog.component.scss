@@ -1,6 +1,11 @@
 
 @use "../../../../styles/colors";
 
+::ng-deep .mat-mdc-dialog-content {
+    max-height: max-content !important;
+    position: relative !important;
+}
+
 ::ng-deep .mat-mdc-tab.mdc-tab {
     border: 0.5px solid colors.$neutral-60;
     border-radius: 4px;
@@ -32,23 +37,27 @@
     color: colors.$neutral-30;
 }
 
-:host {
-    position: relative;
-}
-
 .mat-mdc-icon-button ::ng-deep .mat-mdc-button-persistent-ripple {
     display: none;
 }
 
-.auth__wrapper {
+::ng-deep .mat-tab-body-content {
+    overflow-y: hidden !important;
+}
+
+.auth__container {
+    width: 100%;
+    height: max-content;
     padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .close-button {
     position: absolute;
     top: -0.5rem;
-    right: -0.5rem;
-    z-index: 99;
+    right: 0;
+    z-index: 1001;
     background: none;
 
     &:hover {

@@ -39,7 +39,7 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
       this.airportService.airportsListDeparture$$.asObservable().subscribe(data => this.selectAirport = data),
       this.airportService.searchItemDeparture$$.asObservable().subscribe(data => this.searchAirport = data),
 
-        this.airportService.searchItemDeparture$$
+      this.airportService.searchItemDeparture$$
         .pipe(
           distinctUntilChanged(),
           debounceTime(300),
@@ -56,7 +56,7 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
           } else {
             this.departureControl.setErrors(null);
           }
-        }),
+      }),
 
       this.flightSearch.selectedValueDeparture$$.asObservable()
         .subscribe(value => this.selectedDepartureValue = value),
