@@ -1,9 +1,9 @@
 export interface ISearchFlight {
     fromKey: string;
-    // fromCity: string;
+    fromCity: string;
     toKey: string;
-    // toCity: string;
-    forwardDate: string;
+    toCity: string;
+    forwardDate?: string;
     backDate?: string;
     passengers: string;
 }
