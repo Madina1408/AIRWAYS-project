@@ -23,10 +23,6 @@ export class FlightDataResolver implements Resolve<IGotFlightData[][]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<IGotFlightData[][]> {
-    // this.activatedRoute.queryParams.subscribe(val=>{
-    //   this.queryParams=val
-    //   console.log(val);
-    // });
     return this.flightData.getFlightData(route.queryParams).pipe(
       delay(2000),
       catchError(() => {

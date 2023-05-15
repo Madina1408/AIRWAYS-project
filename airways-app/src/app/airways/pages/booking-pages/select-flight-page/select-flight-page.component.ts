@@ -29,6 +29,8 @@ export class SelectFlightPageComponent implements OnInit {
     forwardDate: '',
     backDate: '',
     passengers: '',
+    fromCity: '',
+    toCity: '',
   };
   fromKey: string = '';
   constructor(
@@ -40,10 +42,9 @@ export class SelectFlightPageComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.sharedService.currentEditableStatus.subscribe((status) => {
-      this.isEditing = !status;
+      this.isEditing = status;
     });
     this.flightSearchDataService.selectedFlightType$$.subscribe((val) => {
-
       this.flightTypeValue = val;
     });
     this.activatedRoute.data.subscribe((res) => {
@@ -71,17 +72,27 @@ export class SelectFlightPageComponent implements OnInit {
     this.flightSearchDataService.selectedValueDateFrom$$
       .asObservable()
       .subscribe((res) => {
-        this.queryParams.forwardDate! = res!.toISOString();
+        this.queryParams.forwardDate = res?.toISOString();
       });
     this.flightSearchDataService.selectedValueDateReturn$$
       .asObservable()
       .subscribe((res) => {
-        this.queryParams.backDate! = res!.toISOString();
+        this.queryParams.backDate = res?.toISOString();
       });
     this.flightSearchDataService.selectedValuePassengers$$
       .asObservable()
       .subscribe((res) => {
         this.queryParams.passengers! = res;
+      });
+    this.flightSearchDataService.selectedValueDeparture$$
+      .asObservable()
+      .subscribe((res) => {
+        this.queryParams.fromCity = res;
+      });
+    this.flightSearchDataService.selectedValueDestination$$
+      .asObservable()
+      .subscribe((res) => {
+        this.queryParams.toCity = res;
       });
   }
 
@@ -96,15 +107,17 @@ export class SelectFlightPageComponent implements OnInit {
   }
 
   continueToNextStep() {
-    this.router.navigate([RoutesPaths.BookingPageStep2]);
+    this.updateSearchData();
+    this.router.navigate([RoutesPaths.BookingPageStep2], {
+      queryParams: this.queryParams,
+    });
   }
 
   markForwardFlightStatus(status: any): void {
     this.isForwardSelected = status;
   }
 
-  markBackwardFlightStatus(status: any){
+  markBackwardFlightStatus(status: any) {
     this.isBackwardSelected = status;
   }
-
 }

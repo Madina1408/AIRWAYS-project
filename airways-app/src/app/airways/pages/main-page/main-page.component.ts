@@ -104,9 +104,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
       if (this.dateOneWayValue) {
         const queryParams: ISearchFlight = {
           fromKey: this.departureValue.slice(-3, this.departureValue.length),
-          // fromCity: this.departureValue.slice(0, -4),
+          fromCity: this.departureValue.slice(0, -4),
           toKey: this.destinationValue.slice(-3, this.destinationValue.length),
-          // toCity: this.destinationValue.slice(0, -4),
+          toCity: this.destinationValue.slice(0, -4),
           forwardDate: this.dateOneWayValue!.toISOString(),
           passengers: this.passengersValue,
         };
@@ -119,9 +119,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
         if (this.dateRoundValue.start && this.dateRoundValue.end) {
           const queryParams: ISearchFlight = {
             fromKey: this.departureValue.slice(-3, this.departureValue.length),
-            // fromCity: this.departureValue.slice(0, -4),
+            fromCity: this.departureValue.slice(0, -4),
             toKey: this.destinationValue.slice(-3, this.destinationValue.length),
-            // toCity: this.destinationValue.slice(0, -4),
+            toCity: this.destinationValue.slice(0, -4),
             forwardDate: this.dateRoundValue.start.toISOString(),
             backDate: this.dateRoundValue.end.toISOString(),
             passengers: this.passengersValue,

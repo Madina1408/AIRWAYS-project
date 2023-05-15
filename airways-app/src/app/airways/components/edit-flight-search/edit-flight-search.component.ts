@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
 import { SharedService } from '../../services/shared/shared.service';
+import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 @Component({
   selector: 'app-edit-flight-search',
   templateUrl: './edit-flight-search.component.html',
@@ -16,24 +17,37 @@ export class EditFlightSearchComponent implements OnInit {
   passengers!: number;
   departureCity: string = '';
   destinationCity: string = '';
-  isEditable: boolean = true;
+  isEditing: boolean = false;
   saveButtonStatus: boolean = false;
+  showEditDiv: boolean = false;
   constructor(
     private activateRoute: ActivatedRoute,
-    private sharedService: SharedService
-  ) {}
+    private sharedService: SharedService,
+    private router: Router
+  ) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const currentUrl = event.url;
+        if (currentUrl.split('/')[2]?.startsWith('step1')) {
+          this.showEditDiv = true;
+        } else {
+          this.showEditDiv = false;
+        }
+      }
+    });
+  }
   ngOnInit(): void {
-    this.departureCity=this.flightData[0][0].form.city;
-    this.destinationCity=this.flightData[0][0].to.city;
-    this.forwardDate=this.flightData[0][0].landingDate;
-    this.backDate = this.flightData[0][1]?.takeoffDate;
     this.activateRoute.queryParams.subscribe((params) => {
       this.passengers = params['passengers'];
+      this.forwardDate = params['forwardDate'];
+      this.backDate = params['backDate'];
+      this.destinationCity = params['toCity'];
+      this.departureCity = params['fromCity'];
     });
   }
   editPostRequest() {
-    this.sharedService.getEditableStatus(!this.isEditable);
-    this.isEditable = !this.isEditable;
+    this.sharedService.getEditableStatus(true);
+    this.isEditing = false;
     this.saveButtonStatus = true;
   }
   saveSearchResults() {
@@ -41,8 +55,8 @@ export class EditFlightSearchComponent implements OnInit {
     this.saveButtonStatus = false;
   }
   cancelSearchresults() {
-    this.sharedService.getEditableStatus(!this.isEditable);
-    this.isEditable = !this.isEditable;
+    this.sharedService.getEditableStatus(false);
+    this.isEditing = false;
     this.saveButtonStatus = false;
   }
 }
