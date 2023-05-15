@@ -1,0 +1,15 @@
+<mat-form-field class="form__field .date-birth" appearance="fill">
+    <mat-label>Date of birth</mat-label>
+    <input matInput #dateBirth
+        [matDatepicker]="picker"
+        [max]="maxDate"
+        placeholder="{{ selectedValueDateFormat }}"
+        [formControl]="dateBirthControl"
+        (dateChange)="onDateChange()"
+        (blur)="onDateChange()"
+    >
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="dateBirthControl?.invalid">Please select date of birth / Invalid date.
+    </mat-error>
+</mat-form-field>

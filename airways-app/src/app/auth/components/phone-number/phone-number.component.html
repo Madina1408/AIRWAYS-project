@@ -1,0 +1,16 @@
+<mat-form-field class="form__field phone-number" appearance="fill">
+    <mat-label>Mobile phone number</mat-label>
+    <input
+        matInput #inputPhoneNumber
+        type="tel"
+        [formControl]="phoneNumberControl"
+        placeholder="e.g. 1111111111"
+        autocomplete="off"
+        maxlength="10"
+    />
+    <mat-error *ngIf="phoneNumberControl?.invalid">
+        <span *ngIf="phoneNumberControl.hasError('required')">Please enter mobile phone number</span>
+        <span *ngIf="phoneNumberControl.hasError('pattern')">Invalid character</span>
+    </mat-error>
+</mat-form-field>
+

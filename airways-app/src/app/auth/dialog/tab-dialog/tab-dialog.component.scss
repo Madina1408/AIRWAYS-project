@@ -2,35 +2,29 @@
 @use "../../../../styles/colors";
 
 ::ng-deep .mat-mdc-dialog-content {
-    max-height: max-content !important;
-    position: relative !important;
+    max-height: min-content !important;
 }
 
-::ng-deep .mat-mdc-tab.mdc-tab {
-    border: 0.5px solid colors.$neutral-60;
+::ng-deep .mat-mdc-tab-labels {
+    border: 0.5px solid colors.$neutral-60 !important;
     border-radius: 4px;
-}
-
-::ng-deep.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
-    font-family: 'Roboto';
-    font-style: normal;
-    color: colors.$primary;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    text-align: center;
-    letter-spacing: 0.1px;
 }
 
 ::ng-deep .mat-mdc-tab .mdc-tab__text-label {
     font-family: 'Roboto';
     font-style: normal;
-    color: colors.$neutral-10;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
+    font-weight: 600;
+    font-size: 0.88rem;
     text-align: center;
-    letter-spacing: 0.1px;
+    color: colors.$neutral-10;
+}
+
+::ng-deep .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
+    color: colors.$primary;
+}
+
+::ng-deep .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active {
+    background-color: colors.$secondary-90;
 }
 
 ::ng-deep .mat-mdc-icon-button  {
@@ -43,6 +37,22 @@
 
 ::ng-deep .mat-tab-body-content {
     overflow-y: hidden !important;
+}
+
+::ng-deep .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active {
+    border-right: 0.5px solid colors.$neutral-60 !important;
+    border-left: 0.5px solid colors.$neutral-60 !important;
+    border-bottom: 0.5px solid colors.$neutral-60 !important;
+    border-radius: 4px;
+}
+
+::ng-deep .cdk-global-overlay-wrapper {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+}
+
+::ng-deep .cdk-overlay-dark-backdrop {
+    background: none !important;
 }
 
 .auth__container {
@@ -59,8 +69,4 @@
     right: 0;
     z-index: 1001;
     background: none;
-
-    &:hover {
-        transform: rotate(180deg);
-    }
 }

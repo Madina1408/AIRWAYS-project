@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import citizenship from 'src/app/shared/models/constants/citizenship';
 import { ToolTips } from 'src/app/shared/models/enums/tool-tips';
+import { IUserRes } from 'src/app/shared/models/interfaces/user-response-interface';
 
 
 @Component({
@@ -11,17 +13,25 @@ import { ToolTips } from 'src/app/shared/models/enums/tool-tips';
 export class SignupComponent {
 
   hide = true;
+
   isSignInFailed = false;
   isSuccessful = false;
   errorMessage = '';
+
   toolTips = ToolTips;
-  maxDate = new Date();
+
+  citizenshipList = citizenship;
+  isPolicyAgree = true;
+
+  selectedEmail = '';
+  selectedFirstName = '';
+  selectedLastName = '';
+  selectedDateBirth!: Date | null;
+  selectedGender = '';
+  selectedCountryCode = '';
+  selectedPhoneNumber = '';
 
   signUpForm = new FormGroup({
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(6),
@@ -30,37 +40,48 @@ export class SignupComponent {
       Validators.pattern(/[a-z]/),
       Validators.pattern(/[!@#?]/)
     ]),
-    firstName: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^[A-Za-z\s']+$/),
-    ]),
-    lastName: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^[A-Za-z\s']+$/),
-    ]),
-    dateBirth: new FormControl('', [
-      Validators.required,
-    ])
+    citizenship: new FormControl('', Validators.required),
+    policy: new FormControl(this.isPolicyAgree, Validators.requiredTrue)
   });
-
-  get emailControl() {
-    return this.signUpForm.get('email');
-  }
 
   get passwordControl() {
     return this.signUpForm.get('password');
   }
 
-  get firstNameControl() {
-    return this.signUpForm.get('firstName');
+  get citizenshipControl() {
+    return this.signUpForm.get('citizenship');
   }
 
-  get lastNameControl() {
-    return this.signUpForm.get('lastName');
+  get policyControl() {
+    return this.signUpForm.get('policy');
   }
 
-  get dateBirthControl() {
-    return this.signUpForm.get('dateBirth');
+  OnEmailChange(value: string): void {
+    this.selectedEmail = value;
+  }
+
+  OnFirstNameChange(value: string): void {
+    this.selectedFirstName = value;
+  }
+
+  OnLastNameChange(value: string): void {
+    this.selectedLastName = value;
+  }
+
+  onDateBirthChange(value: Date | null): void {
+    this.selectedDateBirth = value;
+  }
+
+  onGenderChange(value: string): void {
+    this.selectedGender = value;
+  }
+
+  onCountryCodeChange(value: string): void {
+    this.selectedCountryCode = value;
+  }
+
+  onPhoneNumberChange(value: string): void {
+    this.selectedPhoneNumber = value;
   }
 
   getPasswordErrorMessage(): string {
@@ -82,32 +103,27 @@ export class SignupComponent {
       return 'Password must contain at least one lowercase letter';
     }
     if (!/[^\w\s']/.test(passwordValue)) {
-      return 'Password must contain at least one special character (e.g. !, @, #, or ?)';
+      return 'Password must contain at least one special character';
     }
     return '';
   }
 
-  getFirstNameErrorMessage(): string {
-    const firstNameValue = this.firstNameControl?.value!;
-
-    if (this.firstNameControl?.hasError('required')) {
-      return 'Please enter your first name';
-    }
-    if (!/^[A-Za-z\s']+$/.test(firstNameValue)) {
-      return 'Invalid character';
-    }
-    return '';
+  OnPolicyArgee() {
+    this.isPolicyAgree = !this.isPolicyAgree;
   }
 
-  getLastNameErrorMessage(): string {
-    const lastNameValue = this.lastNameControl?.value!;
-
-    if (this.lastNameControl?.hasError('required')) {
-      return 'Please enter your last name';
-    }
-    if (!/^[A-Za-z\s']+$/.test(lastNameValue)) {
-      return 'Invalid character';
-    }
-    return '';
+  OnSubmitRegistration() {
+    const userInfo: IUserRes = {
+      email: this.selectedEmail,
+      password: this.passwordControl?.value!,
+      firstName: this.selectedFirstName,
+      lastName: this.selectedLastName,
+      dateOfBirth: this.selectedDateBirth!.toISOString(),
+      gender: this.selectedGender,
+      countryCode: this.selectedCountryCode,
+      phone: this.selectedPhoneNumber,
+      citizenship: this.citizenshipControl?.value!,
+    };
+    console.log(userInfo);
   }
 }

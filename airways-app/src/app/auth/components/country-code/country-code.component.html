@@ -1,0 +1,9 @@
+<mat-form-field class="form__field country-code" appearance="fill">
+    <mat-label>Country code</mat-label>
+    <mat-select [formControl]="countryCodeControl" panelClass="countryCodeClass">
+      <mat-option *ngFor="let countryCode of countryCodes" [value]="countryCode">
+        {{ countryCode.name }} ({{ countryCode.countryCode }})
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="countryCodeControl?.errors">Please select country code</mat-error>
+</mat-form-field>

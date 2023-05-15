@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabComponent } from './tab-dialog.component';
+import { TabDialogComponent } from './tab-dialog.component';
 
-describe('TabComponent', () => {
-  let component: TabComponent;
-  let fixture: ComponentFixture<TabComponent>;
+describe('TabDialogComponent', () => {
+  let component: TabDialogComponent;
+  let fixture: ComponentFixture<TabDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TabComponent ]
+      declarations: [ TabDialogComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TabComponent);
+    fixture = TestBed.createComponent(TabDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

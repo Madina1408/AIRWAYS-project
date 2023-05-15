@@ -1,10 +1,10 @@
 <div class="signup__container">
-    <form [formGroup]="signUpForm">
-        <button class="auth__btn" mat-stroked-button>
+    <form [formGroup]="signUpForm" (submit)="OnSubmitRegistration()">
+        <button type="button" class="auth__btn" mat-stroked-button>
             <img class="auth-btn-google__img" src="../../../../assets/icons/google_icon.svg" alt="google"/>
             Continue with Google
         </button>
-        <button class="auth__btn" mat-stroked-button>
+        <button type="button" class="auth__btn" mat-stroked-button>
             <img class="auth-btn-facebook__img" src="../../../../assets/icons/facebook_icon.svg" alt="facebook"/>
             Continue with Facebook
         </button>
@@ -14,22 +14,9 @@
             <div class="message__line"></div>
         </div>
 
-        <mat-form-field class="form__field" appearance="fill">
-            <mat-label>Email</mat-label>
-            <input
-                matInput #inputEmail
-                type="email"
-                placeholder="e.g. example@email.com"
-                formControlName="email"
-                autocomplete="on"
-            />
-            <mat-error *ngIf="emailControl?.invalid">
-                <span *ngIf="emailControl?.errors?.['required']">Please enter your email</span>
-                <span *ngIf="emailControl?.errors?.['email']">The email is invalid</span>
-            </mat-error>
-        </mat-form-field>
+        <app-email (emailValueChange)="OnEmailChange($event)"></app-email>
 
-         <mat-form-field class="form__field password" appearance="fill">
+        <mat-form-field class="form__field password" appearance="fill">
             <mat-label>Password</mat-label>
             <input matInput #inputPass
                 [type]="hide ? 'password' : 'text'"
@@ -37,7 +24,7 @@
                 placeholder="Enter a password"
                 formControlName="password"
                 maxlength="20"
-                autocomplete="on"
+                autocomplete="off"
             />
             <button class="icon__btn"
                 type="button"
@@ -63,87 +50,42 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="form__field name" appearance="fill">
-            <mat-label>FirstName</mat-label>
-            <input
-                matInput #inputFirstName
-                type="text"
-                placeholder="Enter your First Name"
-                formControlName="firstName"
-                autocomplete="on"
-            />
-            <button class="icon__btn"
-                type="button"
-                mat-icon-button
-                matSuffix
-                [matTooltip]="toolTips.name"
-                matTooltipPosition="right"
-            >
-                <mat-icon
-                    *ngIf="firstNameControl?.dirty && firstNameControl?.valid || !firstNameControl?.touched"
-                >
-                    error_outline
-                </mat-icon>
+        <app-first-name (firstNameValueChange)="OnFirstNameChange($event)"></app-first-name>
 
-                <mat-icon class="icon-error"
-                    *ngIf="firstNameControl?.touched && firstNameControl?.errors"
-                >
-                    info
-                </mat-icon>
-            </button>
-            <mat-error *ngIf="firstNameControl?.errors">
-                {{ getFirstNameErrorMessage() }}
-            </mat-error>
+        <app-last-name (lastNameValueChange)="OnLastNameChange($event)"></app-last-name>
+
+        <app-date-birth (dateBirthValueChange)="onDateBirthChange($event)"></app-date-birth>
+
+        <app-gender (genderValueChange)="onGenderChange($event)"></app-gender>
+
+        <div class="phone-number__container">
+            <app-country-code (countryCodeValueChange)="onCountryCodeChange($event)"></app-country-code>
+            <app-phone-number (phoneNumberValueChange)="onPhoneNumberChange($event)"></app-phone-number>
+        </div>
+
+        <mat-form-field class="form__field citizenship" appearance="fill">
+            <mat-label>Citizenship</mat-label>
+            <mat-select formControlName="citizenship" panelClass="citizenshipClass">
+                <mat-option *ngFor="let citizenship of citizenshipList" [value]="citizenship.name">
+                    {{ citizenship.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="citizenshipControl?.errors">Please select your citizenship</mat-error>
         </mat-form-field>
 
-        <mat-form-field class="form__field name" appearance="fill">
-            <mat-label>LastName</mat-label>
-            <input
-                matInput #inputLastName
-                type="text"
-                placeholder="Enter your Last Name"
-                formControlName="lastName"
-                autocomplete="on"
-            />
-            <button class="icon__btn"
-                type="button"
-                mat-icon-button
-                matSuffix
-                [matTooltip]="toolTips.name"
-                matTooltipPosition="right"
-            >
-                <mat-icon
-                    *ngIf="lastNameControl?.dirty && lastNameControl?.valid || !lastNameControl?.touched"
-                >
-                    error_outline
-                </mat-icon>
-
-                <mat-icon class="icon-error"
-                    *ngIf="lastNameControl?.touched && lastNameControl?.errors"
-                >
-                    info
-                </mat-icon>
-            </button>
-            <mat-error *ngIf="lastNameControl?.errors">
-                {{ getLastNameErrorMessage() }}
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="form__field" appearance="fill">
-            <mat-label>Date of birth</mat-label>
-            <input matInput #dateBirth
-                [matDatepicker]="picker"
-                [max]="maxDate"
-                placeholder="Select date of birth"
-                formControlName="dateBirth"
-                autocomplete="on"
-            >
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="dateBirthControl?.invalid">Please select date of birth / Invalid date.
-                <!-- <br>Date format should be {{ selectedValueDateFormat }} -->
-            </mat-error>
-        </mat-form-field>
+        <mat-checkbox
+            class="checkbox__policy"
+            color="primary"
+            formControlName="policy"
+            (change)="OnPolicyArgee()">
+            <p>
+                I agree to <a class="link" routerLink="">Airway's Privacy</a>
+                Policy and <a class="link" routerLink="">Terms of Use</a>
+            </p>
+        </mat-checkbox>
+        <mat-error class="policy__error" *ngIf="!isPolicyAgree">
+            You must agree to the privacy policy and terms of use
+        </mat-error>
 
         <button type="submit" class="submit__btn" mat-flat-button color="primary">Sign up</button>
     </form>

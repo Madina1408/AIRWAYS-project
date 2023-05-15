@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ILoginRequest } from 'src/app/shared/models/interfaces/login-interface';
 
 @Component({
   selector: 'app-signin',
@@ -13,11 +14,9 @@ export class SigninComponent {
   isSuccessful = false;
   errorMessage = '';
 
+  selectedEmail = '';
+
   signInForm = new FormGroup({
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(6),
@@ -28,12 +27,12 @@ export class SigninComponent {
     ]),
   });
 
-  get emailControl() {
-    return this.signInForm.get('email');
-  }
-
   get passwordControl() {
     return this.signInForm.get('password');
+  }
+
+  OnEmailChange(value: string) {
+    this.selectedEmail = value;
   }
 
   getPasswordErrorMessage(): string {
@@ -54,8 +53,16 @@ export class SigninComponent {
       return 'Password must contain at least one lowercase letter';
     }
     if (!/[!@#?]/.test(passwordValue)) {
-      return 'Password must contain at least one special character (e.g. !, @, #, or ?)';
+      return 'Password must contain at least one special character';
     }
     return '';
+  }
+
+  onSubmitLogIn() {
+    const userInfo: ILoginRequest = {
+      email: this.selectedEmail,
+      password: this.passwordControl?.value!,
+    };
+    console.log(userInfo);
   }
 }

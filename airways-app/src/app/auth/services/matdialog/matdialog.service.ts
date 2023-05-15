@@ -13,7 +13,6 @@ export class MatdialogService {
   openDialog(component: ComponentType<any>): Observable<boolean> {
     return this.dialog.open(component, {
       width: '30.88rem',
-      scrollStrategy: this.overlay.scrollStrategies.block(),
       disableClose: true
     }).afterClosed();
   }
