@@ -9,7 +9,7 @@
            (input)="filterOptions(searchInput.value)">
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectedOption()">
       <mat-option *ngFor="let airportFrom of selectAirport"
-        [value]="airportFrom.city + ' ' + airportFrom.key">
+        value="{{ airportFrom.city }} {{ airportFrom.key }}">
         <p class="city">{{ airportFrom.city }} <span class="city">({{ airportFrom.key }})</span></p>
         <p class="airport">{{ airportFrom.country }}, <span class="airport">{{ airportFrom.name }}</span></p>
       </mat-option>

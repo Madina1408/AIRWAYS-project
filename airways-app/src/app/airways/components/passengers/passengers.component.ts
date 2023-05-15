@@ -1,9 +1,9 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
-import { ISelectPassengers } from 'src/app/shared/models/interfaces/select-passangers-interface';
+import { Component, ElementRef, EventEmitter, HostListener, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { IPassenger } from 'src/app/shared/models/interfaces/passengers-interface';
 import { FormControl, Validators } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import passengersList from '../../../shared/models/constants/passengers';
 
 @Component({
@@ -11,11 +11,12 @@ import passengersList from '../../../shared/models/constants/passengers';
   templateUrl: './passengers.component.html',
   styleUrls: ['./passengers.component.scss']
 })
-export class PassengersComponent {
-  selectPassengers: ISelectPassengers[] = passengersList;
-  selectedTypesPassengers = this.selectPassengers.filter(passenger => passenger.count > 0);
-  selectedPassengersValue = this.selectedTypesPassengers
-    .map(passenger => `${passenger.count} ${passenger.type}`).join(', ');
+export class PassengersComponent implements OnInit, OnDestroy {
+  selectPassengers: IPassenger[] = passengersList;
+
+  selectedTypesPassengers: IPassenger[] = [];
+
+  selectedPassengersValue = '';
 
   passengersControl = new FormControl(this.selectedPassengersValue, Validators.required);
 
@@ -29,46 +30,57 @@ export class PassengersComponent {
     private elementRef: ElementRef,
     private flightSearch: FlightSearchDataService) {}
 
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.passengersControl.valueChanges.pipe(take(1)).subscribe(value => {
+        this.passengersValueChange.emit(value!);
+      })
+    );
+  }
+
   getPassengersCount(): string {
-    this.selectedPassengersValue = '';
-    const selectedTypesPassengers = this.selectPassengers.filter(passenger => passenger.count > 0);
-    selectedTypesPassengers.forEach((passenger, index) => {
-      if (passenger.count > 0) {
-        this.selectedPassengersValue += `${passenger.count} ${passenger.type}`;
-        if (index < selectedTypesPassengers.length - 1) {
-          this.selectedPassengersValue += ', ';
-        }
-      };
-    });
+    this.selectedTypesPassengers = this.selectPassengers.filter(passenger => passenger.count > 0);
+
+    this.selectedPassengersValue = this.selectedTypesPassengers
+      .map(passenger => `${passenger.count} ${passenger.type}`).join(', ');
+
     this.flightSearch.setSelectedValuePassengers(this.selectedPassengersValue);
-    this.passengersValueChange.emit(this.selectedPassengersValue);
+    this.passengersControl.setValue(this.selectedPassengersValue);
     return this.selectedPassengersValue;
   }
 
-  getMinCountPassangers(passenger: ISelectPassengers): number {
-    if (passenger.type === 'Adults') {
-      return 1;
-    } else {
-      return 0;
-    }
+  getMinCountPassengers(passenger: IPassenger): number {
+    return passenger.type === 'Adults' ? 1 : 0;
   }
 
-  increasePassengerCount(passenger: ISelectPassengers) {
+  increasePassengerCount(passenger: IPassenger): void {
     passenger.count++;
+    this.emitPassengersValue();
   }
 
-  decreasePassengerCount(passenger: ISelectPassengers) {
-    const minCount = this.getMinCountPassangers(passenger);
+  decreasePassengerCount(passenger: IPassenger): void {
+    const minCount = this.getMinCountPassengers(passenger);
     if (passenger.count > minCount) {
       passenger.count--;
+      this.emitPassengersValue();
     }
+  }
+
+  private emitPassengersValue(): void {
+    this.selectedPassengersValue = this.getPassengersCount();
+    this.passengersControl.setValue(this.selectedPassengersValue);
+    this.passengersValueChange.emit(this.selectedPassengersValue);
   }
 
   @HostListener('document:click', ['$event.target'])
-  onClick(targetElement: HTMLElement) {
+  onClick(targetElement: HTMLElement): void {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);
     if (!clickedInside && this.menuTrigger?.menuOpen) {
       this.menuTrigger.closeMenu();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subs => subs.unsubscribe());
   }
 }

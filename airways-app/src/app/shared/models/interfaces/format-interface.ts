@@ -1,4 +1,4 @@
-export interface ISelectFormat {
+export interface IFormat {
     label: string;
     selected?: boolean;
     sign?: string;

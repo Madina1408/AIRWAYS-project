@@ -6,7 +6,7 @@ import { AirportService } from '../../services/airport/airport.service';
 import { Router } from '@angular/router';
 import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
-import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
+import { IAirport } from 'src/app/shared/models/interfaces/airport-interface';
 import { Subscription } from 'rxjs';
 import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 import { DateRoundComponent } from '../../components/date-round/date-round.component';
@@ -19,8 +19,8 @@ import { DateRoundComponent } from '../../components/date-round/date-round.compo
 })
 export class MainPageComponent implements OnInit, OnDestroy {
 
-  selectAirportFrom: ISelectAirport[] = [];
-  selectAirportTo: ISelectAirport[] = [];
+  selectAirportFrom: IAirport[] = [];
+  selectAirportTo: IAirport[] = [];
 
   flightTypeValue!: string;
 
@@ -46,7 +46,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subscriptions.push(
       this.flightSearch.selectedFlightType$$.asObservable().subscribe(value => this.flightTypeValue = value),
       this.flightSearchForm.valueChanges.subscribe(value => this.flightSearch.setSelectedFlightType(value.flightType!)),
@@ -56,27 +56,27 @@ export class MainPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDepartureChange(value: string) {
+  onDepartureChange(value: string): void {
     this.departureValue = value;
   }
 
-  onDestinationChange(value: string) {
-      this.destinationValue = value;
+  onDestinationChange(value: string): void {
+    this.destinationValue = value;
   }
 
-  onDateRoundChange(value: { start: Date | null; end: Date | null; }) {
+  onDateRoundChange(value: { start: Date | null; end: Date | null; }): void {
     this.dateRoundValue = value;
   }
 
-  onDateOneWayChange(value: Date | null) {
+  onDateOneWayChange(value: Date | null): void {
     this.dateOneWayValue = value;
   }
 
-  onPassengersChange(value: string) {
+  onPassengersChange(value: string): void {
     this.passengersValue = value;
   }
 
-  onSwapAirports() {
+  onSwapAirports(): void {
     const temp = this.departureValue;
     this.departureValue = this.destinationValue;
     this.destinationValue = temp;
@@ -97,7 +97,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFormSubmit() {
+  onFormSubmit(): void {
     if (this.flightSearchForm.valid && this.flightTypeValue === 'one-way') {
       if (this.dateOneWayValue) {
         const queryParams: ISearchFlight = {
@@ -134,7 +134,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.forEach(subs => subs.unsubscribe());
   }
 }

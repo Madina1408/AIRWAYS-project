@@ -1,6 +1,6 @@
-import { ISelectFormat } from "../interfaces/select-format-interface";
+import { IFormat } from "../interfaces/format-interface";
 
-const currencyFormatMenu: ISelectFormat[] = [
+const currencyFormatMenu: IFormat[] = [
     { label: 'EUR', sign: '€' },
     { label: 'USD', sign: '$' },
     { label: 'RUB', sign: '₽' },

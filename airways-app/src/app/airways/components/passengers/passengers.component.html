@@ -16,7 +16,7 @@
         <div class="passengers__total-count">
             <button class="add-btn" mat-button
                 (click)="decreasePassengerCount(passenger); $event.stopPropagation()"
-                [disabled]="passenger.count === getMinCountPassangers(passenger)">
+                [disabled]="passenger.count === getMinCountPassengers(passenger)">
                 <mat-icon>remove</mat-icon>
         </button>
         <span class="passenger__count"

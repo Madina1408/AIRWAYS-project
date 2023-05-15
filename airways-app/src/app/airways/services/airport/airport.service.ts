@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
+import { IAirport } from 'src/app/shared/models/interfaces/airport-interface';
 import { RequestBuilderService } from 'src/app/shared/services/request-builder.service';
 import { BehaviorSubject, Observable, catchError, of } from 'rxjs';
 import { BASE_URL, URL_ALL_AIRPORTS, URL_SEARCH } from 'src/app/shared/models/constants/api-urls';
@@ -9,9 +9,9 @@ import { BASE_URL, URL_ALL_AIRPORTS, URL_SEARCH } from 'src/app/shared/models/co
 })
 export class AirportService {
 
-  airportsListDeparture$$ = new BehaviorSubject<ISelectAirport[]>([]);
+  airportsListDeparture$$ = new BehaviorSubject<IAirport[]>([]);
 
-  airportsListDestination$$ = new BehaviorSubject<ISelectAirport[]>([]);
+  airportsListDestination$$ = new BehaviorSubject<IAirport[]>([]);
 
   searchItemDeparture$$ = new BehaviorSubject<string>('');
 
@@ -19,8 +19,8 @@ export class AirportService {
 
   constructor(private requestBuilderService: RequestBuilderService) {}
 
-  getAirportsFromServer(): Observable<ISelectAirport[]> {
-    return this.requestBuilderService.get<ISelectAirport[]>(`${BASE_URL}${URL_ALL_AIRPORTS}`);
+  getAirportsFromServer(): Observable<IAirport[]> {
+    return this.requestBuilderService.get<IAirport[]>(`${BASE_URL}${URL_ALL_AIRPORTS}`);
   }
 
   getAirportsListDeparture() {
@@ -41,9 +41,9 @@ export class AirportService {
       });
   }
 
-  getSearchAirport(query: string): Observable<ISelectAirport[]> {
+  getSearchAirport(query: string): Observable<IAirport[]> {
     return this.requestBuilderService
-      .get<ISelectAirport[]>(`${BASE_URL}${URL_SEARCH}${query}`)
+      .get<IAirport[]>(`${BASE_URL}${URL_SEARCH}${query}`)
       .pipe(catchError((err) => of(err.status)));
   }
 }

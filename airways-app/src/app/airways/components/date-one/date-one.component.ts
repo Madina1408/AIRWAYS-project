@@ -29,7 +29,7 @@ export class DateOneComponent implements OnInit, OnDestroy {
     private elementRef: ElementRef
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.asObservable().subscribe(value => {
         this.selectedValueDateFormat = value.label;
@@ -42,25 +42,28 @@ export class DateOneComponent implements OnInit, OnDestroy {
           this.selectedDateValue = value;
         }),
       this.dateOneControl.valueChanges
-        .subscribe(value => this.flightSearch.setSelectedValueDateFrom(value!)),
+        .subscribe(value => {
+          this.flightSearch.setSelectedValueDateFrom(value!);
+          if (this.dateOneControl.valid) {
+            this.dateOneWayValueChange.emit(this.selectedDateValue);
+          }
+        }),
     );
     this.dateOneControl.setValue(this.selectedDateValue);
-    this.dateOneWayValueChange.emit(this.selectedDateValue);
   }
 
-  onDateChange() {
+  onDateChange(): void {
     this.selectedDateValue = this.dateOneControl.value;
     this.formatAndSetValue();
-    this.dateOneWayValueChange.emit(this.selectedDateValue);
   }
 
-  private formatAndSetValue() {
+  private formatAndSetValue(): void {
     const date = moment(this.selectedDateValue).format(this.selectedValueDateFormat);
     const inputElement = this.elementRef.nativeElement.querySelector('input');
     inputElement.value = date;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.forEach(subs => subs.unsubscribe());
   }
 }

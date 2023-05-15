@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import dateFormatMenu from '../../shared/models/constants/date-format';
 import currencyFormatMenu from '../../shared/models/constants/currency-format';
-import { ISelectFormat } from 'src/app/shared/models/interfaces/select-format-interface';
+import { IFormat } from 'src/app/shared/models/interfaces/format-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +10,16 @@ import { ISelectFormat } from 'src/app/shared/models/interfaces/select-format-in
 export class HeaderService {
 
   dateFormats = dateFormatMenu;
-  selectedValueDateFormat$$ = new BehaviorSubject<ISelectFormat>(this.dateFormats[0]);
+  selectedValueDateFormat$$ = new BehaviorSubject<IFormat>(this.dateFormats[0]);
 
   currancyFormats = currencyFormatMenu;
-  selectedValueCurrencyFormat$$ = new BehaviorSubject<ISelectFormat>(this.currancyFormats[0]);
+  selectedValueCurrencyFormat$$ = new BehaviorSubject<IFormat>(this.currancyFormats[0]);
 
-  setSelectedValueDateFormat(value: ISelectFormat) {
+  setSelectedValueDateFormat(value: IFormat) {
     this.selectedValueDateFormat$$.next(value);
   }
 
-  setSelectedValueCurrencyFormat(value: ISelectFormat) {
+  setSelectedValueCurrencyFormat(value: IFormat) {
     this.selectedValueCurrencyFormat$$.next(value);
   }
 }

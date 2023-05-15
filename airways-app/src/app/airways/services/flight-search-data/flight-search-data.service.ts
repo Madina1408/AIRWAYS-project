@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ISelectPassengers } from 'src/app/shared/models/interfaces/select-passangers-interface';
+import { IPassenger } from 'src/app/shared/models/interfaces/passengers-interface';
 import passengersList from '../../../shared/models/constants/passengers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FlightSearchDataService {
-  passengers: ISelectPassengers[] = passengersList;
+  passengers: IPassenger[] = passengersList;
 
   selectedFlightType$$ = new BehaviorSubject<string>('round-trip');
   selectedValueDeparture$$ = new BehaviorSubject<string>('');
