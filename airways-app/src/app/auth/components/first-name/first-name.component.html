@@ -1,0 +1,32 @@
+<mat-form-field class="form__field name" appearance="fill">
+    <mat-label>FirstName</mat-label>
+    <input
+        matInput #inputFirstName
+        type="text"
+        placeholder="Enter your First Name"
+        [formControl]="firstNameControl"
+        autocomplete="off"
+    />
+    <button class="icon__btn"
+        type="button"
+        mat-icon-button
+        matSuffix
+        [matTooltip]="toolTips.name"
+        matTooltipPosition="right"
+    >
+        <mat-icon
+            *ngIf="firstNameControl?.dirty && firstNameControl?.valid || !firstNameControl?.touched"
+        >
+            error_outline
+        </mat-icon>
+
+        <mat-icon class="icon-error"
+            *ngIf="firstNameControl?.touched && firstNameControl?.errors"
+        >
+            info
+        </mat-icon>
+    </button>
+    <mat-error *ngIf="firstNameControl?.errors">
+        {{ getFirstNameErrorMessage() }}
+    </mat-error>
+</mat-form-field>

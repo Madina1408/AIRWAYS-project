@@ -5,13 +5,72 @@
 }
 
 ::ng-deep .mdc-text-field--filled {
-    background-color: colors.$secondary-90;
+    background-color: colors.$secondary-90 !important;
     border-radius: 4px;
-    border: 1px solid colors.$neutral-30;
+    border: 1px solid colors.$neutral-60 !important;
 }
 
+::ng-deep .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: colors.$neutral-10 !important;
+    line-height: 1rem;
+    letter-spacing: 0.4px;
+}
 
-::ng-deep .mdc-text-field--focused {
-    background-color: colors.$secondary-90;
-    border: 0.1rem solid colors.$primary;
+::ng-deep .mdc-text-field--filled.mdc-text-field--invalid {
+    border: 1px solid colors.$error-red !important;
+}
+
+::ng-deep .mdc-text-field--filled .mdc-line-ripple {
+    display: none;
+}
+
+::ng-deep .mdc-text-field--filled.mdc-text-field--focused {
+    background-color: colors.$secondary-90 !important;
+    border: 0.1rem solid colors.$primary !important;
+}
+
+::ng-deep .mat-mdc-form-field-error,
+::ng-deep .mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: colors.$error-red !important;
+}
+
+::ng-deep .mat-button-toggle-checked {
+    background-color: colors.$secondary-90 !important;
+    color: colors.$primary !important;
+}
+
+::ng-deep .mat-button-toggle-group-appearance-standard {
+    border: 1px solid colors.$neutral-30;
+    border-radius: 4px;
+    height: 2.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+::ng-deep .mat-button-toggle {
+    width: 50%;
+}
+
+.form__field {
+    width: 100%;
+    height: 4.5rem;
+
+    mat-error {
+        margin-top: -0.2rem;
+    }
+}
+
+.icon__btn {
+    width: 3rem;
+    height: 3rem;
+
+    .icon-btn__eye {
+        color: colors.$neutral-60;
+    }
+}
+
+.icon-error {
+    color: colors.$error-red;
 }

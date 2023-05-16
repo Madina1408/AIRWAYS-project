@@ -24,7 +24,7 @@
                     mat-menu-item
                 >{{ option.label }} <img
                     *ngIf="option.selected"
-                    class="header__logo" src="../../../../assets/icons/icon-select.svg" alt="icon-select">
+                    class="header__tick-icon" src="../../../../assets/icons/icon-select.svg" alt="tick-icon">
                 </button>
             </mat-menu>
 
@@ -32,13 +32,13 @@
                 [matMenuTriggerFor]="CurrencySelect"
                 class="header__currency-format"
                 [class]="headerClass"
-                [class.selected]="isCurrencySelected"
             >{{ selectedCurrencyFormat }}</button>
             <mat-menu #CurrencySelect="matMenu" class="header__currency-list">
                 <button
                     class="header__currency-selected"
                     (click)="onSelectCurrencyFormat(option)"
                     *ngFor="let option of currencyOptions"
+                    [class.selected]="isCurrencySelected"
                     mat-menu-item
                 >{{ option.label }}</button>
             </mat-menu>

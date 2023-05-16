@@ -50,19 +50,24 @@ html {
 
 body {
   height: 100%;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: colors.$light-grey;
   overflow-x: hidden;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.1px;
 }
 
 ::-webkit-scrollbar {
   width: 4px;
-  border-radius: 100px;
+  border-radius: 6.25rem;
   overflow-y: scroll;
 }
 
 ::-webkit-scrollbar-thumb {
   background: colors.$primary;
   border-radius: 10px;
-  height: 214px;
+  height: 5rem;
 }

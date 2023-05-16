@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
-import { ISelectAirport } from 'src/app/shared/models/interfaces/select-airport-interface';
+import { IAirport } from 'src/app/shared/models/interfaces/airport-interface';
 import { AirportService } from '../../services/airport/airport.service';
 import { Subscription, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
@@ -12,13 +12,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./destination.component.scss']
 })
 export class DestinationComponent implements OnInit, OnDestroy {
-  selectAirport: ISelectAirport[] = [];
+  selectAirport: IAirport[] = [];
 
   searchAirport = '';
 
   selectedDestinationValue!: string;
 
-  destinationControl = new FormControl(this.selectedDestinationValue, Validators.required);
+  destinationControl = new FormControl(this.selectedDestinationValue, [Validators.required, Validators.minLength(3)]);
 
   subscriptions: Subscription[] = [];
 
@@ -33,7 +33,7 @@ export class DestinationComponent implements OnInit, OnDestroy {
     private flightSearch: FlightSearchDataService,
     private route: ActivatedRoute){}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.airportService.getAirportsListDestination();
     this.subscriptions.push(
       this.airportService.airportsListDestination$$.asObservable().subscribe(data => this.selectAirport = data),
@@ -46,9 +46,9 @@ export class DestinationComponent implements OnInit, OnDestroy {
           filter((value) => value.length >= 3),
           switchMap((query) => this.airportService.getSearchAirport(query)),
         )
-        .subscribe((data: ISelectAirport[]) => {
+        .subscribe((data: IAirport[]) => {
           this.airportService.airportsListDestination$$.next(data);
-          const matchAirport: ISelectAirport[] = data;
+          const matchAirport: IAirport[] = data;
           if (!matchAirport.length && !this.isAirportSelected) {
             this.destinationControl.setErrors({ incorrect: true });
           } else if (!matchAirport.length  && this.isAirportSelected) {
@@ -63,8 +63,10 @@ export class DestinationComponent implements OnInit, OnDestroy {
 
       this.destinationControl.valueChanges
         .subscribe(value => {
-          this.flightSearch.setSelectedValueDestination(value!);
-          this.destinationValueChange.emit(value!);
+          if (this.destinationControl.valid) {
+            this.flightSearch.setSelectedValueDestination(value!);
+            this.destinationValueChange.emit(value!);
+          }
         }),
 
       this.route.url.subscribe(url => {
@@ -74,7 +76,7 @@ export class DestinationComponent implements OnInit, OnDestroy {
     this.destinationControl.setValue(this.selectedDestinationValue);
   }
 
-  filterOptions(value: string) {
+  filterOptions(value: string): void {
     this.isAirportSelected = false;
     this.airportService.searchItemDestination$$.next(value);
     if (value === '') {
@@ -82,20 +84,22 @@ export class DestinationComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDestinationErrorMessage() {
+  getDestinationErrorMessage(): string {
     if (this.destinationControl.hasError('required')) {
       return 'Please select destination';
     } else if (this.destinationControl.hasError('incorrect')) {
       return 'No airports found';
+    } else if (this.destinationControl.hasError('minlength')) {
+      return 'The name/key of airport must be at least 3 characters long';
     }
     return '';
   }
 
-  onSelectedOption() {
+  onSelectedOption(): void {
     this.isAirportSelected = true;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.forEach(subs => subs.unsubscribe());
   }
 }

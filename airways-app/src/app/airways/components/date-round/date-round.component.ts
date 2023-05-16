@@ -32,7 +32,7 @@ export class DateRoundComponent {
     private elementRef: ElementRef
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.subscribe(value => {
         this.selectedValueDateFormat = value.label;
@@ -52,21 +52,22 @@ export class DateRoundComponent {
       .subscribe(value => {
         this.flightSearch.setSelectedValueDateFrom(value.start!);
         this.flightSearch.setSelectedValueDateReturn(value.end!);
+        if (this.dateRoundControl.valid) {
+          this.dateRoundValueChange.emit(this.selectedDateValue);
+        }
       }),
     );
     this.dateRoundControl.setValue(this.selectedDateValue);
-    this.dateRoundValueChange.emit(this.selectedDateValue);
   }
 
-  onDatesChange() {
+  onDatesChange(): void {
     const startValue = this.dateRoundControl.get('start')?.value;
     const endValue = this.dateRoundControl.get('end')?.value;
     this.selectedDateValue = { start: startValue!, end: endValue!};
     this.formatAndSetValue();
-    this.dateRoundValueChange.emit(this.selectedDateValue);
   }
 
-  private formatAndSetValue() {
+  private formatAndSetValue(): void {
     const start = this.formatDate(this.selectedDateValue.start!, this.selectedValueDateFormat);
     const end = this.formatDate(this.selectedDateValue.end!, this.selectedValueDateFormat);
 
@@ -81,7 +82,7 @@ export class DateRoundComponent {
     return moment(date).format(format.replace('MM', 'M').replace('DD', 'D').replace('YYYY', 'Y'));
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.forEach(subs => subs.unsubscribe());
   }
 }

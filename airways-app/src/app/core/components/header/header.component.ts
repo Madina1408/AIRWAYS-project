@@ -1,12 +1,12 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { ISelectFormat } from '../../../shared/models/interfaces/select-format-interface';
+import { IFormat } from '../../../shared/models/interfaces/format-interface';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutesPaths } from '../../../shared/models/enums/routes-paths';
 import { HeaderService } from '../../services/header.service';
 import { MatdialogService } from 'src/app/auth/services/matdialog/matdialog.service';
-import { TabComponent } from 'src/app/auth/components/tab/tab.component';
+import { TabDialogComponent } from 'src/app/auth/dialog/tab-dialog/tab-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +17,10 @@ import { TabComponent } from 'src/app/auth/components/tab/tab.component';
   }]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  dateOptions: ISelectFormat[] = [];
+  dateOptions: IFormat[] = [];
   selectedDateFormat: string = '';
 
-  currencyOptions: ISelectFormat[] = [];
+  currencyOptions: IFormat[] = [];
   selectedCurrencyFormat: string = '';
   isCurrencySelected = false;
 
@@ -80,7 +80,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  onSelectDateFormat(option: ISelectFormat) {
+  onSelectDateFormat(option: IFormat) {
     this.selectedDateFormat = option.label;
     option.selected = true;
 
@@ -92,14 +92,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.headerService.setSelectedValueDateFormat(option)
   }
 
-  onSelectCurrencyFormat(option: ISelectFormat) {
+  onSelectCurrencyFormat(option: IFormat) {
     this.selectedCurrencyFormat = option.label;
     this.isCurrencySelected = true;
     this.headerService.setSelectedValueCurrencyFormat(option);
   }
 
   openModalDialog(): void {
-    this.dialogService.openDialog(TabComponent).subscribe((result) => {
+    this.dialogService.openDialog(TabDialogComponent).subscribe((result) => {
       this.emitConfirm.emit(result);
     });
   }

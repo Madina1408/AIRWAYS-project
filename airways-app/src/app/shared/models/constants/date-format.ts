@@ -1,6 +1,6 @@
-import { ISelectFormat } from "../../../shared/models/interfaces/select-format-interface";
+import { IFormat } from "../interfaces/format-interface";
 
-const dateFormatMenu: ISelectFormat[] = [
+const dateFormatMenu: IFormat[] = [
     { label: 'MM/DD/YYYY', selected: true },
     { label: 'DD/MM/YYYY', selected: false },
     { label: 'YYYY/DD/MM', selected: false },
