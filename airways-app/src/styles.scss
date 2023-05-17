@@ -71,3 +71,19 @@ body {
   border-radius: 10px;
   height: 5rem;
 }
+
+.mat-mdc-snack-bar-container {
+  &.success-snackbar  {
+    --mdc-snackbar-container-color: #35ab35;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
+
+.mat-mdc-snack-bar-container {
+  &.failed-snackbar  {
+    --mdc-snackbar-container-color: #B3261E;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}

@@ -5,6 +5,7 @@ import { AirportService } from '../../services/airport/airport.service';
 import { Subscription, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 import { ActivatedRoute } from '@angular/router';
+import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 
 @Component({
   selector: 'app-destination',
@@ -70,7 +71,7 @@ export class DestinationComponent implements OnInit, OnDestroy {
         }),
 
       this.route.url.subscribe(url => {
-        this.isMainPage = url[0].path === 'main';
+        this.isMainPage = url[0].path === RoutesPaths.MainPage;
       })
     );
     this.destinationControl.setValue(this.selectedDestinationValue);

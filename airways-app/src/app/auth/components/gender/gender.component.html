@@ -9,7 +9,6 @@
         class="gender-male__item"
         [value]="gender.male"
         checked
-        (click)="onSelectGender(genderControl.value!)"
     >
         <img class="tick__icon" *ngIf="selectedGenderValue === 'Male'"
             src="../../../../assets/icons/icon-select.svg"
@@ -19,7 +18,6 @@
     <mat-button-toggle
         class="gender-female__item"
         [value]="gender.female"
-        (click)="onSelectGender(genderControl.value!)"
     >
         <img class="tick__icon" *ngIf="selectedGenderValue === 'Female'"
             src="../../../../assets/icons/icon-select.svg"

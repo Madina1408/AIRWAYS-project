@@ -21,18 +21,18 @@ export class GenderComponent implements OnInit, OnDestroy {
   @Output() genderValueChange = new EventEmitter<string>();
 
   ngOnInit(): void {
+    if (this.genderControl.valid) {
+      this.genderValueChange.emit(this.selectedGenderValue);
+    }
     this.subscriptions.push(
       this.genderControl.valueChanges.subscribe(value => {
         if (this.genderControl.valid) {
+          this.selectedGenderValue = value!;
           this.genderValueChange.emit(value!);
         }
       })
-    )
+    );
   };
-
-  onSelectGender(value: string): void {
-    this.selectedGenderValue = value;
-  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subs => subs.unsubscribe());

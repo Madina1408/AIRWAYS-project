@@ -9,4 +9,8 @@ import { Component } from '@angular/core';
 export class TabDialogComponent {
   selectedTabIndex = 0;
 
+  changeTabIndex(index: number) {
+    this.selectedTabIndex = index;
+  }
+
 }
