@@ -48,7 +48,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.flightSearch.selectedFlightType$$.asObservable().subscribe(value => this.flightTypeValue = value),
+      this.flightSearch.selectedFlightType$$.subscribe(value => this.flightTypeValue = value),
       this.flightSearchForm.valueChanges.subscribe(value => this.flightSearch.setSelectedFlightType(value.flightType!)),
     );
     this.flightSearchForm.setValue({

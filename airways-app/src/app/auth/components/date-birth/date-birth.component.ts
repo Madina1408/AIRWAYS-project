@@ -30,7 +30,7 @@ export class DateBirthComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.headerService.selectedValueDateFormat$$.asObservable().subscribe(value => {
+      this.headerService.selectedValueDateFormat$$.subscribe(value => {
         this.selectedValueDateFormat = value.label;
           if (this.dateBirthControl.valid) {
             this.formatAndSetValue();

@@ -31,13 +31,13 @@ export class DateOneComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.headerService.selectedValueDateFormat$$.asObservable().subscribe(value => {
+      this.headerService.selectedValueDateFormat$$.subscribe(value => {
         this.selectedValueDateFormat = value.label;
           if (this.dateOneControl.valid) {
             this.formatAndSetValue();
           }
       }),
-      this.flightSearch.selectedValueDateFrom$$.asObservable()
+      this.flightSearch.selectedValueDateFrom$$
         .subscribe(value => {
           this.selectedDateValue = value;
         }),

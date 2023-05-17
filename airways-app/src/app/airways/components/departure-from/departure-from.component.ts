@@ -37,8 +37,8 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.airportService.getAirportsListDeparture();
     this.subscriptions.push(
-      this.airportService.airportsListDeparture$$.asObservable().subscribe(data => this.selectAirport = data),
-      this.airportService.searchItemDeparture$$.asObservable().subscribe(data => this.searchAirport = data),
+      this.airportService.airportsListDeparture$$.subscribe(data => this.selectAirport = data),
+      this.airportService.searchItemDeparture$$.subscribe(data => this.searchAirport = data),
 
       this.airportService.searchItemDeparture$$
         .pipe(
@@ -59,7 +59,7 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
           }
       }),
 
-      this.flightSearch.selectedValueDeparture$$.asObservable()
+      this.flightSearch.selectedValueDeparture$$
         .subscribe(value => this.selectedDepartureValue = value),
       this.departureControl.valueChanges
         .subscribe(value => {

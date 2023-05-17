@@ -37,8 +37,8 @@ export class DestinationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.airportService.getAirportsListDestination();
     this.subscriptions.push(
-      this.airportService.airportsListDestination$$.asObservable().subscribe(data => this.selectAirport = data),
-      this.airportService.searchItemDestination$$.asObservable().subscribe(data => this.searchAirport = data),
+      this.airportService.airportsListDestination$$.subscribe(data => this.selectAirport = data),
+      this.airportService.searchItemDestination$$.subscribe(data => this.searchAirport = data),
 
       this.airportService.searchItemDestination$$
         .pipe(
@@ -59,7 +59,7 @@ export class DestinationComponent implements OnInit, OnDestroy {
           }
         }),
 
-      this.flightSearch.selectedValueDestination$$.asObservable()
+      this.flightSearch.selectedValueDestination$$
         .subscribe(value => this.selectedDestinationValue = value),
 
       this.destinationControl.valueChanges

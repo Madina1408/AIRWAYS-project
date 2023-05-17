@@ -40,11 +40,11 @@ export class DateRoundComponent {
           this.formatAndSetValue();
         }
       }),
-      this.flightSearch.selectedValueDateFrom$$.asObservable()
+      this.flightSearch.selectedValueDateFrom$$
       .subscribe(value => {
         this.selectedDateValue.start = value;
       }),
-      this.flightSearch.selectedValueDateReturn$$.asObservable()
+      this.flightSearch.selectedValueDateReturn$$
       .subscribe(value => {
         this.selectedDateValue.end = value;
       }),
