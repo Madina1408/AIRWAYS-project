@@ -15,9 +15,14 @@ import { DestinationComponent } from './components/destination/destination.compo
 import { DateRoundComponent } from './components/date-round/date-round.component';
 import { PassengersComponent } from './components/passengers/passengers.component';
 import { DateOneComponent } from './components/date-one/date-one.component';
+<<<<<<< Updated upstream
 import { DurationPipe } from './pipes/duration.pipe';
 import { AuthGuard } from '../core/guards/auth/auth.guard';
 import { RoutesPaths } from '../shared/models/enums/routes-paths';
+=======
+import { DurationPipe } from './pipes/duration.pipe';
+import { SummaryPassengersComponent } from './components/summary-passengers/summary-passengers.component';
+>>>>>>> Stashed changes
 
 const routes: Routes = [
   { path: '', redirectTo: RoutesPaths.MainPage, pathMatch: 'full' },
@@ -46,7 +51,8 @@ const routes: Routes = [
     DateRoundComponent,
     PassengersComponent,
     DateOneComponent,
-    DurationPipe
+    DurationPipe,
+    SummaryPassengersComponent
   ],
   imports: [
     CommonModule,

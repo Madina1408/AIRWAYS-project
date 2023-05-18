@@ -7,6 +7,7 @@ import {
   OnChanges,
   SimpleChange,
   SimpleChanges,
+  AfterContentInit,
 } from '@angular/core';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
 import { AirportService } from '../../services/airport/airport.service';
@@ -19,11 +20,12 @@ import { IPostFlightData } from 'src/app/shared/models/interfaces/post-flight-in
   templateUrl: './show-flight-options.component.html',
   styleUrls: ['./show-flight-options.component.scss'],
 })
-export class ShowFlightOptionsComponent implements OnInit, OnChanges {
+export class ShowFlightOptionsComponent
+  implements OnInit, OnChanges, AfterContentInit
+{
   @Input() flightData: IGotFlightData[] = [];
   @Input() isForward: boolean = true;
-  @Output() isSelect = new EventEmitter<boolean>();
-  @Output() disabledOutput = new EventEmitter<boolean>();
+  @Output() isSelect = new EventEmitter<string>();
   detailedInfo!: IGotFlightData;
   departureCity: string = '';
   destinationCity: string = '';
@@ -41,6 +43,8 @@ export class ShowFlightOptionsComponent implements OnInit, OnChanges {
     private sharedService: SharedService
   ) {}
   ngOnInit(): void {
+    console.log(this.flightData);
+
     this.headerService.selectedValueCurrencyFormat$$.subscribe((res) => {
       this.currencySign = res.sign;
       this.currencyLabel = res.label;
@@ -66,6 +70,11 @@ export class ShowFlightOptionsComponent implements OnInit, OnChanges {
         });
       });
     }
+  }
+  ngAfterContentInit() {
+    // setTimeout(() => {
+    //   this.isSelect.emit(this.detailedInfo.takeoffDate);
+    // }, 0);
   }
 
   updateVisibleItems(): void {
@@ -93,6 +102,7 @@ export class ShowFlightOptionsComponent implements OnInit, OnChanges {
       (flight) => flight.flightNumber == flightNumber
     );
     this.detailedInfo = flightArray[0];
+    // this.isSelect.emit(this.detailedInfo.takeoffDate);
   }
 
   getSelectedItemPrice(selectedFlight: IGotFlightData) {
@@ -111,10 +121,22 @@ export class ShowFlightOptionsComponent implements OnInit, OnChanges {
 
   selectFlight() {
     this.isSelected = true;
-    this.isSelect.emit(true);
+    this.isSelect.emit(this.detailedInfo.takeoffDate);
+    if (this.isForward) {
+      this.sharedService.passSelectedForwardFlight(this.detailedInfo);
+    } else if (!this.isForward) {
+      this.sharedService.passSelectedBackwardFlight(this.detailedInfo);
+    }
   }
   editFlightSearch() {
     this.isSelected = false;
-    this.isSelect.emit(false);
+    this.isSelect.emit('');
+    // this.activatedRoute.queryParams.subscribe((params) => {
+    //   if (this.isForward) {
+    //     this.isSelect.emit(params['forwardDate'])
+    //   }else if (!this.isForward) {
+    //     this.isSelect.emit(params['backDate'])
+    //   }
+    // })
   }
 }

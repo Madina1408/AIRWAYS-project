@@ -1,0 +1,59 @@
+@use '../../../../../styles/colors';
+.wrapper {
+  width: 85%;
+  margin: 48px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  .header {
+    display: flex;
+    gap: 12px;
+    h2 {
+      font-weight: 700;
+      font-size: 24px;
+      color: colors.$primary;
+    }
+  }
+  .passengers-container{
+    display: flex;
+    gap: 24px;
+  }
+  .buttons-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: -43px;
+    gap: 40px;
+    .btn-back {
+      width: 126px;
+      height: 60px;
+      padding: 12px 24px;
+      font-weight: 500;
+      font-size: 16px;
+      color: colors.$primary;
+      border: none;
+      background-color: transparent;
+    }
+    .btn-cart {
+      padding: 12px 24px;
+      border: 1px solid colors.$primary;
+      border-radius: 4px;
+      width: 171px;
+      height: 60px;
+      font-size: 16px;
+      line-height: 20px;
+      color: colors.$primary;
+      background-color: transparent;
+    }
+    .btn-buy {
+      padding: 12px 24px;
+      width: 126px;
+      height: 60px;
+      background: colors.$primary;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 16px;
+      color: white;
+      border: none;
+    }
+  }
+}
