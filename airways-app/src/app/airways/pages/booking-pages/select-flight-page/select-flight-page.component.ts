@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { IGotFlightData } from '../../../../shared/models/interfaces/flight-data';
 import { SharedService } from 'src/app/airways/services/shared/shared.service';
 import { FlightSearchDataService } from 'src/app/airways/services/flight-search-data/flight-search-data.service';
-import { IPostFlightData } from 'src/app/shared/models/interfaces/post-flight-interface';
 import { FlightdataService } from 'src/app/airways/services/flightdata/flightdata.service';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { Router } from '@angular/router';
@@ -19,8 +18,8 @@ export class SelectFlightPageComponent implements OnInit {
   backFlightData: IGotFlightData[] = [];
   isEditing: boolean = false;
   isSaving: boolean = false;
-  isForwardSelected: boolean = false;
-  isBackwardSelected: boolean = false;
+  isForwardSelected: string = '';
+  isBackwardSelected: string = '';
   disabled: boolean = true;
   flightTypeValue!: string;
   queryParams: ISearchFlight = {
@@ -108,6 +107,8 @@ export class SelectFlightPageComponent implements OnInit {
 
   continueToNextStep() {
     this.updateSearchData();
+    this.queryParams.forwardDate = this.isForwardSelected;
+    this.queryParams.backDate = this.isBackwardSelected;
     this.router.navigate([RoutesPaths.BookingPageStep2], {
       queryParams: this.queryParams,
     });
@@ -115,9 +116,11 @@ export class SelectFlightPageComponent implements OnInit {
 
   markForwardFlightStatus(status: any): void {
     this.isForwardSelected = status;
+    console.log(this.isForwardSelected);
   }
 
   markBackwardFlightStatus(status: any) {
     this.isBackwardSelected = status;
+    console.log(this.isBackwardSelected);
   }
 }

@@ -1,4 +1,4 @@
-<app-edit-flight-search [flightData]="flightData" (callParentMethod)="updatePostRequestAfterSaveButtonClicked()"></app-edit-flight-search>
+<app-edit-flight-search [flightData]="flightData" [toDate]="isForwardSelected" [backDate]="isBackwardSelected" (callParentMethod)="updatePostRequestAfterSaveButtonClicked()"></app-edit-flight-search>
 <div class="wrapper">
   <form *ngIf="isEditing" class="edit-flight-search">
     <app-departure-from></app-departure-from>
@@ -20,7 +20,7 @@
   ></app-show-flight-options>
   <div class="bottom-buttons">
     <button type="button" class="btn-back" [routerLink]="['']">Back</button>
-    <button *ngIf="flightTypeValue === 'one-way'" type="button" class="btn-continue" [disabled]="!isForwardSelected" (click)="continueToNextStep()">Continue</button>
-    <button *ngIf="flightTypeValue === 'round-trip'" type="button" class="btn-continue" [disabled]="!isBackwardSelected || !isForwardSelected" (click)="continueToNextStep()">Continue</button>
+    <button *ngIf="flightTypeValue === 'one-way'" type="button" class="btn-continue" [disabled]="isForwardSelected==''" (click)="continueToNextStep()">Continue</button>
+    <button *ngIf="flightTypeValue === 'round-trip'" type="button" class="btn-continue" [disabled]="isBackwardSelected=='' || isForwardSelected==''" (click)="continueToNextStep()">Continue</button>
   </div>
 </div>

@@ -21,7 +21,7 @@
           <h4>{{item.takeoffDate | date: 'EEEE'}}</h4>
           <h5>{{currencySign}}{{getSelectedItemPrice(item) | number:'2.1-2'}}</h5>
           <span
-            [ngStyle]="{'background-color': detailedInfo.flightNumber==item.flightNumber? (detailedInfo.seats.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'):'white'}"
+            [ngStyle]="{'background-color': detailedInfo.flightNumber===item.flightNumber? (detailedInfo.seats.avaible>50? 'rgba(241, 201, 51, 0.3)' : 'rgba(179, 38, 30, 0.3)'):'white'}"
           ></span>
         </div>
       </div>

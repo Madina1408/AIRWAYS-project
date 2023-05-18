@@ -1,1 +1,18 @@
 <app-edit-flight-search></app-edit-flight-search>
+<div class="wrapper">
+  <div class="header">
+    <img src="../../../../../assets/icons/summary_icon.svg" alt="summary_icon">
+    <h2>Summary</h2>
+  </div>
+  <div class="passengers-container">
+    <app-summary-passengers [isForward]="true" [selectedFlight]="forwardData"></app-summary-passengers>
+    <app-summary-passengers *ngIf="backwardData.flightNumber!==undefined" [isForward]="false" [selectedFlight]="backwardData"></app-summary-passengers>
+  </div>
+  <div class="fare-container">
+  </div>
+  <div class="buttons-container">
+    <button class="btn-back">Back</button>
+    <button class="btn-cart">Add to order cart</button>
+    <button class="btn-buy">Buy now</button>
+  </div>
+</div>
