@@ -1,8 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import citizenship from 'src/app/shared/models/constants/citizenship';
 import { ToolTips } from 'src/app/shared/models/enums/tool-tips';
-import { IUserRes } from 'src/app/shared/models/interfaces/user-response-interface';
+import { ISignUpRequest } from 'src/app/shared/models/interfaces/signup-interface';
+import { AuthService } from '../../services/auth/auth.service';
+import { NotificationService } from 'src/app/shared/services/notification/notification.service';
+import { EmailComponent } from '../../components/email/email.component';
+import { FirstNameComponent } from '../../components/first-name/first-name.component';
+import { LastNameComponent } from '../../components/last-name/last-name.component';
+import { DateBirthComponent } from '../../components/date-birth/date-birth.component';
+import { GenderComponent } from '../../components/gender/gender.component';
+import { CountryCodeComponent } from '../../components/country-code/country-code.component';
+import { PhoneNumberComponent } from '../../components/phone-number/phone-number.component';
+import { TabDialogComponent } from '../tab-dialog/tab-dialog.component';
 
 
 @Component({
@@ -14,8 +24,8 @@ export class SignupComponent {
 
   hide = true;
 
-  isSignInFailed = false;
   isSuccessful = false;
+  isSignUpFailed = false;
   errorMessage = '';
 
   toolTips = ToolTips;
@@ -31,6 +41,14 @@ export class SignupComponent {
   selectedCountryCode = '';
   selectedPhoneNumber = '';
 
+  @ViewChild(EmailComponent) emailComponents!: EmailComponent;
+  @ViewChild(FirstNameComponent) firstNameComponentComponents!: FirstNameComponent;
+  @ViewChild(LastNameComponent) lastNameComponentComponents!: LastNameComponent;
+  @ViewChild(DateBirthComponent) dateBirthComponentComponents!: DateBirthComponent;
+  @ViewChild(GenderComponent) genderComponent!: GenderComponent;
+  @ViewChild(CountryCodeComponent) countryCodeComponent!: CountryCodeComponent;
+  @ViewChild(PhoneNumberComponent) phoneNumberComponent!: PhoneNumberComponent;
+
   signUpForm = new FormGroup({
     password: new FormControl('', [
       Validators.required,
@@ -43,6 +61,11 @@ export class SignupComponent {
     citizenship: new FormControl('', Validators.required),
     policy: new FormControl(this.isPolicyAgree, Validators.requiredTrue)
   });
+
+  constructor (
+    private authService: AuthService,
+    private notification: NotificationService,
+    private tabDialog: TabDialogComponent) {}
 
   get passwordControl() {
     return this.signUpForm.get('password');
@@ -108,12 +131,40 @@ export class SignupComponent {
     return '';
   }
 
-  OnPolicyArgee() {
+  OnPolicyArgee(): void {
     this.isPolicyAgree = !this.isPolicyAgree;
   }
 
+  resetForm(): void {
+    this.signUpForm.reset();
+    Object.keys(this.signUpForm.controls).forEach(key => {
+      this.signUpForm.get(key)?.setErrors(null) ;
+    });
+
+    this.emailComponents.emailControl.reset();
+    this.firstNameComponentComponents.firstNameControl.reset();
+    this.lastNameComponentComponents.lastNameControl.reset();
+    this.dateBirthComponentComponents.dateBirthControl.reset();
+    this.genderComponent.genderControl.reset();
+    this.countryCodeComponent.countryCodeControl.reset();
+    this.phoneNumberComponent.phoneNumberControl.reset();
+
+
+    this.emailComponents.emailControl.setErrors(null);
+    this.firstNameComponentComponents.firstNameControl.setErrors(null);
+    this.lastNameComponentComponents.lastNameControl.setErrors(null);
+    this.dateBirthComponentComponents.dateBirthControl.setErrors(null);
+    this.genderComponent.genderControl.setErrors(null);
+    this.countryCodeComponent.countryCodeControl.setErrors(null);
+    this.phoneNumberComponent.phoneNumberControl.setErrors(null);
+  }
+
+  goToSignInTab() {
+    this.tabDialog.changeTabIndex(0);
+  }
+
   OnSubmitRegistration() {
-    const userInfo: IUserRes = {
+    const userData: ISignUpRequest = {
       email: this.selectedEmail,
       password: this.passwordControl?.value!,
       firstName: this.selectedFirstName,
@@ -124,6 +175,16 @@ export class SignupComponent {
       phone: this.selectedPhoneNumber,
       citizenship: this.citizenshipControl?.value!,
     };
-    console.log(userInfo);
+
+    this.authService.signUp(userData).subscribe({
+      next: () => {
+        this.notification.openSuccessSnackBar('Registration is successful! You can sign in.');
+        this.resetForm();
+        this.goToSignInTab();
+      },
+      error: (err) => {
+        this.notification.openFailureSnackBar(`Registration failed. ${err.error.message}`);
+      }
+    });
   }
 }

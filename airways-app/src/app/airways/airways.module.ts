@@ -16,15 +16,20 @@ import { DateRoundComponent } from './components/date-round/date-round.component
 import { PassengersComponent } from './components/passengers/passengers.component';
 import { DateOneComponent } from './components/date-one/date-one.component';
 import { DurationPipe } from './pipes/duration.pipe';
+import { AuthGuard } from '../core/guards/auth/auth.guard';
+import { RoutesPaths } from '../shared/models/enums/routes-paths';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/main', pathMatch: 'full' },
-  { path: 'main', component: MainPageComponent, },
-  { path: 'booking', redirectTo: '/booking/step1', pathMatch: 'full' },
-  { path: 'booking/step1', component: SelectFlightPageComponent, resolve:{flights:FlightDataResolver}, runGuardsAndResolvers:'paramsOrQueryParamsChange'},
-  { path: 'booking/step2', component: PassengersPageComponent, },
-  { path: 'booking/step3', component: SummaryPageComponent, },
-  { path: 'shopping-cart', component: ShoppingCartPageComponent, },
+  { path: '', redirectTo: RoutesPaths.MainPage, pathMatch: 'full' },
+  { path: RoutesPaths.MainPage, component: MainPageComponent },
+  { path: RoutesPaths.BookingPage, redirectTo: RoutesPaths.MainPage, pathMatch: 'full' },
+  { path: RoutesPaths.BookingPageStep1, component: SelectFlightPageComponent,
+    resolve: { flights:FlightDataResolver },
+    runGuardsAndResolvers:'paramsOrQueryParamsChange'
+  },
+  { path: RoutesPaths.BookingPageStep2, component: PassengersPageComponent, canActivate: [ AuthGuard ] },
+  { path: RoutesPaths.BookingPageStep3, component: SummaryPageComponent, canActivate: [ AuthGuard ] },
+  { path: RoutesPaths.ShoppingCart, component: ShoppingCartPageComponent, canActivate: [ AuthGuard ] },
 ];
 
 @NgModule({

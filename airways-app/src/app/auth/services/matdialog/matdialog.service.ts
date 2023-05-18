@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { Observable } from 'rxjs';
 
@@ -8,12 +8,18 @@ import { Observable } from 'rxjs';
 })
 export class MatdialogService {
 
-  constructor(private dialog: MatDialog, private overlay: Overlay) { }
+  dialogRef!: MatDialogRef<any, any>;
 
-  openDialog(component: ComponentType<any>): Observable<boolean> {
-    return this.dialog.open(component, {
+  constructor(private dialog: MatDialog) { }
+
+  openDialog(component: ComponentType<any>): void {
+    this.dialogRef = this.dialog.open(component, {
       width: '30.88rem',
       disableClose: true
-    }).afterClosed();
+    });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 }

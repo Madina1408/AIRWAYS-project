@@ -1,5 +1,5 @@
 <header class="header" [class]="headerClass">
-    <div class="header__container">
+    <div class="header__container" *ngIf="{ isLoggedIn: authService.isLoggedIn() } as state">
         <img class="header__logo" src="../../../../assets/images/main_logo.png" alt="airways-logo" routerLink="">
 
         <mat-horizontal-stepper #stepper *ngIf="isShowProgressBar" class="stepper">
@@ -29,11 +29,12 @@
             </mat-menu>
 
             <button mat-button
-                [matMenuTriggerFor]="CurrencySelect"
+                [matMenuTriggerFor]="currencySelect"
                 class="header__currency-format"
                 [class]="headerClass"
+                [ngClass]="state.isLoggedIn ? 'primary': '' "
             >{{ selectedCurrencyFormat }}</button>
-            <mat-menu #CurrencySelect="matMenu" class="header__currency-list">
+            <mat-menu #currencySelect="matMenu" class="header__currency-list">
                 <button
                     class="header__currency-selected"
                     (click)="onSelectCurrencyFormat(option)"
@@ -46,15 +47,40 @@
             <button mat-button
                 class="header__signin-btn"
                 [class]="headerClass"
-                (click)="openModalDialog()">
+                (click)="openModalDialog()"
+                *ngIf="!state.isLoggedIn">
                 <img *ngIf="isMainPage" src="../../../../assets/icons/user_icon.svg" alt="user-icon">
                 <img *ngIf="!isMainPage" src="../../../../assets/icons/user_icon_dark.svg" alt="user-icon">
-                Sign In
+                Sign in
             </button>
 
+            <button mat-button
+                [matMenuTriggerFor]="menuUser"
+                class="header__signin-btn user"
+                [class]="headerClass"
+                *ngIf="state.isLoggedIn">
+                <img src="../../../../assets/icons/user_icon_blue.svg" alt="user-icon">
+                {{ userService.getCurrentUserName() }}
+            </button>
+            <mat-menu #menuUser="matMenu" class="header__user-menu">
+                <button mat-menu-item>History of orders	<mat-icon color="primary">history</mat-icon></button>
+                <button mat-menu-item (click)="onLogOut();">Log out <mat-icon color="primary">input</mat-icon></button>
+            </mat-menu>
+
+
             <a class="header__cart-btn" matBadge="15" matBadgeColor="warn">
-                <img *ngIf="isMainPage" src="../../../../assets/icons/shopping_basket.svg" alt="cart-icon">
-                <img *ngIf="!isMainPage" src="../../../../assets/icons/shopping_basket_dark.svg" alt="cart-icon">
+                <img *ngIf="isMainPage && !state.isLoggedIn"
+                    src="../../../../assets/icons/shopping_basket.svg"
+                    alt="cart-icon"
+                >
+                <img *ngIf="!isMainPage && !state.isLoggedIn"
+                    src="../../../../assets/icons/shopping_basket_dark.svg"
+                    alt="cart-icon"
+                    >
+                <img *ngIf="(!isMainPage && state.isLoggedIn) || (isMainPage && state.isLoggedIn)"
+                    src="../../../../assets/icons/shopping_basket_blue.svg"
+                    alt="cart-icon"
+                >
             </a>
         </div>
     </div>

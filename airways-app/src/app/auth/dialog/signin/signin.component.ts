@@ -1,6 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ILoginRequest } from 'src/app/shared/models/interfaces/login-interface';
+import { ILogInRequest } from 'src/app/shared/models/interfaces/login-interface';
+import { AuthService } from '../../services/auth/auth.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage/local-storage.service';
+import { NotificationService } from 'src/app/shared/services/notification/notification.service';
+import { EmailComponent } from '../../components/email/email.component';
+import { UserService } from '../../services/user/user.service';
+import { MatdialogService } from '../../services/matdialog/matdialog.service';
+import { Router } from '@angular/router';
+import { TOKEN } from 'src/app/shared/models/constants/token';
 
 @Component({
   selector: 'app-signin',
@@ -10,9 +18,6 @@ import { ILoginRequest } from 'src/app/shared/models/interfaces/login-interface'
 export class SigninComponent {
 
   hide = true;
-  isSignInFailed = false;
-  isSuccessful = false;
-  errorMessage = '';
 
   selectedEmail = '';
 
@@ -26,6 +31,17 @@ export class SigninComponent {
       Validators.pattern(/[!@#?]/)
     ]),
   });
+
+  @ViewChild(EmailComponent) emailComponents!: EmailComponent;
+
+  constructor (
+    private authService: AuthService,
+    private storageService: LocalStorageService,
+    private notification: NotificationService,
+    private userService: UserService,
+    private dialofService: MatdialogService,
+    private router: Router
+  ) {}
 
   get passwordControl() {
     return this.signInForm.get('password');
@@ -58,11 +74,30 @@ export class SigninComponent {
     return '';
   }
 
-  onSubmitLogIn() {
-    const userInfo: ILoginRequest = {
+  resetForm(): void {
+    this.signInForm.reset();
+    this.emailComponents.emailControl.reset();
+
+    this.passwordControl?.setErrors(null);
+    this.emailComponents.emailControl.setErrors(null);
+  }
+
+  onSubmitLogIn(): void {
+    const userData: ILogInRequest = {
       email: this.selectedEmail,
       password: this.passwordControl?.value!,
     };
-    console.log(userInfo);
+
+    this.authService.logIn(userData).subscribe({
+      next: (data) => {
+        this.storageService.saveToStorage(TOKEN, data.token);
+        this.notification.openSuccessSnackBar('Login is successful!');
+        this.resetForm();
+        this.dialofService.closeDialog();
+      },
+      error: (err) => {
+        this.notification.openFailureSnackBar(`Login failed. ${err.error.message}`);
+      }
+    });
   }
 }

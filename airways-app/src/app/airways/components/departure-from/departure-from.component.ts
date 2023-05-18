@@ -5,6 +5,7 @@ import { AirportService } from '../../services/airport/airport.service';
 import { Subscription, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { FlightSearchDataService } from '../../services/flight-search-data/flight-search-data.service';
 import { ActivatedRoute } from '@angular/router';
+import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 
 @Component({
   selector: 'app-departure-from',
@@ -36,8 +37,8 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.airportService.getAirportsListDeparture();
     this.subscriptions.push(
-      this.airportService.airportsListDeparture$$.asObservable().subscribe(data => this.selectAirport = data),
-      this.airportService.searchItemDeparture$$.asObservable().subscribe(data => this.searchAirport = data),
+      this.airportService.airportsListDeparture$$.subscribe(data => this.selectAirport = data),
+      this.airportService.searchItemDeparture$$.subscribe(data => this.searchAirport = data),
 
       this.airportService.searchItemDeparture$$
         .pipe(
@@ -58,7 +59,7 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
           }
       }),
 
-      this.flightSearch.selectedValueDeparture$$.asObservable()
+      this.flightSearch.selectedValueDeparture$$
         .subscribe(value => this.selectedDepartureValue = value),
       this.departureControl.valueChanges
         .subscribe(value => {
@@ -68,7 +69,7 @@ export class DepartureFromComponent implements OnInit, OnDestroy {
           }
         }),
       this.route.url.subscribe(url => {
-        this.isMainPage = url[0].path === 'main';
+        this.isMainPage = url[0].path === RoutesPaths.MainPage;
       })
     );
     this.departureControl.setValue(this.selectedDepartureValue);

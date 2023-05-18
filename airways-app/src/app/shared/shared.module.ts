@@ -19,8 +19,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTooltipModule,
     MatButtonToggleModule,
     MatCheckboxModule,
+    MatSnackBarModule
   ],
   exports: [
     MatButtonModule,
@@ -72,6 +74,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTooltipModule,
     MatButtonToggleModule,
     MatCheckboxModule,
+    MatSnackBarModule
   ],
 })
 export class SharedModule { }

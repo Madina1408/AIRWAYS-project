@@ -7,6 +7,8 @@ import { RoutesPaths } from '../../../shared/models/enums/routes-paths';
 import { HeaderService } from '../../services/header.service';
 import { MatdialogService } from 'src/app/auth/services/matdialog/matdialog.service';
 import { TabDialogComponent } from 'src/app/auth/dialog/tab-dialog/tab-dialog.component';
+import { AuthService } from 'src/app/auth/services/auth/auth.service';
+import { UserService } from 'src/app/auth/services/user/user.service';
 
 @Component({
   selector: 'app-header',
@@ -31,9 +33,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-  @Output() emitConfirm: EventEmitter<boolean> = new EventEmitter();
+  currentPageUrl = '';
 
-  constructor(private router: Router, private headerService: HeaderService, private dialogService: MatdialogService) {}
+  constructor(
+    private router: Router,
+    private headerService: HeaderService,
+    private dialogService: MatdialogService,
+    public authService: AuthService,
+    public userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.dateOptions = this.headerService.dateFormats;
@@ -48,9 +56,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }),
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
-          const currentUrl = event.url;
+          this.currentPageUrl = event.url;
 
-          switch (currentUrl.split('/')[1]) {
+          switch (this.currentPageUrl.split('/')[1]) {
             case RoutesPaths.MainPage:
               this.isShowBookFlights = true;
               this.isShowProgressBar = false;
@@ -99,9 +107,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openModalDialog(): void {
-    this.dialogService.openDialog(TabDialogComponent).subscribe((result) => {
-      this.emitConfirm.emit(result);
-    });
+    this.dialogService.openDialog(TabDialogComponent);
+  }
+
+  onLogOut() {
+    this.authService.signOut();
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IAirport } from 'src/app/shared/models/interfaces/airport-interface';
-import { RequestBuilderService } from 'src/app/shared/services/request-builder.service';
+import { RequestBuilderService } from 'src/app/shared/services/request-builder/request-builder.service';
 import { BehaviorSubject, Observable, catchError, of } from 'rxjs';
 import { BASE_URL, URL_ALL_AIRPORTS, URL_SEARCH } from 'src/app/shared/models/constants/api-urls';
 
