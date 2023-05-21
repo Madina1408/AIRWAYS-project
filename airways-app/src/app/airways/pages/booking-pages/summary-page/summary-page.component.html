@@ -1,17 +1,93 @@
 <app-edit-flight-search></app-edit-flight-search>
 <div class="wrapper">
   <div class="header">
-    <img src="../../../../../assets/icons/summary_icon.svg" alt="summary_icon">
+    <img
+      src="../../../../../assets/icons/summary_icon.svg"
+      alt="summary_icon"
+    />
     <h2>Summary</h2>
   </div>
   <div class="passengers-container">
-    <app-summary-passengers [isForward]="true" [selectedFlight]="forwardData"></app-summary-passengers>
-    <app-summary-passengers *ngIf="backwardData.flightNumber!==undefined" [isForward]="false" [selectedFlight]="backwardData"></app-summary-passengers>
+    <app-summary-passengers
+      [isForward]="true"
+      [selectedFlight]="forwardData"
+    ></app-summary-passengers>
+    <app-summary-passengers
+      *ngIf="backwardData.flightNumber!==undefined"
+      [isForward]="false"
+      [selectedFlight]="backwardData"
+    ></app-summary-passengers>
   </div>
   <div class="fare-container">
+    <div class="fare-categories">
+      <div class="fare adult-fare" *ngIf="adultStatus">
+        <div class="heading">
+          <h6>{{adultNumber}} x Adult(s) Fare</h6>
+          <h6>
+            {{currencySign}}{{adultTotalFare+adultTotalTax}}
+          </h6>
+        </div>
+        <div class="fare-devision">
+          <div class="fare-type">
+            <p>Fare</p>
+            <p>
+              {{currencySign}}{{adultTotalFare}}
+            </p>
+          </div>
+          <div class="fare-type">
+            <p>Tax & Service Charge</p>
+            <p>{{currencySign}}{{adultTotalTax}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="fare child-fare" *ngIf="childStatus">
+        <div class="heading">
+          <h6>{{childNumber}} x Child Fare</h6>
+          <h6>
+            {{currencySign}}{{childTotalFare+childTotalTax}}
+          </h6>
+        </div>
+        <div class="fare-devision">
+          <div class="fare-type">
+            <p>Fare</p>
+            <p>
+              {{currencySign}}{{childTotalFare}}
+            </p>
+          </div>
+          <div class="fare-type">
+            <p>Tax & Service Charge</p>
+            <p>{{currencySign}}{{childTotalTax}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="fare infant-fare" *ngIf="infantStatus">
+        <div class="heading">
+          <h6>{{infantNumber}} x Infant Fare</h6>
+          <h6>
+            {{currencySign}}{{infantTotalFare+infantTotalTax}}
+          </h6>
+        </div>
+        <div class="fare-devision">
+          <div class="fare-type">
+            <p>Fare</p>
+            <p>
+              {{currencySign}}{{infantTotalFare}}
+            </p>
+          </div>
+          <div class="fare-type">
+            <p>Tax & Service Charge</p>
+            <p>{{currencySign}}{{infantTotalTax}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="total-fare">
+      <h4>TOTAL:</h4>
+      <h5>{{currencySign}}{{TOTAL}}</h5>
+    </div>
   </div>
   <div class="buttons-container">
-    <button class="btn-back">Back</button>
+    <button class="btn-back" (click)="goBack()">Back</button>
     <button class="btn-cart">Add to order cart</button>
     <button class="btn-buy">Buy now</button>
   </div>
