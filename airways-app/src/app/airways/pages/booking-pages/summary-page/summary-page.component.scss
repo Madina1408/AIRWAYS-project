@@ -14,9 +14,69 @@
       color: colors.$primary;
     }
   }
-  .passengers-container{
+  .passengers-container {
     display: flex;
     gap: 24px;
+  }
+  .fare-container {
+    width: 552px;
+    margin-left: 53%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+    border: 1px solid #e1e5eb;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    .fare-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 24px 72px 0px 40px;
+      .fare {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        .heading {
+          display: flex;
+          width: 440px;
+          justify-content: space-between;
+          h6 {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+          }
+        }
+        .fare-devision {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          padding-left: 30px;
+          .fare-type {
+            display: flex;
+            width: 410px;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+    .total-fare {
+      display: flex;
+      width: 552px;
+      justify-content: space-between;
+      padding: 20px 72px 20px 40px;
+      border-width: 1px 0px;
+      border-style: solid;
+      border-color: #e1e5eb;
+      h4,
+      h5 {
+        font-weight: 700;
+        font-size: 20px;
+      }
+      h5 {
+        color: #11397e;
+      }
+    }
   }
   .buttons-container {
     display: flex;
