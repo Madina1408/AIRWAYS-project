@@ -1,2 +1,92 @@
 <app-edit-flight-search></app-edit-flight-search>
-<button (click)="continueToNextStep()">continue</button>
+<div class="passengers__wrapper">
+    <form class="passengers__form" [formGroup]="passengersForm" (ngSubmit)="continueToNextStep()">
+        <div class="form__title">
+            <p class="passenger__title">
+                <img class="titile-icon"
+                    src="../../../../../assets/icons/passenger_blue_icon.svg"
+                    alt="special-assistance-icon"
+                />
+                Passengers
+            </p>
+            <p>Enter the passenger's names as they appear on document (passport or ID).</p>
+        </div>
+        <div class="form__cards">
+            <mat-card class="passengers__card" *ngFor="let passenger of passengers; let i = index">
+                <mat-card-title class="passenger__title">{{ i + 1 }}. {{ passenger.type }}</mat-card-title>
+                <mat-card-content class="passengers__info">
+                    <app-first-name
+                        [initialValue]="passenger.firstName"
+                        (firstNameValueChange)="handleFirstNameChange(passenger, $event)">
+                    </app-first-name>
+                    <app-last-name
+                        [initialValue]="passenger.lastName"
+                        (lastNameValueChange)="handleLastNameChange(passenger, $event)">
+                    </app-last-name>
+                    <app-gender
+                        [initialValue]="passenger.gender"class="passengers__gender"
+                        (genderValueChange)="handleGenderChange(passenger, $event)">
+                    </app-gender>
+                    <app-date-birth
+                        [initialValue]="passenger.dateBirth"
+                        (dateBirthValueChange)="handleDateBirthChange(passenger, $event)">
+                    </app-date-birth>
+                </mat-card-content>
+                <div class="passengers__options" *ngIf="passenger.type !== 'Infant'">
+                    <mat-slide-toggle
+                        [checked]="passenger.needAssistance"
+                        color="primary"
+                        (change)="handleAssistanceChange(passenger, $event.checked)"
+                    >
+                        <img class="option-icon"
+                            src="../../../../../assets/icons/assistance_icon.svg"
+                            alt="special-assistance-icon"
+                        />
+                        Need special assistance?
+                    </mat-slide-toggle>
+                    <mat-slide-toggle
+                        [checked]="passenger.needCheckedBaggage"
+                        color="primary"
+                        (change)="handleCheckedBaggageChange(passenger, $event.checked)"
+                    >
+                        <mat-icon class="option-icon">work</mat-icon>
+                        Need checked-in baggage 23kg?
+                    </mat-slide-toggle>
+                </div>
+            </mat-card>
+        </div>
+        <div class="form__title">
+            <p class="passenger__title contact-details">
+                <img class="titile-icon"
+                    src="../../../../../assets/icons/contacts_icon.svg"
+                    alt="special-assistance-icon"
+                />
+                Contact details
+            </p>
+            <p>We need contact details to be able to deliver the latest information regarding your flight.</p>
+        </div>
+        <div class="form__cards">
+            <mat-card class="passengers__card contact-details__card">
+                <mat-card-content class="passengers__info">
+                    <app-country-code
+                        [initialValue]="initialCountryCode"
+                        (countryCodeValueChange)="handleCountryCodeChange($event)"
+                        (countryCodeNameValueChange)="handleCountryCodeNameChange($event)">
+                    </app-country-code>
+                    <app-phone-number
+                        [initialValue]="initialPhoneNumber"
+                        (phoneNumberValueChange)="handlePhoneNumberChange($event)">
+                    </app-phone-number>
+                    <app-email
+                        [initialValue]="initialEmail"
+                        (emailValueChange)="handleEmailChange($event)">
+                    </app-email>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="bottom-buttons">
+            <button type="button" class="btn-back" [routerLink]="['']">Back</button>
+            <button type="submit" class="btn-continue">Continue</button>
+        </div>
+    </form>
+</div>

@@ -1,14 +1,12 @@
-<mat-button-toggle-group
-    #groupGender
+ <mat-button-toggle-group
     name="gender"
     aria-label="Gender"
     [formControl]="genderControl"
     class="gender"
   >
     <mat-button-toggle
-        class="gender-male__item"
+        class="gender-male__item" [ngClass]="{'passengers__male': isPassengersPage}"
         [value]="gender.male"
-        checked
     >
         <img class="tick__icon" *ngIf="selectedGenderValue === 'Male'"
             src="../../../../assets/icons/icon-select.svg"
@@ -16,7 +14,7 @@
         />Male
     </mat-button-toggle>
     <mat-button-toggle
-        class="gender-female__item"
+        class="gender-female__item" [ngClass]="{'passengers__female': isPassengersPage}"
         [value]="gender.female"
     >
         <img class="tick__icon" *ngIf="selectedGenderValue === 'Female'"
