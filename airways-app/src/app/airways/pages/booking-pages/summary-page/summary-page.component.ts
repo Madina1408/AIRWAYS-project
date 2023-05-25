@@ -8,8 +8,7 @@ import passengersList from '../../../../shared/models/constants/passengers';
 import { Router } from '@angular/router';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { HttpClient } from '@angular/common/http';
-import { CartOrderService } from 'src/app/airways/services/cart-order/cart-order.service';
-import { IUserDataCopy,IRecieveUserData } from 'src/app/shared/models/interfaces/user-response-interface';
+import { IUserDataCopy } from 'src/app/shared/models/interfaces/user-response-interface';
 
 @Component({
   selector: 'app-summary-page',
@@ -242,11 +241,11 @@ export class SummaryPageComponent implements OnInit {
     private headerService: HeaderService,
     private router: Router,
     private http:HttpClient,
-    private cart:CartOrderService
+    // private cart:CartOrderService
   ) {}
   ngOnInit(): void {
-    // this.forwardData = this.items;
-    // this.backwardData = this.items;
+
+
     this.sharedService.selectedForwardFlight.asObservable().subscribe((res) => {
       this.forwardData = res;
       console.log(this.forwardData);
@@ -383,7 +382,7 @@ export class SummaryPageComponent implements OnInit {
 
   addToCart() {
     this.sharedService.getAddToCardNumber(this.numberOfTickets);
-    
+
     this.router.navigateByUrl(RoutesPaths.MainPage);
     // this.cart.register(this.user).subscribe(res=>{
     //   console.log(res.login, res.password);
