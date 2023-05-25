@@ -7,6 +7,7 @@ import { FlightdataService } from 'src/app/airways/services/flightdata/flightdat
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { Router } from '@angular/router';
 import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
+import { StepperService } from 'src/app/core/services/stepper/stepper.service';
 @Component({
   selector: 'app-select-flight-page',
   templateUrl: './select-flight-page.component.html',
@@ -37,7 +38,8 @@ export class SelectFlightPageComponent implements OnInit {
     private sharedService: SharedService,
     private flightSearchDataService: FlightSearchDataService,
     private flightDataService: FlightdataService,
-    private router: Router
+    private router: Router,
+    private stepperService: StepperService
   ) {}
   ngOnInit(): void {
     this.sharedService.currentEditableStatus.subscribe((status) => {
@@ -112,6 +114,7 @@ export class SelectFlightPageComponent implements OnInit {
     this.router.navigate([RoutesPaths.BookingPageStep2], {
       queryParams: this.queryParams,
     });
+    this.stepperService.nextStep();
   }
 
   markForwardFlightStatus(status: any): void {

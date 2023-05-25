@@ -10,6 +10,7 @@ import { FirstNameComponent } from 'src/app/auth/components/first-name/first-nam
 import { GenderComponent } from 'src/app/auth/components/gender/gender.component';
 import { LastNameComponent } from 'src/app/auth/components/last-name/last-name.component';
 import { PhoneNumberComponent } from 'src/app/auth/components/phone-number/phone-number.component';
+import { StepperService } from 'src/app/core/services/stepper/stepper.service';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { IPassengerContacts, IPassengerData } from 'src/app/shared/models/interfaces/passengers-interface';
 import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
@@ -57,7 +58,8 @@ export class PassengersPageComponent implements OnInit {
   constructor(
     private activateRoute: ActivatedRoute,
     private router: Router,
-    private passengerService: PassengersService
+    private passengerService: PassengersService,
+    private stepperService: StepperService
   ) {}
 
   ngOnInit(): void {
@@ -205,12 +207,14 @@ export class PassengersPageComponent implements OnInit {
         this.router.navigate([RoutesPaths.BookingPageStep3], {
         queryParams: this.queryParams,
       });
-  }
+    }
+    this.stepperService.nextStep();
   }
 
   returnToPrevStep() {
-      this.router.navigate([RoutesPaths.BookingPageStep1], {
-        queryParams: this.queryParams,
-      });
+    this.router.navigate([RoutesPaths.BookingPageStep1], {
+      queryParams: this.queryParams,
+    });
+    this.stepperService.previousStep();
   }
 }
