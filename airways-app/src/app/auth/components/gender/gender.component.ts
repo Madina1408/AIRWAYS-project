@@ -41,7 +41,6 @@ export class GenderComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }),
     this.route.url.subscribe(url => {
-      console.log(url[0].path);
       this.isPassengersPage = url[0].path === RoutesPaths.BookingPage;
     })
     );

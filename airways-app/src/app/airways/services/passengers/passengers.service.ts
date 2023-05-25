@@ -10,11 +10,11 @@ export class PassengersService {
   private contactDetails!: IPassengerContacts;
 
   setPassenger(index: number, passenger: IPassengerData) {
-    this.passengers[index] = passenger;
+    this.passengers[index - 1] = passenger;
   }
 
   getPassengerByIndex(index: number): IPassengerData | undefined {
-    return this.passengers[index];
+    return this.passengers[index - 1];
   }
 
   getAllPassengers(): IPassengerData[] | undefined {
