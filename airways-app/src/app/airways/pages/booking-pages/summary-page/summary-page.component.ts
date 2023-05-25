@@ -8,10 +8,7 @@ import passengersList from '../../../../shared/models/constants/passengers';
 import { Router } from '@angular/router';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { HttpClient } from '@angular/common/http';
-import { CartOrderService } from 'src/app/airways/services/cart-order/cart-order.service';
 import { IUserDataCopy } from 'src/app/shared/models/interfaces/user-response-interface';
-import { PassengersService } from 'src/app/airways/services/passengers/passengers.service';
-import { IPassengerData } from 'src/app/shared/models/interfaces/passengers-interface';
 
 @Component({
   selector: 'app-summary-page',
@@ -40,7 +37,6 @@ export class SummaryPageComponent implements OnInit {
   forwardFlightPrice: number = 0;
   backwardFlightPrice: number = 0;
   numberOfTickets: number = 0;
-  passengersArray?:IPassengerData[];
   loginData?:any;
   items: any = {
     seats: {
@@ -245,12 +241,10 @@ export class SummaryPageComponent implements OnInit {
     private headerService: HeaderService,
     private router: Router,
     private http:HttpClient,
-    private passengerService:PassengersService
     // private cart:CartOrderService
   ) {}
   ngOnInit(): void {
-    this.passengersArray=this.passengerService.getAllPassengers();
-    console.log(this.passengersArray);
+
 
     this.sharedService.selectedForwardFlight.asObservable().subscribe((res) => {
       this.forwardData = res;

@@ -9,28 +9,12 @@
       <p>{{selectedFlight.takeoffDate|date:'hh:mm'}} — {{selectedFlight.landingDate|date:'hh:mm'}}</p>
     </div>
   </div>
-  <div class="passenger-info">
-    <h3>Harry Potter</h3>
+  <div *ngFor="let passenger of passengersArray" class="passenger-info">
+    <h3>{{passenger.firstName}} {{passenger.lastName}}</h3>
     <div class="baggage-info">
-      <p>1checked bag (total 23 kg) included</p>
+      <p *ngIf="passenger.needCheckedBaggage">1checked bag (total 23 kg) included</p>
       <p>1 cabin bag + 1 personal item (max. 8 kg) included</p>
-      <p>Seat 19E</p>
-    </div>
-  </div>
-  <div class="passenger-info">
-    <h3>Lili Potter</h3>
-    <div class="baggage-info">
-      <p>1checked bag (total 23 kg) included</p>
-      <p>1 cabin bag + 1 personal item (max. 8 kg) included</p>
-      <p>Seat 19E</p>
-    </div>
-  </div>
-  <div class="passenger-info">
-    <h3>James Potter</h3>
-    <div class="baggage-info">
-      <p>1checked bag (total 23 kg) included</p>
-      <p>1 cabin bag + 1 personal item (max. 8 kg) included</p>
-      <p>Seat 19E</p>
+      <p>Seat 23B</p>
     </div>
   </div>
 </div>
