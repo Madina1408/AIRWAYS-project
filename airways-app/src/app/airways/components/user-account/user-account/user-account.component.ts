@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-import {ThemePalette} from '@angular/material/core';
-import {FormsModule} from '@angular/forms';
-import {NgFor} from '@angular/common';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { Component, OnInit } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
+import { UserService } from 'src/app/auth/services/user/user.service';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
 export interface Task {
   name: string;
@@ -13,9 +11,9 @@ export interface Task {
 @Component({
   selector: 'app-user-account',
   templateUrl: './user-account.component.html',
-  styleUrls: ['./user-account.component.scss']
+  styleUrls: ['./user-account.component.scss'],
 })
-export class UserAccountComponent {
+export class UserAccountComponent implements OnInit {
   flights: Task = {
     name: 'Select All',
     completed: false,
@@ -566,21 +564,35 @@ export class UserAccountComponent {
             },
           },
         },
-      }
+      },
     ],
   };
+  userId?:string;
+  cartData:any;
 
+  constructor(private userService:UserService){}
   allComplete: boolean = false;
+  ngOnInit(): void {
+    this.userId=this.userService.getCurrentUserId();
+  const data:any = (localStorage.getItem(this.userId));
+  this.cartData=JSON.parse(data);
+  console.log(this.cartData);
 
+  }
   updateAllComplete() {
-    this.allComplete = this.flights.cartFlights != null && this.flights.cartFlights.every(t => t.completed);
+    this.allComplete =
+      this.flights.cartFlights != null &&
+      this.flights.cartFlights.every((t) => t.completed);
   }
 
   someComplete(): boolean {
     if (this.flights.cartFlights == null) {
       return false;
     }
-    return this.flights.cartFlights.filter(t => t.completed).length > 0 && !this.allComplete;
+    return (
+      this.flights.cartFlights.filter((t) => t.completed).length > 0 &&
+      !this.allComplete
+    );
   }
 
   setAll(completed: boolean) {
@@ -588,6 +600,6 @@ export class UserAccountComponent {
     if (this.flights.cartFlights == null) {
       return;
     }
-    this.flights.cartFlights.forEach(t => (t.completed = completed));
+    this.flights.cartFlights.forEach((t) => (t.completed = completed));
   }
 }

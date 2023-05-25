@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { HttpClient } from '@angular/common/http';
 import { CartOrderService } from 'src/app/airways/services/cart-order/cart-order.service';
-import { IUserDataCopy,IRecieveUserData } from 'src/app/shared/models/interfaces/user-response-interface';
+import { UserService } from 'src/app/auth/services/user/user.service';
 
 @Component({
   selector: 'app-summary-page',
@@ -33,12 +33,13 @@ export class SummaryPageComponent implements OnInit {
   infantTotalFare: number = 5.0;
   infantTotalTax: number = 0;
   TOTAL: number = 0;
+  userId:string='';
   currencySign?: string;
   currencyLabel: string = '';
   forwardFlightPrice: number = 0;
   backwardFlightPrice: number = 0;
   numberOfTickets: number = 0;
-  loginData?:any;
+  localStorageData:any=[];
   items: any = {
     seats: {
       total: 541,
@@ -222,31 +223,18 @@ export class SummaryPageComponent implements OnInit {
     },
   };
 
-  user:IUserDataCopy={
-    email: 'madi@gmail.com',
-    firstName: 'Madi',
-    lastName: 'Karimova',
-    birthday: '14/08/1993',
-    gender: 'female',
-    country: 'Uzbekistan',
-    phoneNumber: '2345678',
-    citizenship: 'Uzbekistan',
-    login:'madi',
-    password:'1234'
-  }
-
   constructor(
     private sharedService: SharedService,
     private location: Location,
     private activatedRoute: ActivatedRoute,
     private headerService: HeaderService,
     private router: Router,
-    private http:HttpClient,
-    private cart:CartOrderService
+    private http: HttpClient,
+    private cart: CartOrderService,
+    private userService: UserService
   ) {}
   ngOnInit(): void {
-    // this.forwardData = this.items;
-    // this.backwardData = this.items;
+    this.userId=this.userService.getCurrentUserId();
     this.sharedService.selectedForwardFlight.asObservable().subscribe((res) => {
       this.forwardData = res;
       console.log(this.forwardData);
@@ -306,7 +294,6 @@ export class SummaryPageComponent implements OnInit {
         if (this.backwardData) {
           this.backwardFlightPrice = this.backwardData.price.usd;
         }
-        // return this.forwardFlightPrice;
         break;
       case 'EUR':
         this.forwardFlightPrice = this.forwardData.price.eur;
@@ -383,26 +370,17 @@ export class SummaryPageComponent implements OnInit {
 
   addToCart() {
     this.sharedService.getAddToCardNumber(this.numberOfTickets);
-    
     this.router.navigateByUrl(RoutesPaths.MainPage);
-    // this.cart.register(this.user).subscribe(res=>{
-    //   console.log(res.login, res.password);
-    //   this.cart.login(res.login, res.password).subscribe(respond=>{
-    //     // this.cart.getUserById(respond.id)
-    //     console.log(respond);
-    //   })
-    // // })
-    // this.cart.login('Madina', '1234' ).subscribe(res=>{
-    //   console.log(res);
-    // })
   }
 
-  goToUserAccount(){
+  goToUserAccount() {
     this.router.navigateByUrl(RoutesPaths.UserAccountPage);
   }
 
-  proceedToPayment(){
+  proceedToPayment() {
+    this.localStorageData.push(this.forwardData,this.backwardData)
     alert('Payment was successfull');
     this.router.navigateByUrl(RoutesPaths.ShoppingCart);
+    localStorage.setItem(this.userId,JSON.stringify(this.localStorageData))
   }
 }
