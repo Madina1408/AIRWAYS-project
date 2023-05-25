@@ -5,6 +5,12 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HeaderService } from 'src/app/core/services/header.service';
 import passengersList from '../../../../shared/models/constants/passengers';
+import { Router } from '@angular/router';
+import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
+import { HttpClient } from '@angular/common/http';
+import { CartOrderService } from 'src/app/airways/services/cart-order/cart-order.service';
+import { IUserDataCopy,IRecieveUserData } from 'src/app/shared/models/interfaces/user-response-interface';
+
 @Component({
   selector: 'app-summary-page',
   templateUrl: './summary-page.component.html',
@@ -31,6 +37,8 @@ export class SummaryPageComponent implements OnInit {
   currencyLabel: string = '';
   forwardFlightPrice: number = 0;
   backwardFlightPrice: number = 0;
+  numberOfTickets: number = 0;
+  loginData?:any;
   items: any = {
     seats: {
       total: 541,
@@ -213,12 +221,28 @@ export class SummaryPageComponent implements OnInit {
       },
     },
   };
-  passengersList: string[] = ['Adult', 'Child', 'Infant'];
+
+  user:IUserDataCopy={
+    email: 'madi@gmail.com',
+    firstName: 'Madi',
+    lastName: 'Karimova',
+    birthday: '14/08/1993',
+    gender: 'female',
+    country: 'Uzbekistan',
+    phoneNumber: '2345678',
+    citizenship: 'Uzbekistan',
+    login:'madi',
+    password:'1234'
+  }
+
   constructor(
     private sharedService: SharedService,
     private location: Location,
     private activatedRoute: ActivatedRoute,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private router: Router,
+    private http:HttpClient,
+    private cart:CartOrderService
   ) {}
   ngOnInit(): void {
     // this.forwardData = this.items;
@@ -342,17 +366,43 @@ export class SummaryPageComponent implements OnInit {
       ).toFixed(2);
     }
     this.TOTAL = +(
-      this.adultTotalTax +
+      this.adultTotalFare +
       this.childTotalFare +
       this.infantTotalFare
     ).toFixed(2);
+    if (this.backwardData.flightNumber !== undefined) {
+      this.numberOfTickets = 2;
+    } else {
+      this.numberOfTickets = 1;
+    }
   }
 
   goBack() {
     this.location.back();
   }
 
-  addToCart(){
+  addToCart() {
+    this.sharedService.getAddToCardNumber(this.numberOfTickets);
     
+    this.router.navigateByUrl(RoutesPaths.MainPage);
+    // this.cart.register(this.user).subscribe(res=>{
+    //   console.log(res.login, res.password);
+    //   this.cart.login(res.login, res.password).subscribe(respond=>{
+    //     // this.cart.getUserById(respond.id)
+    //     console.log(respond);
+    //   })
+    // // })
+    // this.cart.login('Madina', '1234' ).subscribe(res=>{
+    //   console.log(res);
+    // })
+  }
+
+  goToUserAccount(){
+    this.router.navigateByUrl(RoutesPaths.UserAccountPage);
+  }
+
+  proceedToPayment(){
+    alert('Payment was successfull');
+    this.router.navigateByUrl(RoutesPaths.ShoppingCart);
   }
 }

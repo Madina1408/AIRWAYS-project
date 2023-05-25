@@ -68,7 +68,7 @@
             </mat-menu>
 
 
-            <a class="header__cart-btn" matBadge="15" matBadgeColor="warn">
+            <a class="header__cart-btn" matBadge="{{matBadgeNumber}}" matBadgeColor="warn">
                 <img *ngIf="isMainPage && !state.isLoggedIn"
                     src="../../../../assets/icons/shopping_basket.svg"
                     alt="cart-icon"

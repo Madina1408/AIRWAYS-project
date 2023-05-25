@@ -6,4 +6,5 @@ export enum RoutesPaths {
     BookingPageStep2 = 'booking/step2',
     BookingPageStep3 = 'booking/step3',
     ShoppingCart = 'shopping-cart',
+    UserAccountPage='user-info'
 }

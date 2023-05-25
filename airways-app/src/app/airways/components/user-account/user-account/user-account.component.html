@@ -1,0 +1,134 @@
+<div class="wrapper">
+  <h1>Cart</h1>
+  <div class="table-header">
+    <div class="first-container">
+      <div class="number">
+        <p>No.</p>
+        <img
+          src="../../../../../assets/icons/Sorting_icon.svg"
+          alt="sorting_icon"
+        />
+      </div>
+      <div class="number">
+        <p style="margin-left: 30px;">Flight</p>
+        <img
+          src="../../../../../assets/icons/Sorting_icon.svg"
+          alt="sorting_icon"
+        />
+      </div>
+    </div>
+    <div class="first-container">
+      <div class="number">
+        <p>Trip type</p>
+        <img
+          src="../../../../../assets/icons/Sorting_icon.svg"
+          alt="sorting_icon"
+        />
+      </div>
+      <div class="number">
+        <p>Date & Time</p>
+        <img
+          src="../../../../../assets/icons/Sorting_icon.svg"
+          alt="sorting_icon"
+        />
+      </div>
+    </div>
+    <div class="first-container">
+      <div class="number">
+        <p>Passengers</p>
+      </div>
+      <div class="number">
+        <p>Price</p>
+        <img
+          src="../../../../../assets/icons/Sorting_icon.svg"
+          alt="sorting_icon"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="table-data">
+    <section class="example-section">
+      <span class="example-list-section">
+        <mat-checkbox
+          class="example-margin"
+          [checked]="allComplete"
+          [color]="'primary'"
+          [indeterminate]="someComplete()"
+          (change)="setAll($event.checked)"
+        >
+        </mat-checkbox>
+        {{flights.name}}
+      </span>
+      <span class="example-list-section">
+        <ul>
+          <li *ngFor="let flight of flights.cartFlights">
+            <div class="firstest">
+              <mat-checkbox
+                [(ngModel)]="flight.completed"
+                [color]="'primary'"
+                (ngModelChange)="updateAllComplete()"
+              >
+                <!-- {{flight.flightNumber}} -->
+              </mat-checkbox>
+              <div class="first">
+                <p class="fight-number" style="color: #0090BD;">{{flight.flightNumber}}</p>
+                <div class="infos">
+                  <p>{{flight.form.city}} - {{flight.to.city}}</p>
+                  <p>{{flight.to.city}} - {{flight.form.city}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="first" >
+              <p>Round Trip</p>
+              <div class="infos">
+                <p>{{flight.takeoffDate|date:'d MMM, y, h:mm'}}</p>
+                <p>{{flight.landingDate|date:'d MMM, y, h:mm'}}</p>
+              </div>
+            </div>
+            <div class="first" style="margin-left: 55px; gap: 40px;" >
+              <div class="infos">
+                <p>1 Adult</p>
+                <p>1 Child</p>
+              </div>
+              <p class="price" style="color: #7F8906;">${{flight.price.usd|number:'1.1-2'}}</p>
+              <!-- <button>
+                <img
+                  src="../../../../../assets//icons/three-dots_icon.svg"
+                  alt=""
+                />
+              </button> -->
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                  <span>Delete</span>
+                </button>
+                <button mat-menu-item >
+                  <span>Edit</span>
+                </button>
+              </mat-menu>
+            </div>
+          </li>
+        </ul>
+      </span>
+    </section>
+    <div class="total-container">
+      <button>+ Add new trip</button>
+      <div class="total-price">
+        <p>Total</p>
+        <h5>€572.34</h5>
+      </div>
+    </div>
+    <div class="buttons-container">
+      <div class="promo">
+        <p>Promo Code</p>
+        <button>Apply</button>
+      </div>
+      <div class="selection">
+        <p>2 selected</p>
+        <button>Payment</button>
+      </div>
+    </div>
+  </div>
+</div>

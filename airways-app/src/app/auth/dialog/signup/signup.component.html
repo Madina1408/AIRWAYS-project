@@ -1,5 +1,5 @@
 <div class="signup__container">
-    <form [formGroup]="signUpForm" (submit)="OnSubmitRegistration()">
+    <form [formGroup]="signUpForm" (ngSubmit)="OnSubmitRegistration()">
         <button type="button" class="auth__btn" mat-stroked-button>
             <img class="auth-btn-google__img" src="../../../../assets/icons/google_icon.svg" alt="google"/>
             Continue with Google
