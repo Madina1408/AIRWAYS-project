@@ -18,6 +18,9 @@ import { DateRoundComponent } from '../../components/date-round/date-round.compo
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit, OnDestroy {
+  @ViewChild(DepartureFromComponent) departureFromComponent!: DepartureFromComponent;
+  @ViewChild(DestinationComponent) destinationComponent!: DestinationComponent;
+  @ViewChild(DateRoundComponent) dateRoundComponent!: DateRoundComponent;
 
   selectAirportFrom: IAirport[] = [];
   selectAirportTo: IAirport[] = [];
@@ -31,10 +34,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   passengersValue!: string;
 
   subscriptions: Subscription[] = [];
-
-  @ViewChild(DepartureFromComponent) departureFromComponent!: DepartureFromComponent;
-  @ViewChild(DestinationComponent) destinationComponent!: DestinationComponent;
-  @ViewChild(DateRoundComponent) dateRoundComponent!: DateRoundComponent;
 
   flightSearchForm = new FormGroup({
     flightType: new FormControl(this.flightTypeValue, Validators.required),

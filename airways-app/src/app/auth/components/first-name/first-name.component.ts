@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ToolTips } from 'src/app/shared/models/enums/tool-tips';
@@ -10,18 +10,20 @@ import { ToolTips } from 'src/app/shared/models/enums/tool-tips';
   styleUrls: ['./first-name.component.scss']
 })
 export class FirstNameComponent implements OnInit, OnDestroy {
+  @Input() initialValue!: string;
+  @Output() firstNameValueChange = new EventEmitter<string>();
+
   toolTips = ToolTips;
 
   subscriptions: Subscription[] = [];
 
-  firstNameControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^[A-Za-z\s']+$/),
-  ]);
-
-  @Output() firstNameValueChange = new EventEmitter<string>();
+  firstNameControl!: FormControl;
 
   ngOnInit(): void {
+    this.firstNameControl = new FormControl(this.initialValue || '', [
+      Validators.required,
+      Validators.pattern(/^[A-Za-z\s']+$/),
+    ]);
     this.subscriptions.push(
       this.firstNameControl.valueChanges.subscribe(value => {
         if (this.firstNameControl.valid) {

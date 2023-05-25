@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -10,25 +10,27 @@ import { HeaderService } from 'src/app/core/services/header.service';
   styleUrls: ['./date-birth.component.scss']
 })
 export class DateBirthComponent implements OnInit, OnDestroy {
+  @Input() initialValue!: string;
+  @Output() dateBirthValueChange = new EventEmitter<Date | null>();
+
   maxDate = new Date();
 
   selectedValueDateFormat = '';
 
   selectedDateBirthValue!: Date | null;
 
-  dateBirthControl = new FormControl(null, [
-    Validators.required,
-  ]);
+  dateBirthControl!: FormControl;
 
   subscriptions: Subscription[] = [];
-
-  @Output() dateBirthValueChange = new EventEmitter<Date | null>();
 
   constructor (
     private headerService: HeaderService,
     private elementRef: ElementRef) {}
 
   ngOnInit(): void {
+    this.dateBirthControl = new FormControl(new Date(this.initialValue) || null, [
+      Validators.required,
+    ]);
     this.subscriptions.push(
       this.headerService.selectedValueDateFormat$$.subscribe(value => {
         this.selectedValueDateFormat = value.label;

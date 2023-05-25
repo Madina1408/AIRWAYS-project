@@ -42,6 +42,7 @@ import { PhoneNumberComponent } from './components/phone-number/phone-number.com
     DateBirthComponent,
     GenderComponent,
     CountryCodeComponent,
+    PhoneNumberComponent
   ],
 })
 export class AuthModule { }

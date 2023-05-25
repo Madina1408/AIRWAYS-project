@@ -21,6 +21,12 @@ import { TabDialogComponent } from '../tab-dialog/tab-dialog.component';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
+  @ViewChild(EmailComponent) emailComponent!: EmailComponent;
+  @ViewChild(FirstNameComponent) firstNameComponent!: FirstNameComponent;
+  @ViewChild(LastNameComponent) lastNameComponent!: LastNameComponent;
+  @ViewChild(DateBirthComponent) dateBirthComponent!: DateBirthComponent;
+  @ViewChild(CountryCodeComponent) countryCodeComponent!: CountryCodeComponent;
+  @ViewChild(PhoneNumberComponent) phoneNumberComponent!: PhoneNumberComponent;
 
   hide = true;
 
@@ -40,14 +46,6 @@ export class SignupComponent {
   selectedGender = '';
   selectedCountryCode = '';
   selectedPhoneNumber = '';
-
-  @ViewChild(EmailComponent) emailComponents!: EmailComponent;
-  @ViewChild(FirstNameComponent) firstNameComponentComponents!: FirstNameComponent;
-  @ViewChild(LastNameComponent) lastNameComponentComponents!: LastNameComponent;
-  @ViewChild(DateBirthComponent) dateBirthComponentComponents!: DateBirthComponent;
-  @ViewChild(GenderComponent) genderComponent!: GenderComponent;
-  @ViewChild(CountryCodeComponent) countryCodeComponent!: CountryCodeComponent;
-  @ViewChild(PhoneNumberComponent) phoneNumberComponent!: PhoneNumberComponent;
 
   signUpForm = new FormGroup({
     password: new FormControl('', [
@@ -141,20 +139,18 @@ export class SignupComponent {
       this.signUpForm.get(key)?.setErrors(null) ;
     });
 
-    this.emailComponents.emailControl.reset();
-    this.firstNameComponentComponents.firstNameControl.reset();
-    this.lastNameComponentComponents.lastNameControl.reset();
-    this.dateBirthComponentComponents.dateBirthControl.reset();
-    this.genderComponent.genderControl.reset();
+    this.emailComponent.emailControl.reset();
+    this.firstNameComponent.firstNameControl.reset();
+    this.lastNameComponent.lastNameControl.reset();
+    this.dateBirthComponent.dateBirthControl.reset();
     this.countryCodeComponent.countryCodeControl.reset();
     this.phoneNumberComponent.phoneNumberControl.reset();
 
 
-    this.emailComponents.emailControl.setErrors(null);
-    this.firstNameComponentComponents.firstNameControl.setErrors(null);
-    this.lastNameComponentComponents.lastNameControl.setErrors(null);
-    this.dateBirthComponentComponents.dateBirthControl.setErrors(null);
-    this.genderComponent.genderControl.setErrors(null);
+    this.emailComponent.emailControl.setErrors(null);
+    this.firstNameComponent.firstNameControl.setErrors(null);
+    this.lastNameComponent.lastNameControl.setErrors(null);
+    this.dateBirthComponent.dateBirthControl.setErrors(null);
     this.countryCodeComponent.countryCodeControl.setErrors(null);
     this.phoneNumberComponent.phoneNumberControl.setErrors(null);
   }

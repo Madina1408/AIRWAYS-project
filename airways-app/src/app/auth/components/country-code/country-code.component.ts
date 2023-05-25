@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import countryCodes from 'src/app/shared/models/constants/country-code';
@@ -10,20 +10,22 @@ import { ICountryCode } from 'src/app/shared/models/interfaces/country-code';
   styleUrls: ['./country-code.component.scss'],
 })
 export class CountryCodeComponent implements OnInit, OnDestroy {
-  countryCodes: ICountryCode [] = countryCodes;
+  @Input() initialValue!: string;
+  @Output() countryCodeNameValueChange = new EventEmitter<string>();
+  @Output() countryCodeValueChange = new EventEmitter<string>();
 
-  selectedCountryCode: ICountryCode | null = null;
+  countryCodes: ICountryCode [] = countryCodes;
 
   subscriptions: Subscription[] = [];
 
-  countryCodeControl = new FormControl(this.selectedCountryCode, Validators.required);
-
-  @Output() countryCodeValueChange = new EventEmitter<string>();
+  countryCodeControl!: FormControl;
 
   ngOnInit(): void {
+    this.countryCodeControl = new FormControl(this.initialValue || '', Validators.required);
     this.subscriptions.push(
       this.countryCodeControl.valueChanges.subscribe(value => {
         if (this.countryCodeControl.valid) {
+          this.countryCodeValueChange.emit(value?.name);
           this.countryCodeValueChange.emit(value?.countryCode);
         }
       })

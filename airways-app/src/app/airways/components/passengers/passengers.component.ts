@@ -12,6 +12,9 @@ import passengersList from '../../../shared/models/constants/passengers';
   styleUrls: ['./passengers.component.scss']
 })
 export class PassengersComponent implements OnInit, OnDestroy {
+  @ViewChild(MatMenuTrigger, { static: true }) menuTrigger!: MatMenuTrigger;
+  @Output() passengersValueChange = new EventEmitter<string>();
+
   selectPassengers: IPassenger[] = passengersList;
 
   selectedTypesPassengers: IPassenger[] = [];
@@ -20,11 +23,9 @@ export class PassengersComponent implements OnInit, OnDestroy {
 
   passengersControl = new FormControl(this.selectedPassengersValue, Validators.required);
 
-  @ViewChild(MatMenuTrigger, { static: true }) menuTrigger!: MatMenuTrigger;
-
   subscriptions: Subscription[] = [];
 
-  @Output() passengersValueChange = new EventEmitter<string>();
+
 
   constructor(
     private elementRef: ElementRef,
@@ -50,7 +51,7 @@ export class PassengersComponent implements OnInit, OnDestroy {
   }
 
   getMinCountPassengers(passenger: IPassenger): number {
-    return passenger.type === 'Adults' ? 1 : 0;
+    return passenger.type === 'Adult' ? 1 : 0;
   }
 
   increasePassengerCount(passenger: IPassenger): void {
