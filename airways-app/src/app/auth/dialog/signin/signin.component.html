@@ -1,5 +1,5 @@
 <div class="signin__container">
-    <form [formGroup]="signInForm" (submit)="onSubmitLogIn()">
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmitLogIn()">
         <button type="button" class="auth__btn" mat-stroked-button>
             <img class="auth-btn-google__img" src="../../../../assets/icons/google_icon.svg" alt="google"/>
             Continue with Google

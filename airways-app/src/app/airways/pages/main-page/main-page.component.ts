@@ -127,7 +127,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
             this.router.navigate([RoutesPaths.BookingPageStep1], { queryParams });
           }
         } else {
-          this.dateRoundComponent.dateRoundControl.markAllAsTouched();
+          this.dateRoundComponent.dateRoundControl.markAllAsTouched()
         };
     } else {
       this.flightSearchForm.markAllAsTouched();
