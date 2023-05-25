@@ -11,6 +11,8 @@ import { FlightSearchDataService } from '../../services/flight-search-data/fligh
   styleUrls: ['./date-one.component.scss']
 })
 export class DateOneComponent implements OnInit, OnDestroy {
+  @Output() dateOneWayValueChange = new EventEmitter<Date | null>();
+
   minDate = new Date();
 
   selectedValueDateFormat = '';
@@ -20,8 +22,6 @@ export class DateOneComponent implements OnInit, OnDestroy {
   dateOneControl = new FormControl(this.selectedDateValue, Validators.required);
 
   subscriptions: Subscription[] = [];
-
-  @Output() dateOneWayValueChange = new EventEmitter<Date | null>();
 
   constructor(
     private headerService: HeaderService,

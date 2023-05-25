@@ -1,10 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PassengersService } from 'src/app/airways/services/passengers/passengers.service';
+import { CountryCodeComponent } from 'src/app/auth/components/country-code/country-code.component';
+import { DateBirthComponent } from 'src/app/auth/components/date-birth/date-birth.component';
+import { EmailComponent } from 'src/app/auth/components/email/email.component';
+import { FirstNameComponent } from 'src/app/auth/components/first-name/first-name.component';
+import { GenderComponent } from 'src/app/auth/components/gender/gender.component';
+import { LastNameComponent } from 'src/app/auth/components/last-name/last-name.component';
+import { PhoneNumberComponent } from 'src/app/auth/components/phone-number/phone-number.component';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
-import { IPassengerContacts, IPassengerData, IPassengersSummaryList } from 'src/app/shared/models/interfaces/passengers-interface';
+import { IPassengerContacts, IPassengerData } from 'src/app/shared/models/interfaces/passengers-interface';
 import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
 
 
@@ -14,6 +21,13 @@ import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-in
   styleUrls: ['./passengers-page.component.scss'],
 })
 export class PassengersPageComponent implements OnInit {
+  @ViewChild(FirstNameComponent) firstNameComponent!: FirstNameComponent;
+  @ViewChild(LastNameComponent) lastNameComponent!: LastNameComponent;
+  @ViewChild(DateBirthComponent) dateBirthComponent!: DateBirthComponent;
+  @ViewChild(CountryCodeComponent) countryCodeComponent!: CountryCodeComponent;
+  @ViewChild(PhoneNumberComponent) phoneNumberComponent!: PhoneNumberComponent;
+  @ViewChild(EmailComponent) emailComponent!: EmailComponent;
+
   queryParams: ISearchFlight = {
     fromKey: '',
     toKey: '',
@@ -37,6 +51,8 @@ export class PassengersPageComponent implements OnInit {
   initialEmail = '';
 
   passengersForm = new FormGroup({});
+
+  isValidForm = false;
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -67,7 +83,7 @@ export class PassengersPageComponent implements OnInit {
     passengers.forEach(passenger => {
       const [count, type] = passenger.split(" ");
 
-      if (type.toLowerCase() === "adults") {
+      if (type.toLowerCase() === "adult") {
         this.adultsCount = parseInt(count);
         for (let i = 1; i <= this.adultsCount; i++) {
           const existingPassengerAdult = this.passengerService.getPassengerByIndex(index);
@@ -181,10 +197,21 @@ export class PassengersPageComponent implements OnInit {
   }
 
   continueToNextStep() {
-    if (this.passengersForm.valid) {
-      this.router.navigate([RoutesPaths.BookingPageStep3], {
+    if (this.firstNameComponent.firstNameControl.valid &&
+      this.lastNameComponent.lastNameControl.valid &&
+      this.dateBirthComponent.dateBirthControl.valid &&
+      this.countryCodeComponent.countryCodeControl.valid &&
+      this.phoneNumberComponent.phoneNumberControl.valid &&
+      this.emailComponent.emailControl.valid) {
+        this.router.navigate([RoutesPaths.BookingPageStep3], {
         queryParams: this.queryParams,
       });
-    }
+  }
+  }
+
+  returnToPrevStep() {
+      this.router.navigate([RoutesPaths.BookingPageStep1], {
+        queryParams: this.queryParams,
+      });
   }
 }

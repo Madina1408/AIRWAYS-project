@@ -16,6 +16,7 @@ import { TOKEN } from 'src/app/shared/models/constants/token';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent {
+  @ViewChild(EmailComponent) emailComponents!: EmailComponent;
 
   hide = true;
 
@@ -31,8 +32,6 @@ export class SigninComponent {
       Validators.pattern(/[!@#?]/)
     ]),
   });
-
-  @ViewChild(EmailComponent) emailComponents!: EmailComponent;
 
   constructor (
     private authService: AuthService,

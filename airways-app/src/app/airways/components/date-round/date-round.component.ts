@@ -11,6 +11,8 @@ import { FlightSearchDataService } from '../../services/flight-search-data/fligh
   styleUrls: ['./date-round.component.scss']
 })
 export class DateRoundComponent {
+  @Output() dateRoundValueChange = new EventEmitter<{ start: Date | null; end: Date | null}>();
+
   minDate = new Date();
 
   selectedValueDateFormat = '';
@@ -18,8 +20,6 @@ export class DateRoundComponent {
   selectedDateValue: { start: Date | null; end: Date | null} = { start: null, end: null };
 
   subscriptions: Subscription[] = [];
-
-  @Output() dateRoundValueChange = new EventEmitter<{ start: Date | null; end: Date | null}>();
 
   dateRoundControl = new FormGroup({
     start: new FormControl(this.selectedDateValue.start, Validators.required),

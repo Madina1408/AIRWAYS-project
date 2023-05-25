@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { IPassengerContacts, IPassengerData } from 'src/app/shared/models/interfaces/passengers-interface';
 
 @Injectable({

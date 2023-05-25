@@ -16,4 +16,10 @@ export class UserService {
     const decoded: any = jwtDecode(token!);
     return `${decoded.firstName} ${decoded.lastName}`;
   }
+
+  getCurrentUserId(): string {
+    const token = this.storageService.getFromStorage(TOKEN);
+    const decoded: any = jwtDecode(token!);
+    return decoded.id;
+  }
 }

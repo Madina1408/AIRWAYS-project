@@ -73,7 +73,7 @@
                         (countryCodeValueChange)="handleCountryCodeChange($event)"
                         (countryCodeNameValueChange)="handleCountryCodeNameChange($event)">
                     </app-country-code>
-                    <app-phone-number
+                    <app-phone-number *ngIf="contactDetails?.countryCode"
                         [initialValue]="initialPhoneNumber"
                         (phoneNumberValueChange)="handlePhoneNumberChange($event)">
                     </app-phone-number>
@@ -85,7 +85,7 @@
             </mat-card>
         </div>
         <div class="bottom-buttons">
-            <button type="button" class="btn-back" [routerLink]="['']">Back</button>
+            <button type="button" class="btn-back" (click)="returnToPrevStep()">Back</button>
             <button type="submit" class="btn-continue">Continue</button>
         </div>
     </form>
