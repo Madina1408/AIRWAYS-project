@@ -577,7 +577,7 @@ export class UserAccountComponent implements OnInit {
   const data:any = (localStorage.getItem(this.userId));
   this.cartData=JSON.parse(data);
   console.log(this.cartData);
-
+  this.flights.cartFlights=this.cartData
   }
   updateAllComplete() {
     this.allComplete =

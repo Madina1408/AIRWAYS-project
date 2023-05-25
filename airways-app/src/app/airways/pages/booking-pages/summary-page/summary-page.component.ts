@@ -33,13 +33,13 @@ export class SummaryPageComponent implements OnInit {
   infantTotalFare: number = 5.0;
   infantTotalTax: number = 0;
   TOTAL: number = 0;
-  userId:string='';
+  userId: string = '';
   currencySign?: string;
   currencyLabel: string = '';
   forwardFlightPrice: number = 0;
   backwardFlightPrice: number = 0;
   numberOfTickets: number = 0;
-  localStorageData:any=[];
+  localStorageData: any = [];
   items: any = {
     seats: {
       total: 541,
@@ -234,7 +234,7 @@ export class SummaryPageComponent implements OnInit {
     private userService: UserService
   ) {}
   ngOnInit(): void {
-    this.userId=this.userService.getCurrentUserId();
+    this.userId = this.userService.getCurrentUserId();
     this.sharedService.selectedForwardFlight.asObservable().subscribe((res) => {
       this.forwardData = res;
       console.log(this.forwardData);
@@ -378,9 +378,11 @@ export class SummaryPageComponent implements OnInit {
   }
 
   proceedToPayment() {
-    this.localStorageData.push(this.forwardData,this.backwardData)
+    this.forwardData.completed = false;
+    this.backwardData.completed = false;
+    this.localStorageData.push(this.forwardData, this.backwardData);
     alert('Payment was successfull');
     this.router.navigateByUrl(RoutesPaths.ShoppingCart);
-    localStorage.setItem(this.userId,JSON.stringify(this.localStorageData))
+    localStorage.setItem(this.userId, JSON.stringify(this.localStorageData));
   }
 }
