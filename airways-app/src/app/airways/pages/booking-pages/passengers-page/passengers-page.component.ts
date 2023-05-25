@@ -124,7 +124,6 @@ export class PassengersPageComponent implements OnInit {
         this.contactDetails = { countryName: '', countryCode: '', phoneNumber: '', email: '' };
       }
     });
-    console.log(this.passengers);
   }
 
   createPassengersArray(index: number, type: string) {
