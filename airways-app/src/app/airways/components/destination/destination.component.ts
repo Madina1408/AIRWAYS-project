@@ -13,6 +13,8 @@ import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
   styleUrls: ['./destination.component.scss']
 })
 export class DestinationComponent implements OnInit, OnDestroy {
+  @Output() destinationValueChange = new EventEmitter<string>();
+
   selectAirport: IAirport[] = [];
 
   searchAirport = '';
@@ -26,8 +28,6 @@ export class DestinationComponent implements OnInit, OnDestroy {
   isMainPage = true;
 
   isAirportSelected = false;
-
-  @Output() destinationValueChange = new EventEmitter<string>();
 
   constructor(
     private airportService: AirportService,

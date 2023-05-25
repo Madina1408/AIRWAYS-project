@@ -1,0 +1,199 @@
+@use '../../../../../styles/colors';
+@use '../../../../../styles/form-fields';
+@use '../../../../../styles/matTooltip';
+
+
+::ng-deep .passengers__gender .mat-button-toggle-group-appearance-standard {
+    margin-bottom: 1.2rem !important;
+    width: 13.94rem !important;
+    height: 3.255rem !important;
+    border: 1px solid colors.$neutral-60 !important;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch {
+    width: 3.25rem !important;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch.mdc-switch--unselected .mdc-switch__track {
+    height: 2rem !important;
+    border: 2px solid colors.$neutral-30;
+    border-radius: 6.25rem !important;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch.mdc-switch--selected.mdc-switch--checked .mdc-switch__track {
+    height: 2rem !important;
+    border-radius: 6.25rem !important;
+}
+
+.mat-mdc-slide-toggle.mat-primary {
+    --mdc-switch-selected-handle-color:colors.$white;
+    --mdc-switch-selected-focus-handle-color: colors.$white;
+    --mdc-switch-selected-hover-handle-color: colors.$white;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch:enabled .mdc-switch__track::after {
+    background-color: colors.$primary !important;
+ }
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch.mdc-switch--selected:enabled .mdc-switch__icon {
+    fill: colors.$primary !important;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch .mdc-switch__handle{
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    border-radius: 6.25rem !important;
+    left: 0.2rem;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch .mdc-switch__handle-track {
+    width: calc(100% - var(--mdc-switch-handle-width, 1.9rem)) !important;
+}
+
+.passengers__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .passengers__form {
+        width: 70.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+
+        .form__title {
+            margin: 3rem auto 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .passenger__title {
+                display: flex;
+                align-items: center;
+                gap: 0.87rem;
+
+                .title-icon {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                }
+
+            }
+        }
+
+        .contact-details {
+            margin-top: -1rem;
+        }
+
+        .passenger__title {
+            font-size: 1.5rem;
+            color: colors.$dark-primary;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .form__cards {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+
+            .passengers__card {
+                width: 100%;
+                padding: 2rem 2.75rem;
+                display: flex;
+                flex-direction: column;
+                border-radius: 0.5rem;
+                gap: 1.25rem;
+
+
+                .passengers__info {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 1.25rem;
+
+                    app-first-name,
+                    app-last-name,
+                    app-date-birth,
+                    app-country-code,
+                    app-phone-number {
+                        width: 15.94rem;
+                    }
+
+                    app-email {
+                        margin-left: 2.5rem;
+                        width: 26.125rem;
+                    }
+                }
+
+                .passengers__options {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 5rem;
+
+                    mat-slide-toggle {
+                        display: flex;
+                        align-items: center;
+                        justify-content: baseline;
+
+                        .option-icon {
+                            height: 1.35rem;
+                            margin-left: 1.25rem;
+                            margin-right: 0.46rem;
+                        }
+                    }
+                }
+            }
+
+            .contact-details__card {
+                padding: 1rem 2rem;
+                height: 7.5rem;
+
+                .passengers__info {
+                    justify-content: flex-start;
+                }
+            }
+        }
+    }
+    .bottom-buttons {
+        margin-top: 1rem;
+        margin-bottom: 6.38rem;
+        margin-left: auto;
+        display: flex;
+        justify-content: flex-end;
+
+            button {
+                width: 126px;
+                height: 60px;
+                border-radius: 4px;
+                justify-content: center;
+                align-items: center;
+                padding: 12px 24px;
+                border: none;
+                background: transparent;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            .btn-continue {
+                background-color: colors.$primary;
+                color: white;
+            }
+
+            button:disabled{
+                opacity: 0.7;
+            }
+
+            .btn-back {
+                color: colors.$primary;
+            }
+    }
+}

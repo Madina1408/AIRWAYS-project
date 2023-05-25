@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ToolTips } from 'src/app/shared/models/enums/tool-tips';
@@ -9,18 +9,20 @@ import { ToolTips } from 'src/app/shared/models/enums/tool-tips';
   styleUrls: ['./last-name.component.scss']
 })
 export class LastNameComponent implements OnInit, OnDestroy {
+  @Input() initialValue!: string;
+  @Output() lastNameValueChange = new EventEmitter<string>();
+
   toolTips = ToolTips;
 
   subscriptions: Subscription[] = [];
 
-  lastNameControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^[A-Za-z\s']+$/),
-  ]);
-
-  @Output() lastNameValueChange = new EventEmitter<string>();
+  lastNameControl!: FormControl;
 
   ngOnInit(): void {
+    this.lastNameControl = new FormControl(this.initialValue || '', [
+      Validators.required,
+      Validators.pattern(/^[A-Za-z\s']+$/),
+    ]);
     this.subscriptions.push(
       this.lastNameControl.valueChanges.subscribe(value => {
         if (this.lastNameControl.valid) {

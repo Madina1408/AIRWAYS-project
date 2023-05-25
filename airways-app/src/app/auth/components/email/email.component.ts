@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { SubscriptSizing } from '@angular/material/form-field';
 import { Subscription } from 'rxjs';
@@ -9,17 +9,18 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./email.component.scss']
 })
 export class EmailComponent implements OnInit, OnDestroy {
+  @Input() initialValue!: string;
+  @Output() emailValueChange = new EventEmitter<string>();
 
-  emailControl = new FormControl('', [
-    Validators.required,
-    Validators.email
-  ]);
+  emailControl!: FormControl;
 
   subscriptions: Subscription[] = [];
 
-  @Output() emailValueChange = new EventEmitter<string>();
-
   ngOnInit(): void {
+    this.emailControl = new FormControl(this.initialValue || '', [
+      Validators.required,
+      Validators.email
+    ]);
     this.subscriptions.push(
       this.emailControl.valueChanges.subscribe(value => {
         if (this.emailControl.valid) {

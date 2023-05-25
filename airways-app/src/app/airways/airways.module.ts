@@ -21,6 +21,7 @@ import { RoutesPaths } from '../shared/models/enums/routes-paths';
 import { SummaryPassengersComponent } from './components/summary-passengers/summary-passengers.component';
 import { UserAccountPageComponent } from './pages/user-account-page/user-account-page/user-account-page.component';
 import { UserAccountComponent } from './components/user-account/user-account/user-account.component';
+import { AuthModule } from '../auth/auth.module';
 
 const routes: Routes = [
   { path: '', redirectTo: RoutesPaths.MainPage, pathMatch: 'full' },
@@ -59,6 +60,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     SharedModule,
+    AuthModule,
   ],
   exports: [
     SelectFlightPageComponent,
