@@ -1,4 +1,5 @@
 export interface IGotFlightData {
+  completed?:boolean;
   seats: {
     total: number;
     avaible: number;

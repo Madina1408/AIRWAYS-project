@@ -20,12 +20,16 @@ export class SharedService {
   currentEditableStatus = this.editableStatus.asObservable();
   selectedForwardFlight=new BehaviorSubject<any>([]);
   selectedBackwardFlight=new BehaviorSubject<any>([]);
+  addToCardNumber= new BehaviorSubject<number>(0);
+
+  getAddToCardNumber(number:number){
+    this.addToCardNumber.next(number)
+  }
 
   getCities(destination: string, deparrtureCity: string) {
     this.destination.next(destination);
     this.deparrtureCity.next(deparrtureCity);
   }
-
   getEditableStatus(status:boolean){
     this.editableStatus.next(status);
   }

@@ -78,23 +78,13 @@
       }
     }
   }
-  .buttons-container {
+  .button-wrapper{
     display: flex;
-    justify-content: flex-end;
-    margin-right: -43px;
-    gap: 40px;
-    .btn-back {
-      width: 126px;
-      height: 60px;
-      padding: 12px 24px;
-      font-weight: 500;
-      font-size: 16px;
-      color: colors.$primary;
-      border: none;
-      background-color: transparent;
-    }
+    align-items: center;
+    justify-content: space-between;
     .btn-cart {
       padding: 12px 24px;
+      cursor: pointer;
       border: 1px solid colors.$primary;
       border-radius: 4px;
       width: 171px;
@@ -104,10 +94,27 @@
       color: colors.$primary;
       background-color: transparent;
     }
+  }
+  .buttons-container {
+    display: flex;
+    gap: 40px;
+    .btn-back {
+      cursor: pointer;
+      width: 126px;
+      height: 60px;
+      padding: 12px 24px;
+      font-weight: 500;
+      font-size: 16px;
+      color: colors.$primary;
+      border: none;
+      background-color: transparent;
+    }
+
     .btn-buy {
       padding: 12px 24px;
       width: 126px;
       height: 60px;
+      cursor: pointer;
       background: colors.$primary;
       border-radius: 4px;
       font-weight: 500;

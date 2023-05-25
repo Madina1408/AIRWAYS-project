@@ -86,9 +86,12 @@
       <h5>{{currencySign}}{{TOTAL}}</h5>
     </div>
   </div>
-  <div class="buttons-container">
-    <button class="btn-back" (click)="goBack()">Back</button>
-    <button class="btn-cart">Add to order cart</button>
-    <button class="btn-buy">Buy now</button>
+  <div class="button-wrapper">
+    <button class="btn-cart" style="width: 200px;" (click)="goToUserAccount()" >Return to account</button>
+    <div class="buttons-container">
+      <button class="btn-back" (click)="goBack()">Back</button>
+      <button class="btn-cart" (click)="addToCart()">Add to order cart</button>
+      <button class="btn-buy" (click)="proceedToPayment()">Buy now</button>
+    </div>
   </div>
 </div>

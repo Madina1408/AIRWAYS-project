@@ -9,6 +9,7 @@ import { MatdialogService } from 'src/app/auth/services/matdialog/matdialog.serv
 import { TabDialogComponent } from 'src/app/auth/dialog/tab-dialog/tab-dialog.component';
 import { AuthService } from 'src/app/auth/services/auth/auth.service';
 import { UserService } from 'src/app/auth/services/user/user.service';
+import { SharedService } from 'src/app/airways/services/shared/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currencyOptions: IFormat[] = [];
   selectedCurrencyFormat: string = '';
   isCurrencySelected = false;
+  matBadgeNumber:number=0;
 
   isShowBookFlights = false;
   isShowProgressBar = false;
@@ -40,10 +42,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private headerService: HeaderService,
     private dialogService: MatdialogService,
     public authService: AuthService,
-    public userService: UserService
+    public userService: UserService,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
+    this.sharedService.addToCardNumber.subscribe(res=>{
+      this.matBadgeNumber+=res;
+    })
     this.dateOptions = this.headerService.dateFormats;
     this.currencyOptions = this.headerService.currancyFormats;
 
@@ -73,7 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               break;
             case RoutesPaths.ShoppingCart:
               this.isShowBookFlights = false;
-              this.isShowProgressBar = true;
+              this.isShowProgressBar = false;
               this.isMainPage = false;
               this.headerClass = RoutesPaths.ShoppingCart;
               break;
