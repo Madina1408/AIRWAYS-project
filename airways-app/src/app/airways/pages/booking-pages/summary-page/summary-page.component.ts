@@ -242,7 +242,7 @@ export class SummaryPageComponent implements OnInit {
     private headerService: HeaderService,
     private router: Router,
     private http:HttpClient,
-    private cart:CartOrderService
+    // private cart:CartOrderService
   ) {}
   ngOnInit(): void {
     // this.forwardData = this.items;
@@ -383,7 +383,7 @@ export class SummaryPageComponent implements OnInit {
 
   addToCart() {
     this.sharedService.getAddToCardNumber(this.numberOfTickets);
-    
+
     this.router.navigateByUrl(RoutesPaths.MainPage);
     // this.cart.register(this.user).subscribe(res=>{
     //   console.log(res.login, res.password);
