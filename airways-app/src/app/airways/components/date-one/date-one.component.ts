@@ -15,7 +15,7 @@ export class DateOneComponent implements OnInit, OnDestroy {
 
   selectedValueDateFormat = '';
 
-  selectedDateValue!: Date | null;
+  selectedDateValue: Date | null = null;;
 
   dateOneControl = new FormControl(this.selectedDateValue, Validators.required);
 
@@ -43,9 +43,9 @@ export class DateOneComponent implements OnInit, OnDestroy {
         }),
       this.dateOneControl.valueChanges
         .subscribe(value => {
-          this.flightSearch.setSelectedValueDateFrom(value!);
           if (this.dateOneControl.valid) {
-            this.dateOneWayValueChange.emit(this.selectedDateValue);
+            this.flightSearch.setSelectedValueDateFrom(value);
+            this.dateOneWayValueChange.emit(value);
           }
         }),
     );

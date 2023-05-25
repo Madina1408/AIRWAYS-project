@@ -50,14 +50,14 @@ export class DateRoundComponent {
       }),
     this.dateRoundControl.valueChanges
       .subscribe(value => {
-        this.flightSearch.setSelectedValueDateFrom(value.start!);
-        this.flightSearch.setSelectedValueDateReturn(value.end!);
         if (this.dateRoundControl.valid) {
-          this.dateRoundValueChange.emit(this.selectedDateValue);
+          this.flightSearch.setSelectedValueDateFrom(value.start!);
+          this.flightSearch.setSelectedValueDateReturn(value.end!);
         }
       }),
     );
     this.dateRoundControl.setValue(this.selectedDateValue);
+    this.dateRoundValueChange.emit(this.selectedDateValue);
   }
 
   onDatesChange(): void {
