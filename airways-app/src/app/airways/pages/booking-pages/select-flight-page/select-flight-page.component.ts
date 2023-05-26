@@ -116,11 +116,11 @@ export class SelectFlightPageComponent implements OnInit {
 
   markForwardFlightStatus(status: any): void {
     this.isForwardSelected = status;
-    console.log(this.isForwardSelected);
+    // console.log(this.isForwardSelected);
   }
 
   markBackwardFlightStatus(status: any) {
     this.isBackwardSelected = status;
-    console.log(this.isBackwardSelected);
+    // console.log(this.isBackwardSelected);
   }
 }

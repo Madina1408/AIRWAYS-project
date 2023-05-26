@@ -57,54 +57,54 @@
           (change)="setAll($event.checked)"
         >
         </mat-checkbox>
-        {{flights.name}}
+        Select All
       </span>
       <span class="example-list-section">
         <ul>
-          <li *ngFor="let flight of flights.cartFlights">
+          <li *ngFor="let item of wrappedCartItems">
             <div class="firstest">
               <mat-checkbox
-                [(ngModel)]="flight.completed"
+                [(ngModel)]="item.selected"
                 [color]="'primary'"
                 (ngModelChange)="updateAllComplete()"
               >
-                <!-- {{flight.flightNumber}} -->
               </mat-checkbox>
               <div class="first">
-                <p class="fight-number" style="color: #0090BD;">{{flight.flightNumber}}</p>
+                <p class="fight-number" style="color: #0090bd;">
+                  {{item.cartData[2].flightNumber}}
+                </p>
                 <div class="infos">
-                  <p>{{flight.form.city}} - {{flight.to.city}}</p>
-                  <p>{{flight.to.city}} - {{flight.form.city}}</p>
+                  <p>{{item.cartData[2].form.city}} - {{item.cartData[2].to.city}}</p>
+                  <p *ngIf="item.cartData[3].to!==undefined">{{item.cartData[3].to.city}} - {{item.cartData[2].form.city}}</p>
                 </div>
               </div>
             </div>
-            <div class="first" >
+            <div class="first">
               <p>Round Trip</p>
               <div class="infos">
-                <p>{{flight.takeoffDate|date:'d MMM, y, h:mm'}}</p>
-                <p>{{flight.landingDate|date:'d MMM, y, h:mm'}}</p>
+                <p>{{item.cartData[2].takeoffDate|date:'d MMM, y, h:mm'}}</p>
+                <p *ngIf="item.cartData[3].to!==undefined">{{item.cartData[3].landingDate|date:'d MMM, y, h:mm'}}</p>
               </div>
             </div>
-            <div class="first" style="margin-left: 55px; gap: 40px;" >
+            <div class="first" style="margin-left: 55px; gap: 40px;">
               <div class="infos">
-                <p>1 Adult</p>
-                <p>1 Child</p>
+                <p>{{item.cartData[0]}}</p>
               </div>
-              <p class="price" style="color: #7F8906;">${{flight.price.usd|number:'1.1-2'}}</p>
-              <!-- <button>
-                <img
-                  src="../../../../../assets//icons/three-dots_icon.svg"
-                  alt=""
-                />
-              </button> -->
-              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <p class="price" style="color: #7f8906;">
+                ${{+item.cartData[1]|number:'1.1-2'}}
+              </p>
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                aria-label="Example icon-button with a menu"
+              >
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
                 <button mat-menu-item>
                   <span>Delete</span>
                 </button>
-                <button mat-menu-item >
+                <button mat-menu-item>
                   <span>Edit</span>
                 </button>
               </mat-menu>

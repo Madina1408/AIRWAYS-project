@@ -43,7 +43,7 @@ export class ShowFlightOptionsComponent
     private sharedService: SharedService
   ) {}
   ngOnInit(): void {
-    console.log(this.flightData);
+    // console.log(this.flightData);
 
     this.headerService.selectedValueCurrencyFormat$$.subscribe((res) => {
       this.currencySign = res.sign;
