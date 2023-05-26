@@ -15,8 +15,8 @@ export class SummaryPassengersComponent implements OnInit {
   passengerSeat?:number;
   constructor(private passengerService: PassengersService) {}
   ngOnInit(): void {
-    console.log(this.selectedFlight.takeoffDate);
+    // console.log(this.selectedFlight.takeoffDate);
     this.passengersArray = this.passengerService.getAllPassengers();
-    console.log(this.passengersArray);
+    // console.log(this.passengersArray);
   }
 }

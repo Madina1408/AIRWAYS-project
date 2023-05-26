@@ -8,6 +8,9 @@ import passengersList from '../../../../shared/models/constants/passengers';
 import { Router } from '@angular/router';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { HttpClient } from '@angular/common/http';
+import { CartOrderService } from 'src/app/airways/services/cart-order/cart-order.service';
+import { UserService } from 'src/app/auth/services/user/user.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage/local-storage.service';
 import { IUserDataCopy } from 'src/app/shared/models/interfaces/user-response-interface';
 import { StepperService } from 'src/app/core/services/stepper/stepper.service';
 
@@ -33,207 +36,13 @@ export class SummaryPageComponent implements OnInit {
   infantTotalFare: number = 5.0;
   infantTotalTax: number = 0;
   TOTAL: number = 0;
+  userId: string = '';
   currencySign?: string;
   currencyLabel: string = '';
   forwardFlightPrice: number = 0;
   backwardFlightPrice: number = 0;
   numberOfTickets: number = 0;
-  loginData?:any;
-  items: any = {
-    seats: {
-      total: 541,
-      avaible: 213,
-    },
-    flightNumber: 'ZG-8931',
-    timeMins: 307,
-    form: {
-      key: 'AMS',
-      name: 'Amsterdam-Schiphol',
-      city: 'Amsterdam',
-      gmt: '+1.0',
-      country: 'Netherlands',
-    },
-    to: {
-      key: 'BER',
-      name: 'Berlin Metropolitan Area',
-      city: 'Berlin',
-      gmt: '+1.0',
-      country: 'Germany',
-    },
-    takeoffDate: '2023-05-20T06:06:00.000Z',
-    landingDate: '2023-05-20T11:08:00.000Z',
-    price: {
-      eur: 299,
-      usd: 329.82689999999997,
-      rub: 26452.53,
-      pln: 1372.4099999999999,
-    },
-    otherFlights: {
-      '2': {
-        seats: {
-          total: 143,
-          avaible: 42,
-        },
-        flightNumber: 'TY-3901',
-        timeMins: 303,
-        form: {
-          key: 'AMS',
-          name: 'Amsterdam-Schiphol',
-          city: 'Amsterdam',
-          gmt: '+1.0',
-          country: 'Netherlands',
-        },
-        to: {
-          key: 'BER',
-          name: 'Berlin Metropolitan Area',
-          city: 'Berlin',
-          gmt: '+1.0',
-          country: 'Germany',
-        },
-        takeoffDate: '2023-05-22T18:36:00.000Z',
-        landingDate: '2023-05-22T23:38:00.000Z',
-        price: {
-          eur: 312,
-          usd: 344.1672,
-          rub: 27602.64,
-          pln: 1432.08,
-        },
-      },
-      '3': {
-        seats: {
-          total: 220,
-          avaible: 173,
-        },
-        flightNumber: 'DG-3875',
-        timeMins: 297,
-        form: {
-          key: 'AMS',
-          name: 'Amsterdam-Schiphol',
-          city: 'Amsterdam',
-          gmt: '+1.0',
-          country: 'Netherlands',
-        },
-        to: {
-          key: 'BER',
-          name: 'Berlin Metropolitan Area',
-          city: 'Berlin',
-          gmt: '+1.0',
-          country: 'Germany',
-        },
-        takeoffDate: '2023-05-23T01:08:00.000Z',
-        landingDate: '2023-05-23T06:10:00.000Z',
-        price: {
-          eur: 294,
-          usd: 324.3114,
-          rub: 26010.18,
-          pln: 1349.46,
-        },
-      },
-      '4': {
-        seats: {
-          total: 192,
-          avaible: 163,
-        },
-        flightNumber: 'AG-4103',
-        timeMins: 297,
-        form: {
-          key: 'AMS',
-          name: 'Amsterdam-Schiphol',
-          city: 'Amsterdam',
-          gmt: '+1.0',
-          country: 'Netherlands',
-        },
-        to: {
-          key: 'BER',
-          name: 'Berlin Metropolitan Area',
-          city: 'Berlin',
-          gmt: '+1.0',
-          country: 'Germany',
-        },
-        takeoffDate: '2023-05-24T07:51:00.000Z',
-        landingDate: '2023-05-24T12:53:00.000Z',
-        price: {
-          eur: 287,
-          usd: 316.5897,
-          rub: 25390.89,
-          pln: 1317.33,
-        },
-      },
-      '5': {
-        seats: {
-          total: 415,
-          avaible: 268,
-        },
-        flightNumber: 'SJ-9598',
-        timeMins: 303,
-        form: {
-          key: 'AMS',
-          name: 'Amsterdam-Schiphol',
-          city: 'Amsterdam',
-          gmt: '+1.0',
-          country: 'Netherlands',
-        },
-        to: {
-          key: 'BER',
-          name: 'Berlin Metropolitan Area',
-          city: 'Berlin',
-          gmt: '+1.0',
-          country: 'Germany',
-        },
-        takeoffDate: '2023-05-25T18:26:00.000Z',
-        landingDate: '2023-05-25T23:28:00.000Z',
-        price: {
-          eur: 301,
-          usd: 332.0331,
-          rub: 26629.47,
-          pln: 1381.59,
-        },
-      },
-      '-1': {
-        seats: {
-          total: 528,
-          avaible: 392,
-        },
-        flightNumber: 'XB-7314',
-        timeMins: 300,
-        form: {
-          key: 'AMS',
-          name: 'Amsterdam-Schiphol',
-          city: 'Amsterdam',
-          gmt: '+1.0',
-          country: 'Netherlands',
-        },
-        to: {
-          key: 'BER',
-          name: 'Berlin Metropolitan Area',
-          city: 'Berlin',
-          gmt: '+1.0',
-          country: 'Germany',
-        },
-        takeoffDate: '2023-05-19T23:06:00.000Z',
-        landingDate: '2023-05-20T04:08:00.000Z',
-        price: {
-          eur: 315,
-          usd: 347.4765,
-          rub: 27868.05,
-          pln: 1445.85,
-        },
-      },
-    },
-  };
-
-  user:IUserDataCopy={
-    email: 'madi@gmail.com',
-    firstName: 'Madi',
-    lastName: 'Karimova',
-    birthday: '14/08/1993',
-    gender: 'female',
-    country: 'Uzbekistan',
-    phoneNumber: '2345678',
-    citizenship: 'Uzbekistan',
-    login:'madi',
-    password:'1234'
-  }
+  localStorageData: any[] = [];
 
   constructor(
     private sharedService: SharedService,
@@ -241,26 +50,28 @@ export class SummaryPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private headerService: HeaderService,
     private router: Router,
+shopping-cart
+    private localStorageService: LocalStorageService,
+    private cart: CartOrderService,
+    private userService: UserService
     private http:HttpClient,
-    // private cart:CartOrderService
-    private stepperService: StepperService
+    private stepperService: StepperServic,
   ) {}
   ngOnInit(): void {
-
-
+    this.userId = this.userService.getCurrentUserId();
     this.sharedService.selectedForwardFlight.asObservable().subscribe((res) => {
       this.forwardData = res;
-      console.log(this.forwardData);
+      // console.log(this.forwardData);
     });
     this.sharedService.selectedBackwardFlight
       .asObservable()
       .subscribe((res) => {
         this.backwardData = res;
-        console.log(this.backwardData);
+        // console.log(this.backwardData);
       });
     this.activatedRoute.queryParams.subscribe((res) => {
       this.passengers = res['passengers'].split(',');
-      console.log(this.passengers);
+      // console.log(this.passengers);
       for (let i = 0; i < this.passengers.length; i++) {
         if (this.passengers[i].includes('Adult')) {
           this.adultNumber = +this.passengers[i].charAt(0);
@@ -303,19 +114,18 @@ export class SummaryPageComponent implements OnInit {
     switch (this.currencyLabel) {
       case 'USD':
         this.forwardFlightPrice = this.forwardData.price.usd;
-        console.log(this.forwardFlightPrice);
+        // console.log(this.forwardFlightPrice);
         if (this.backwardData) {
           this.backwardFlightPrice = this.backwardData.price.usd;
         }
-        // return this.forwardFlightPrice;
         break;
       case 'EUR':
         this.forwardFlightPrice = this.forwardData.price.eur;
-        console.log(this.forwardFlightPrice);
+        // console.log(this.forwardFlightPrice);
         if (this.backwardData) {
           this.backwardFlightPrice = this.backwardData.price.eur;
         }
-        console.log(this.backwardFlightPrice);
+        // console.log(this.backwardFlightPrice);
         break;
       case 'RUB':
         this.forwardFlightPrice = this.forwardData.price.rub;
@@ -367,9 +177,9 @@ export class SummaryPageComponent implements OnInit {
       ).toFixed(2);
     }
     this.TOTAL = +(
-      this.adultTotalFare +
-      this.childTotalFare +
-      this.infantTotalFare
+      this.adultTotalFare +this.adultTotalTax+
+      this.childTotalFare +this.childTotalTax+
+      this.infantTotalFare+this.infantTotalTax
     ).toFixed(2);
     if (this.backwardData.flightNumber !== undefined) {
       this.numberOfTickets = 2;
@@ -387,23 +197,29 @@ export class SummaryPageComponent implements OnInit {
     this.sharedService.getAddToCardNumber(this.numberOfTickets);
 
     this.router.navigateByUrl(RoutesPaths.MainPage);
-    // this.cart.register(this.user).subscribe(res=>{
-    //   console.log(res.login, res.password);
-    //   this.cart.login(res.login, res.password).subscribe(respond=>{
-    //     // this.cart.getUserById(respond.id)
-    //     console.log(respond);
-    //   })
-    // // })
-    // this.cart.login('Madina', '1234' ).subscribe(res=>{
-    //   console.log(res);
-    // })
   }
 
-  goToUserAccount(){
+  goToUserAccount() {
     this.router.navigateByUrl(RoutesPaths.UserAccountPage);
   }
 
-  proceedToPayment(){
+  proceedToPayment() {
+    // this.passengers.push(this.TOTAL.toString());
+    const existingCart = this.localStorageService.getTypedStorageItem(
+      this.userId
+    );
+    this.localStorageData.push([this.passengers, this.TOTAL,this.forwardData, this.backwardData ]);
+    if (existingCart === null) {
+      this.localStorageService.setTypedStorageItem(
+        this.userId,
+        this.localStorageData
+      );
+    } else {
+      existingCart.push([this.passengers,this.TOTAL,this.forwardData, this.backwardData ]);
+      console.log(existingCart);
+
+      this.localStorageService.setTypedStorageItem(this.userId, existingCart);
+    }
     alert('Payment was successfull');
     this.router.navigateByUrl(RoutesPaths.ShoppingCart);
   }
