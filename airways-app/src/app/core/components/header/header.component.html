@@ -2,11 +2,7 @@
     <div class="header__container" *ngIf="{ isLoggedIn: authService.isLoggedIn() } as state">
         <img class="header__logo" src="../../../../assets/images/main_logo.png" alt="airways-logo" routerLink="">
 
-        <mat-horizontal-stepper #stepper *ngIf="isShowProgressBar" class="stepper">
-            <mat-step label="Flights" state="edit"></mat-step>
-            <mat-step label="Passengers"></mat-step>
-            <mat-step label="Review & Payment"></mat-step>
-        </mat-horizontal-stepper>
+        <app-progress-bar *ngIf="isShowProgressBar" class="stepper"></app-progress-bar>
 
         <div class="header__options">
             <p *ngIf="isShowBookFlights">Book flights</p>

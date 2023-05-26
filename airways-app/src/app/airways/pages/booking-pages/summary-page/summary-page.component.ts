@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { HttpClient } from '@angular/common/http';
 import { IUserDataCopy } from 'src/app/shared/models/interfaces/user-response-interface';
+import { StepperService } from 'src/app/core/services/stepper/stepper.service';
 
 @Component({
   selector: 'app-summary-page',
@@ -242,6 +243,7 @@ export class SummaryPageComponent implements OnInit {
     private router: Router,
     private http:HttpClient,
     // private cart:CartOrderService
+    private stepperService: StepperService
   ) {}
   ngOnInit(): void {
 
@@ -378,6 +380,7 @@ export class SummaryPageComponent implements OnInit {
 
   goBack() {
     this.location.back();
+    this.stepperService.previousStep();
   }
 
   addToCart() {

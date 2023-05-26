@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { IFormat } from '../../../shared/models/interfaces/format-interface';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NavigationEnd, Router } from '@angular/router';
@@ -10,16 +10,16 @@ import { TabDialogComponent } from 'src/app/auth/dialog/tab-dialog/tab-dialog.co
 import { AuthService } from 'src/app/auth/services/auth/auth.service';
 import { UserService } from 'src/app/auth/services/user/user.service';
 import { SharedService } from 'src/app/airways/services/shared/shared.service';
+import { MatStepper } from '@angular/material/stepper';
+import { StepperService } from '../../services/stepper/stepper.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  providers: [{
-    provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false }
-  }]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+
   dateOptions: IFormat[] = [];
   selectedDateFormat: string = '';
 
@@ -43,7 +43,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private dialogService: MatdialogService,
     public authService: AuthService,
     public userService: UserService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private stepperService: StepperService
   ) {}
 
   ngOnInit(): void {
@@ -93,6 +94,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       })
     );
   }
+
+
 
   onSelectDateFormat(option: IFormat) {
     this.selectedDateFormat = option.label;
