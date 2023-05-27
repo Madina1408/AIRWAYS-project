@@ -59,12 +59,12 @@
                 {{ userService.getCurrentUserName() }}
             </button>
             <mat-menu #menuUser="matMenu" class="header__user-menu">
-                <button mat-menu-item>History of orders	<mat-icon color="primary">history</mat-icon></button>
+                <button (click)="goToUserAccount()" mat-menu-item>History of orders	<mat-icon color="primary">history</mat-icon></button>
                 <button mat-menu-item (click)="onLogOut();">Log out <mat-icon color="primary">input</mat-icon></button>
             </mat-menu>
 
 
-            <a class="header__cart-btn" matBadge="{{matBadgeNumber}}" matBadgeColor="warn">
+            <a (click)="goToShoppingCart()" class="header__cart-btn" matBadge="{{cartItemsCount}}" matBadgeColor="warn">
                 <img *ngIf="isMainPage && !state.isLoggedIn"
                     src="../../../../assets/icons/shopping_basket.svg"
                     alt="cart-icon"

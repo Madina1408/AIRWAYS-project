@@ -1,5 +1,5 @@
-<app-user-account></app-user-account>
-<!-- <div class="wrapper">
+<!-- <app-user-account></app-user-account> -->
+<div class="wrapper">
   <h1>Cart</h1>
   <div class="table-header">
     <div class="first-container">
@@ -50,27 +50,10 @@
   <div class="table-data">
     <section class="example-section">
       <span class="example-list-section">
-        <mat-checkbox
-          class="example-margin"
-          [checked]="allComplete"
-          [color]="task.color"
-          [indeterminate]="someComplete()"
-          (change)="setAll($event.checked)"
-        >
-          {{task.name}}
-        </mat-checkbox>
       </span>
       <span class="example-list-section">
         <ul>
-          <li *ngFor="let subtask of task.subtasks">
-            <mat-checkbox
-              [(ngModel)]="subtask.completed"
-              [color]="'primary'"
-              (ngModelChange)="updateAllComplete()"
-            >
-              {{subtask.name}}
-            </mat-checkbox>
-
+          <li>
           </li>
         </ul>
       </span>
@@ -93,4 +76,4 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>

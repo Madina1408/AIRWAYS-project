@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FlightSearchDataService } from 'src/app/airways/services/flight-search-data/flight-search-data.service';
+import { SharedService } from 'src/app/airways/services/shared/shared.service';
 import { UserService } from 'src/app/auth/services/user/user.service';
+import { HeaderService } from 'src/app/core/services/header.service';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
 import { LocalStorageService } from 'src/app/shared/services/local-storage/local-storage.service';
 type WrappedCartItem = {
@@ -13,30 +15,42 @@ type WrappedCartItem = {
   styleUrls: ['./user-account.component.scss'],
 })
 export class UserAccountComponent implements OnInit {
-  userId?: string;
+  userId: string='';
 
-  passengers:string='';
+  passengers: string = '';
   wrappedCartItems: WrappedCartItem[] | null = null;
+  selectedItems: WrappedCartItem[] | null = null;
+  cartItemsFromLocalStorage:IGotFlightData[][]|null=null;
+  selectedItemCount: number = 0;
+  selectedTotalPrice: number = 0;
+  selecteCurrency!: string;
   constructor(
     private userService: UserService,
+    private headerService: HeaderService,
     private localStorageService: LocalStorageService,
     private flightSearchDataService: FlightSearchDataService,
-
+    private sharedService:SharedService
   ) {}
   allComplete: boolean = false;
 
   ngOnInit(): void {
-    this.flightSearchDataService.selectedValuePassengers$$.asObservable().subscribe(res=>{
-      this.passengers=res
-    })
+    this.headerService.selectedValueCurrencyFormat$$
+      .asObservable()
+      .subscribe((res) => {
+        this.selecteCurrency != res.sign;
+      });
+    this.flightSearchDataService.selectedValuePassengers$$
+      .asObservable()
+      .subscribe((res) => {
+        this.passengers = res;
+      });
     this.userId = this.userService.getCurrentUserId();
     this.wrappedCartItems = [];
-    const cartItems: IGotFlightData[][] =
+    this.cartItemsFromLocalStorage =
       this.localStorageService.getTypedStorageItem(this.userId);
-    for (let cartItem of cartItems) {
+    for (let cartItem of this.cartItemsFromLocalStorage) {
       this.wrappedCartItems.push({ cartData: cartItem, selected: false });
     }
-    console.log(this.userId);
   }
   updateAllComplete() {
     this.allComplete =
@@ -47,11 +61,19 @@ export class UserAccountComponent implements OnInit {
   someComplete(): boolean {
     if (this.wrappedCartItems == null) {
       return false;
+    } else {
+      this.selectedTotalPrice = 0;
+      this.selectedItemCount = 0;
+      this.selectedItems = this.wrappedCartItems.filter((t) => t.selected);
+      for (let i = 0; i < this.selectedItems!.length; i++) {
+        this.selectedTotalPrice += +this.selectedItems![i].cartData[1];
+        this.selectedItemCount += 1;
+      }
+      return (
+        this.wrappedCartItems.filter((t) => t.selected).length > 0 &&
+        !this.allComplete
+      );
     }
-    return (
-      this.wrappedCartItems.filter((t) => t.selected).length > 0 &&
-      !this.allComplete
-    );
   }
 
   setAll(selected: boolean) {
@@ -60,6 +82,24 @@ export class UserAccountComponent implements OnInit {
       return;
     }
     this.wrappedCartItems.forEach((t) => (t.selected = selected));
+
+    if (this.allComplete) {
+      for (let i = 0; i < this.wrappedCartItems!.length; i++) {
+        this.selectedTotalPrice += +this.wrappedCartItems![i].cartData[1];
+        this.selectedItemCount += 1;
+      }
+    } else {
+      this.selectedTotalPrice = 0;
+      this.selectedItemCount = 0;
+    }
   }
 
+  deleteItemFromCart(index:number) {
+    console.log(index);
+    this.cartItemsFromLocalStorage?.splice(index,1);
+    this.wrappedCartItems?.splice(index,1);
+    console.log(this.wrappedCartItems);
+    this.localStorageService.setTypedStorageItem(this.userId,this.cartItemsFromLocalStorage!);
+    this.sharedService.getAddToCardNumber(this.cartItemsFromLocalStorage!.length)
+  }
 }
