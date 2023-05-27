@@ -61,7 +61,7 @@
       </span>
       <span class="example-list-section">
         <ul>
-          <li *ngFor="let item of wrappedCartItems">
+          <li *ngFor="let item of wrappedCartItems; let i = index">
             <div class="firstest">
               <mat-checkbox
                 [(ngModel)]="item.selected"
@@ -75,7 +75,7 @@
                 </p>
                 <div class="infos">
                   <p>{{item.cartData[2].form.city}} - {{item.cartData[2].to.city}}</p>
-                  <p *ngIf="item.cartData[3].to!==undefined">{{item.cartData[3].to.city}} - {{item.cartData[2].form.city}}</p>
+                  <p *ngIf="item.cartData[3].to!==undefined">{{item.cartData[3].form.city}} - {{item.cartData[3].to.city}}</p>
                 </div>
               </div>
             </div>
@@ -91,7 +91,7 @@
                 <p>{{item.cartData[0]}}</p>
               </div>
               <p class="price" style="color: #7f8906;">
-                ${{+item.cartData[1]|number:'1.1-2'}}
+                {{selecteCurrency}}{{+item.cartData[1]|number:'1.1-2'}}
               </p>
               <button
                 mat-icon-button
@@ -101,7 +101,7 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item>
+                <button (click)="deleteItemFromCart(i)" mat-menu-item>
                   <span>Delete</span>
                 </button>
                 <button mat-menu-item>
@@ -117,7 +117,7 @@
       <button>+ Add new trip</button>
       <div class="total-price">
         <p>Total</p>
-        <h5>€572.34</h5>
+        <h5>{{selecteCurrency}}{{selectedTotalPrice}}</h5>
       </div>
     </div>
     <div class="buttons-container">
@@ -126,7 +126,7 @@
         <button>Apply</button>
       </div>
       <div class="selection">
-        <p>2 selected</p>
+        <p>{{selectedItemCount}} selected</p>
         <button>Payment</button>
       </div>
     </div>

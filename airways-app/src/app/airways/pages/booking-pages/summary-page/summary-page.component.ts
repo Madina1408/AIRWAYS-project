@@ -7,12 +7,10 @@ import { HeaderService } from 'src/app/core/services/header.service';
 import passengersList from '../../../../shared/models/constants/passengers';
 import { Router } from '@angular/router';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
-import { HttpClient } from '@angular/common/http';
-import { CartOrderService } from 'src/app/airways/services/cart-order/cart-order.service';
 import { UserService } from 'src/app/auth/services/user/user.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage/local-storage.service';
-import { IUserDataCopy } from 'src/app/shared/models/interfaces/user-response-interface';
 import { StepperService } from 'src/app/core/services/stepper/stepper.service';
+import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-summary-page',
@@ -41,7 +39,6 @@ export class SummaryPageComponent implements OnInit {
   currencyLabel: string = '';
   forwardFlightPrice: number = 0;
   backwardFlightPrice: number = 0;
-  numberOfTickets: number = 0;
   localStorageData: any[] = [];
 
   constructor(
@@ -50,24 +47,20 @@ export class SummaryPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private headerService: HeaderService,
     private router: Router,
-shopping-cart
     private localStorageService: LocalStorageService,
-    private cart: CartOrderService,
-    private userService: UserService
-    private http:HttpClient,
-    private stepperService: StepperServic,
+    private userService: UserService,
+    private stepperService: StepperService,
+    private notificationService: NotificationService
   ) {}
   ngOnInit(): void {
     this.userId = this.userService.getCurrentUserId();
     this.sharedService.selectedForwardFlight.asObservable().subscribe((res) => {
       this.forwardData = res;
-      // console.log(this.forwardData);
     });
     this.sharedService.selectedBackwardFlight
       .asObservable()
       .subscribe((res) => {
         this.backwardData = res;
-        // console.log(this.backwardData);
       });
     this.activatedRoute.queryParams.subscribe((res) => {
       this.passengers = res['passengers'].split(',');
@@ -114,18 +107,15 @@ shopping-cart
     switch (this.currencyLabel) {
       case 'USD':
         this.forwardFlightPrice = this.forwardData.price.usd;
-        // console.log(this.forwardFlightPrice);
         if (this.backwardData) {
           this.backwardFlightPrice = this.backwardData.price.usd;
         }
         break;
       case 'EUR':
         this.forwardFlightPrice = this.forwardData.price.eur;
-        // console.log(this.forwardFlightPrice);
         if (this.backwardData) {
           this.backwardFlightPrice = this.backwardData.price.eur;
         }
-        // console.log(this.backwardFlightPrice);
         break;
       case 'RUB':
         this.forwardFlightPrice = this.forwardData.price.rub;
@@ -181,11 +171,6 @@ shopping-cart
       this.childTotalFare +this.childTotalTax+
       this.infantTotalFare+this.infantTotalTax
     ).toFixed(2);
-    if (this.backwardData.flightNumber !== undefined) {
-      this.numberOfTickets = 2;
-    } else {
-      this.numberOfTickets = 1;
-    }
   }
 
   goBack() {
@@ -194,17 +179,6 @@ shopping-cart
   }
 
   addToCart() {
-    this.sharedService.getAddToCardNumber(this.numberOfTickets);
-
-    this.router.navigateByUrl(RoutesPaths.MainPage);
-  }
-
-  goToUserAccount() {
-    this.router.navigateByUrl(RoutesPaths.UserAccountPage);
-  }
-
-  proceedToPayment() {
-    // this.passengers.push(this.TOTAL.toString());
     const existingCart = this.localStorageService.getTypedStorageItem(
       this.userId
     );
@@ -216,11 +190,33 @@ shopping-cart
       );
     } else {
       existingCart.push([this.passengers,this.TOTAL,this.forwardData, this.backwardData ]);
-      console.log(existingCart);
-
       this.localStorageService.setTypedStorageItem(this.userId, existingCart);
+      this.sharedService.getAddToCardNumber(existingCart.length)
     }
-    alert('Payment was successfull');
+
+    this.router.navigateByUrl(RoutesPaths.MainPage);
+  }
+
+  goToUserAccount() {
+    this.router.navigateByUrl(RoutesPaths.UserAccountPage);
+  }
+
+  proceedToPayment() {
+    const existingCart = this.localStorageService.getTypedStorageItem(
+      this.userId
+    );
+    this.localStorageData.push([this.passengers, this.TOTAL,this.forwardData, this.backwardData ]);
+    if (existingCart === null) {
+      this.localStorageService.setTypedStorageItem(
+        this.userId,
+        this.localStorageData
+      );
+    } else {
+      existingCart.push([this.passengers,this.TOTAL,this.forwardData, this.backwardData ]);
+      this.localStorageService.setTypedStorageItem(this.userId, existingCart);
+      this.sharedService.getAddToCardNumber(existingCart.length)
+    }
+    this.notificationService.openSuccessSnackBar('Thank you for your perchase! Payment was successfull!');
     this.router.navigateByUrl(RoutesPaths.ShoppingCart);
   }
 }

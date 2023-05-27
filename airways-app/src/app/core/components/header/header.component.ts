@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currencyOptions: IFormat[] = [];
   selectedCurrencyFormat: string = '';
   isCurrencySelected = false;
-  matBadgeNumber:number=0;
+  cartItemsCount:number=0;
 
   isShowBookFlights = false;
   isShowProgressBar = false;
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sharedService.addToCardNumber.subscribe(res=>{
-      this.matBadgeNumber+=res;
+      this.cartItemsCount=res;
     })
     this.dateOptions = this.headerService.dateFormats;
     this.currencyOptions = this.headerService.currancyFormats;
@@ -125,5 +125,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subs) => subs.unsubscribe());
+  }
+
+  goToShoppingCart(){
+    this.router.navigateByUrl(RoutesPaths.ShoppingCart);
+  }
+
+  goToUserAccount(){
+    this.router.navigateByUrl(RoutesPaths.UserAccountPage)
   }
 }
