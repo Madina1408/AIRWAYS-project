@@ -2,7 +2,7 @@
     <div class="header__container" *ngIf="{ isLoggedIn: authService.isLoggedIn() } as state">
         <img class="header__logo" src="../../../../assets/images/main_logo.png" alt="airways-logo" routerLink="">
 
-        <app-progress-bar *ngIf="isShowProgressBar" class="stepper"></app-progress-bar>
+        <app-progress-bar *ngIf="isShowProgressBar"></app-progress-bar>
 
         <div class="header__options">
             <p *ngIf="isShowBookFlights">Book flights</p>
