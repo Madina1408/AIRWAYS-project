@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FlightSearchDataService } from 'src/app/airways/services/flight-search-data/flight-search-data.service';
 import { SharedService } from 'src/app/airways/services/shared/shared.service';
 import { UserService } from 'src/app/auth/services/user/user.service';
 import { HeaderService } from 'src/app/core/services/header.service';
+import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
+import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
 import { LocalStorageService } from 'src/app/shared/services/local-storage/local-storage.service';
+import { SessionStorageService } from 'src/app/shared/services/session-storage/session-storage.service';
+
+
 export type WrappedCartItem = {
   selected: boolean;
   cartData: IGotFlightData[];
@@ -23,14 +29,20 @@ export class UserAccountComponent implements OnInit {
   selectedItemCount: number = 0;
   selectedTotalPrice: number = 0;
   selecteCurrency!: string;
+
+  queryParams!: ISearchFlight;
+
+  allComplete: boolean = false;
+
   constructor(
     private userService: UserService,
     private headerService: HeaderService,
     private localStorageService: LocalStorageService,
     private flightSearchDataService: FlightSearchDataService,
-    private sharedService:SharedService
+    private sharedService: SharedService,
+    private router: Router,
+    private sessionStorageService: SessionStorageService
   ) {}
-  allComplete: boolean = false;
 
   ngOnInit(): void {
     this.headerService.selectedValueCurrencyFormat$$
@@ -43,6 +55,7 @@ export class UserAccountComponent implements OnInit {
       .subscribe((res) => {
         this.passengers = res;
       });
+    this.queryParams = this.sessionStorageService.getQueryParamsFromStorage()!;
     this.userId = this.userService.getCurrentUserId();
     this.wrappedCartItems = [];
     this.cartItemsFromLocalStorage =
@@ -116,5 +129,12 @@ export class UserAccountComponent implements OnInit {
       existingCart.push(orderedItems);
       this.localStorageService.setTypedStorageItem(this.userId+'order', existingCart);
     }
+    this.sessionStorageService.sessionStorageClear();
+  }
+
+  redirectToPassengersPage() {
+    this.router.navigate([RoutesPaths.BookingPageStep2], {
+      queryParams: this.queryParams,
+    });
   }
 }

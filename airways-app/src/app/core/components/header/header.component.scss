@@ -1,13 +1,5 @@
 @use '../../../../styles/colors';
 
-::ng-deep .mat-step-header .mat-step-icon-selected {
-    background-color: colors.$green-blue;
-}
-
-::ng-deep .mat-step-header .mat-step-icon-state-done {
-    background-color: colors.$green-blue;
-}
-
 ::ng-deep .header__currency-list {
     min-width: unset !important;
     min-width: 4rem;
@@ -25,10 +17,6 @@
             margin-left: 0.7rem;
         }
     }
-}
-
-::ng-deep .mat-stepper-horizontal-line {
-    min-width: 5rem !important;
 }
 
 .header {
@@ -61,12 +49,7 @@
             }
         }
 
-        .stepper {
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 2.25rem;
+        app-progress-bar {
             margin-left: auto;
         }
 

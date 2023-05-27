@@ -9,8 +9,9 @@ import { Router } from '@angular/router';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { UserService } from 'src/app/auth/services/user/user.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage/local-storage.service';
-import { StepperService } from 'src/app/core/services/stepper/stepper.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
+import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
+import { SessionStorageService } from 'src/app/shared/services/session-storage/session-storage.service';
 
 @Component({
   selector: 'app-summary-page',
@@ -41,6 +42,16 @@ export class SummaryPageComponent implements OnInit {
   backwardFlightPrice: number = 0;
   localStorageData: any[] = [];
 
+  queryParams: ISearchFlight = {
+    fromKey: '',
+    toKey: '',
+    forwardDate: '',
+    backDate: '',
+    passengers: '',
+    fromCity: '',
+    toCity: '',
+  };
+
   constructor(
     private sharedService: SharedService,
     private location: Location,
@@ -49,8 +60,8 @@ export class SummaryPageComponent implements OnInit {
     private router: Router,
     private localStorageService: LocalStorageService,
     private userService: UserService,
-    private stepperService: StepperService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private sessionStorageService: SessionStorageService
   ) {}
   ngOnInit(): void {
     this.userId = this.userService.getCurrentUserId();
@@ -63,6 +74,19 @@ export class SummaryPageComponent implements OnInit {
         this.backwardData = res;
       });
     this.activatedRoute.queryParams.subscribe((res) => {
+      this.queryParams.backDate = res['backDate'];
+      this.queryParams.forwardDate = res['forwardDate'];
+      this.queryParams.toCity = res['toCity'];
+      this.queryParams.fromCity = res['fromCity'];
+      this.queryParams.toKey = res['toKey'];
+      this.queryParams.fromKey = res['fromKey'];
+      this.queryParams.passengers = res['passengers'];
+
+      this.sessionStorageService.saveQueryParamsToStorage(this.queryParams);
+
+      if (res['passengers'].includes(',')) {
+        this.passengers = res['passengers'].split('');
+      }
       this.passengers = res['passengers'].split(',');
       // console.log(this.passengers);
       for (let i = 0; i < this.passengers.length; i++) {
@@ -175,7 +199,6 @@ export class SummaryPageComponent implements OnInit {
 
   goBack() {
     this.location.back();
-    this.stepperService.previousStep();
   }
 
   addToCart() {

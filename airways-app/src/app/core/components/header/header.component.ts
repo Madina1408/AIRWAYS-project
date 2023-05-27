@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component,OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { IFormat } from '../../../shared/models/interfaces/format-interface';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutesPaths } from '../../../shared/models/enums/routes-paths';
@@ -10,8 +9,7 @@ import { TabDialogComponent } from 'src/app/auth/dialog/tab-dialog/tab-dialog.co
 import { AuthService } from 'src/app/auth/services/auth/auth.service';
 import { UserService } from 'src/app/auth/services/user/user.service';
 import { SharedService } from 'src/app/airways/services/shared/shared.service';
-import { MatStepper } from '@angular/material/stepper';
-import { StepperService } from '../../services/stepper/stepper.service';
+
 
 @Component({
   selector: 'app-header',
@@ -44,7 +42,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     public userService: UserService,
     private sharedService: SharedService,
-    private stepperService: StepperService
   ) {}
 
   ngOnInit(): void {
@@ -91,11 +88,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
             this.headerClass = RoutesPaths.MainPage;
           }
         }
-      })
+      }),
     );
+
   }
-
-
 
   onSelectDateFormat(option: IFormat) {
     this.selectedDateFormat = option.label;
@@ -123,15 +119,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.signOut();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subs) => subs.unsubscribe());
-  }
-
   goToShoppingCart(){
     this.router.navigateByUrl(RoutesPaths.ShoppingCart);
   }
 
   goToUserAccount(){
-    this.router.navigateByUrl(RoutesPaths.UserAccountPage)
+    this.router.navigateByUrl(RoutesPaths.UserAccountPage);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subs) => subs.unsubscribe());
   }
 }
