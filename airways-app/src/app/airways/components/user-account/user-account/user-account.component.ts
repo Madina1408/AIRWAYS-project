@@ -5,7 +5,7 @@ import { UserService } from 'src/app/auth/services/user/user.service';
 import { HeaderService } from 'src/app/core/services/header.service';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
 import { LocalStorageService } from 'src/app/shared/services/local-storage/local-storage.service';
-type WrappedCartItem = {
+export type WrappedCartItem = {
   selected: boolean;
   cartData: IGotFlightData[];
 };
@@ -16,7 +16,6 @@ type WrappedCartItem = {
 })
 export class UserAccountComponent implements OnInit {
   userId: string='';
-
   passengers: string = '';
   wrappedCartItems: WrappedCartItem[] | null = null;
   selectedItems: WrappedCartItem[] | null = null;
@@ -95,11 +94,27 @@ export class UserAccountComponent implements OnInit {
   }
 
   deleteItemFromCart(index:number) {
-    console.log(index);
     this.cartItemsFromLocalStorage?.splice(index,1);
     this.wrappedCartItems?.splice(index,1);
     console.log(this.wrappedCartItems);
     this.localStorageService.setTypedStorageItem(this.userId,this.cartItemsFromLocalStorage!);
     this.sharedService.getAddToCardNumber(this.cartItemsFromLocalStorage!.length)
+  }
+
+  buyNow(){
+    const orderedItems :WrappedCartItem[] = this.wrappedCartItems!.filter((t) => t.selected);
+    console.log(orderedItems);
+    const existingCart = this.localStorageService.getTypedStorageItem(
+      this.userId+'order'
+    );
+    if (existingCart === null) {
+      this.localStorageService.setTypedStorageItem(
+        this.userId+'order',
+        [orderedItems]
+      );
+    } else {
+      existingCart.push(orderedItems);
+      this.localStorageService.setTypedStorageItem(this.userId+'order', existingCart);
+    }
   }
 }

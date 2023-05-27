@@ -216,7 +216,6 @@ export class SummaryPageComponent implements OnInit {
       this.localStorageService.setTypedStorageItem(this.userId, existingCart);
       this.sharedService.getAddToCardNumber(existingCart.length)
     }
-    this.notificationService.openSuccessSnackBar('Thank you for your perchase! Payment was successfull!');
     this.router.navigateByUrl(RoutesPaths.ShoppingCart);
   }
 }
