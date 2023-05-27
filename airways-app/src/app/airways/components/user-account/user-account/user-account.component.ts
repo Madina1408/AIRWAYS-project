@@ -129,6 +129,7 @@ export class UserAccountComponent implements OnInit {
       existingCart.push(orderedItems);
       this.localStorageService.setTypedStorageItem(this.userId+'order', existingCart);
     }
+    this.sessionStorageService.sessionStorageClear();
   }
 
   redirectToPassengersPage() {
