@@ -1,13 +1,17 @@
 <div class="signin__container">
     <form [formGroup]="signInForm" (ngSubmit)="onSubmitLogIn()">
-        <button type="button" class="auth__btn" mat-stroked-button>
-            <img class="auth-btn-google__img" src="../../../../assets/icons/google_icon.svg" alt="google"/>
-            Continue with Google
-        </button>
-        <button type="button" class="auth__btn" mat-stroked-button>
-            <img class="auth-btn-facebook__img" src="../../../../assets/icons/facebook_icon.svg" alt="facebook"/>
-            Continue with Facebook
-        </button>
+        <a class="auth__btn" href="https://www.google.com/intl/ru/account/about/" target="_blank">
+            <button type="button" class="auth__btn" mat-stroked-button>
+                <img class="auth-btn-google__img" src="../../../../assets/icons/google_icon.svg" alt="google"/>
+                Continue with Google
+            </button>
+        </a>
+        <a class="auth__btn" href="https://www.facebook.com/" target="_blank">
+            <button type="button" class="auth__btn" mat-stroked-button>
+                <img class="auth-btn-facebook__img" src="../../../../assets/icons/facebook_icon.svg" alt="facebook"/>
+                Continue with Facebook
+            </button>
+        </a>
         <div class="message">
             <div class="message__line"></div>
             <p class="message__text">or log in with your email</p>

@@ -14,17 +14,21 @@ export interface IPassengerData {
     dateBirth: string;
     needAssistance?: boolean;
     needCheckedBaggage?: boolean;
-
 }
 
 export interface IPassengerContacts {
-    countryName: string;
     countryCode: string;
     phoneNumber: string;
     email: string;
 }
 
-export interface IPassengersSummaryList {
-    passengers: IPassengerData[];
-    contactDetails: IPassengerContacts;
+export interface IPassengerInfo {
+    email: string,
+    firstName: string,
+    lastName: string,
+    dateOfBirth: string,
+    gender: string,
+    countryCode: string,
+    phone: string,
+    citizenship: string
 }

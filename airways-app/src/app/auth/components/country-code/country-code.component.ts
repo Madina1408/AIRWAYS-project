@@ -14,7 +14,7 @@ export class CountryCodeComponent implements OnInit, OnDestroy {
   @Output() countryCodeNameValueChange = new EventEmitter<string>();
   @Output() countryCodeValueChange = new EventEmitter<string>();
 
-  countryCodes: ICountryCode [] = countryCodes;
+  countryCodes: ICountryCode[] = countryCodes;
 
   subscriptions: Subscription[] = [];
 
@@ -25,8 +25,7 @@ export class CountryCodeComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.countryCodeControl.valueChanges.subscribe(value => {
         if (this.countryCodeControl.valid) {
-          this.countryCodeValueChange.emit(value?.name);
-          this.countryCodeValueChange.emit(value?.countryCode);
+          this.countryCodeValueChange.emit(value);
         }
       })
     )

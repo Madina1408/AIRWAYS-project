@@ -31,7 +31,11 @@ export class AuthService {
 
   isLoggedIn() {
     const token = this.storageService.getFromStorage(TOKEN);
-    return !this.helper.isTokenExpired(token);
+    if (token) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   signOut(): void {

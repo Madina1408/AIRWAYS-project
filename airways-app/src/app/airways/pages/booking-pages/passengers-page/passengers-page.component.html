@@ -12,6 +12,7 @@
             <p>Enter the passenger's names as they appear on document (passport or ID).</p>
         </div>
         <div class="form__cards">
+            <mat-spinner *ngIf="loadingPassengers"></mat-spinner>
             <mat-card class="passengers__card" *ngFor="let passenger of passengers; let i = index">
                 <mat-card-title class="passenger__title">{{ i + 1 }}. {{ passenger.type }}</mat-card-title>
                 <mat-card-content class="passengers__info">
@@ -65,13 +66,12 @@
             </p>
             <p>We need contact details to be able to deliver the latest information regarding your flight.</p>
         </div>
-        <div class="form__cards">
+        <div class="form__cards" *ngIf="!loadingPassengers">
             <mat-card class="passengers__card contact-details__card">
                 <mat-card-content class="passengers__info">
                     <app-country-code
                         [initialValue]="initialCountryCode"
-                        (countryCodeValueChange)="handleCountryCodeChange($event)"
-                        (countryCodeNameValueChange)="handleCountryCodeNameChange($event)">
+                        (countryCodeValueChange)="handleCountryCodeChange($event)">
                     </app-country-code>
                     <app-phone-number *ngIf="contactDetails?.countryCode"
                         [initialValue]="initialPhoneNumber"
