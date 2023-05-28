@@ -4,9 +4,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { IPostFlightData } from '../../../shared/models/interfaces/post-flight-interface';
 import {
   IGotFlightData,
-  IGotFlightDataList,
 } from '../../../shared/models/interfaces/flight-data';
-import { IRecieveFormData } from '../../../shared/models/interfaces/post-flight-interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,17 +26,12 @@ export class FlightdataService {
         postFlightData.backDate === undefined ||
         postFlightData.backDate === null
       ) {
-        try {
           dates.push({
             fromKey: postFlightData.fromKey,
             toKey: postFlightData.toKey,
             forwardDate: newForwardDate!.toISOString(),
             backDate: '',
           });
-          throw new Error('i am error');
-        } catch (error) {
-          console.log(error);
-        }
       } else {
         dates.push({
           fromKey: postFlightData.fromKey,

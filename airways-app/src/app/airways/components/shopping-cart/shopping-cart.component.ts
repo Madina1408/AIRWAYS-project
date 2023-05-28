@@ -8,6 +8,7 @@ import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
 import { IGotFlightData } from 'src/app/shared/models/interfaces/flight-data';
 import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
 import { LocalStorageService } from 'src/app/shared/services/local-storage/local-storage.service';
+import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { SessionStorageService } from 'src/app/shared/services/session-storage/session-storage.service';
 
 
@@ -16,11 +17,11 @@ export type WrappedCartItem = {
   cartData: IGotFlightData[];
 };
 @Component({
-  selector: 'app-user-account',
-  templateUrl: './user-account.component.html',
-  styleUrls: ['./user-account.component.scss'],
+  selector: 'app-shopping-cart',
+  templateUrl: './shopping-cart.component.html',
+  styleUrls: ['./shopping-cart.component.scss'],
 })
-export class UserAccountComponent implements OnInit {
+export class ShoppingCartComponent implements OnInit {
   userId: string='';
   passengers: string = '';
   wrappedCartItems: WrappedCartItem[] | null = null;
@@ -41,7 +42,8 @@ export class UserAccountComponent implements OnInit {
     private flightSearchDataService: FlightSearchDataService,
     private sharedService: SharedService,
     private router: Router,
-    private sessionStorageService: SessionStorageService
+    private sessionStorageService: SessionStorageService,
+    private notificationService:NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -115,20 +117,25 @@ export class UserAccountComponent implements OnInit {
   }
 
   buyNow(){
-    const orderedItems :WrappedCartItem[] = this.wrappedCartItems!.filter((t) => t.selected);
-    console.log(orderedItems);
+    const selected:IGotFlightData[][]=this.wrappedCartItems!.filter(t=>t.selected).map(t=>t.cartData);
+    const unSelected:IGotFlightData[][]=this.wrappedCartItems!.filter(t=>!t.selected).map(t=>t.cartData);
+    this.wrappedCartItems=this.wrappedCartItems!.filter(t=>!t.selected);
+    this.localStorageService.setTypedStorageItem(this.userId, unSelected);
+    this.sharedService.getAddToCardNumber(unSelected.length)
     const existingCart = this.localStorageService.getTypedStorageItem(
       this.userId+'order'
     );
     if (existingCart === null) {
       this.localStorageService.setTypedStorageItem(
         this.userId+'order',
-        [orderedItems]
+        [...selected]
       );
     } else {
-      existingCart.push(orderedItems);
+      existingCart.push(...selected);
       this.localStorageService.setTypedStorageItem(this.userId+'order', existingCart);
     }
+    this.router.navigateByUrl(RoutesPaths.UserAccountPage);
+    this.notificationService.openSuccessSnackBar('Thank you for your purchase! Your payment is successfull!')
     this.sessionStorageService.sessionStorageClear();
   }
 

@@ -131,25 +131,27 @@ export class SummaryPageComponent implements OnInit {
     switch (this.currencyLabel) {
       case 'USD':
         this.forwardFlightPrice = this.forwardData.price.usd;
-        if (this.backwardData) {
+        if (this.backwardData.price!==undefined) {
           this.backwardFlightPrice = this.backwardData.price.usd;
         }
         break;
       case 'EUR':
         this.forwardFlightPrice = this.forwardData.price.eur;
-        if (this.backwardData) {
+        if (this.backwardData.price!==undefined) {
           this.backwardFlightPrice = this.backwardData.price.eur;
+        } else{
+          this.backwardFlightPrice=0;
         }
         break;
       case 'RUB':
         this.forwardFlightPrice = this.forwardData.price.rub;
-        if (this.backwardData) {
+        if (this.backwardData.price!==undefined) {
           this.backwardFlightPrice = this.backwardData.price.rub;
         }
         break;
       case 'PLN':
         this.forwardFlightPrice = this.forwardData.price.pln;
-        if (this.backwardData) {
+        if (this.backwardData.price!==undefined) {
           this.backwardFlightPrice = this.backwardData.price.pln;
         }
         break;
@@ -158,15 +160,15 @@ export class SummaryPageComponent implements OnInit {
       }
     }
 
-    if (this.backwardData) {
+    if (this.backwardData.price!==undefined) {
       this.adultTotalFare =
-        (this.forwardFlightPrice + this.backwardFlightPrice) * this.adultNumber;
+        (this.forwardFlightPrice + this.backwardFlightPrice!) * this.adultNumber;
     } else {
       this.adultTotalFare = this.forwardFlightPrice * this.adultNumber;
     }
-    if (this.backwardData) {
+    if (this.backwardData.price!==undefined) {
       this.childTotalFare = +(
-        (this.forwardFlightPrice + this.backwardFlightPrice) *
+        (this.forwardFlightPrice + this.backwardFlightPrice!) *
         0.5 *
         this.childNumber
       ).toFixed(2);
@@ -177,7 +179,7 @@ export class SummaryPageComponent implements OnInit {
         this.childNumber
       ).toFixed(2);
     }
-    if (this.backwardData) {
+    if (this.backwardData.price!==undefined) {
       this.infantTotalFare = +(
         (this.forwardFlightPrice + this.backwardFlightPrice) *
         0.2 *
@@ -211,6 +213,7 @@ export class SummaryPageComponent implements OnInit {
         this.userId,
         this.localStorageData
       );
+      this.sharedService.getAddToCardNumber(this.localStorageData.length);
     } else {
       existingCart.push([this.passengers,this.TOTAL,this.forwardData, this.backwardData ]);
       this.localStorageService.setTypedStorageItem(this.userId, existingCart);
@@ -234,6 +237,7 @@ export class SummaryPageComponent implements OnInit {
         this.userId,
         this.localStorageData
       );
+      this.sharedService.getAddToCardNumber(this.localStorageData.length);
     } else {
       existingCart.push([this.passengers,this.TOTAL,this.forwardData, this.backwardData ]);
       this.localStorageService.setTypedStorageItem(this.userId, existingCart);

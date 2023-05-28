@@ -24,8 +24,8 @@ export class SharedService implements OnInit {
 
   userId: string = this.userService.getCurrentUserId();
   existingCart: IGotFlightData[][] =
-  this.localStorageService.getTypedStorageItem(this.userId);
-  addToCardNumber = new BehaviorSubject<number>(0);
+    this.localStorageService.getTypedStorageItem(this.userId);
+  addToCardNumber = new BehaviorSubject<number>(this.existingCart===null? 0:this.existingCart.length);
 
   constructor(
     private userService: UserService,
