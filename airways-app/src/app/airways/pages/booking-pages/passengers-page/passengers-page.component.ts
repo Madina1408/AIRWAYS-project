@@ -142,11 +142,10 @@ export class PassengersPageComponent implements OnInit {
       this.contactDetails = this.passengerService.getContactDetails();
       if (!this.contactDetails) {
         this.contactDetails = {
-          countryName: this.registeredUser.citizenship,
           countryCode: this.registeredUser.countryCode,
           phoneNumber: this.registeredUser.phone,
-          email: this.registeredUser.email };
-
+          email: this.registeredUser.email
+        };
       };
       this.setInitialContactDetailsValues(this.contactDetails);
     });
@@ -179,7 +178,7 @@ export class PassengersPageComponent implements OnInit {
   }
 
   private setInitialContactDetailsValues(contactDetails: IPassengerContacts) {
-    this.initialCountryCode = `${contactDetails.countryName} ${contactDetails.countryCode}`;
+    this.initialCountryCode = contactDetails.countryCode;
     this.initialPhoneNumber = contactDetails.phoneNumber;
     this.initialEmail = contactDetails.email;
   }
@@ -212,11 +211,6 @@ export class PassengersPageComponent implements OnInit {
   handleCheckedBaggageChange(passenger: IPassengerData, value: boolean) {
     passenger.needCheckedBaggage = value;
     this.passengerService.setPassenger(passenger.index, passenger);
-  }
-
-  handleCountryCodeNameChange(value: string) {
-    this.contactDetails!.countryName = value;
-    this.passengerService.setContactDetails(this.contactDetails!);
   }
 
   handleCountryCodeChange(value: string) {

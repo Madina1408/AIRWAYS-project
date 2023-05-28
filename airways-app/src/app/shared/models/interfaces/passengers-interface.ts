@@ -17,7 +17,6 @@ export interface IPassengerData {
 }
 
 export interface IPassengerContacts {
-    countryName: string;
     countryCode: string;
     phoneNumber: string;
     email: string;

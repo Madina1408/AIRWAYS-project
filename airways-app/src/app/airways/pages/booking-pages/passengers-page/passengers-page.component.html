@@ -71,9 +71,7 @@
                 <mat-card-content class="passengers__info">
                     <app-country-code
                         [initialValue]="initialCountryCode"
-                        (countryCodeNameValueChange)="handleCountryCodeChange($event)"
-                        (countryCodeValueChange)="handleCountryCodeChange($event)"
-                        >
+                        (countryCodeValueChange)="handleCountryCodeChange($event)">
                     </app-country-code>
                     <app-phone-number *ngIf="contactDetails?.countryCode"
                         [initialValue]="initialPhoneNumber"

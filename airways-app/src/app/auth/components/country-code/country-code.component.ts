@@ -25,8 +25,7 @@ export class CountryCodeComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.countryCodeControl.valueChanges.subscribe(value => {
         if (this.countryCodeControl.valid) {
-          this.countryCodeNameValueChange.emit(value?.name);
-          this.countryCodeValueChange.emit(value?.countryCode);
+          this.countryCodeValueChange.emit(value);
         }
       })
     )
