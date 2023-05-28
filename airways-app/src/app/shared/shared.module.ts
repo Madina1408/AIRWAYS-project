@@ -23,6 +23,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatButtonToggleModule,
     MatCheckboxModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatButtonModule,
@@ -77,7 +79,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatButtonToggleModule,
     MatCheckboxModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressSpinnerModule
   ],
 })
 export class SharedModule { }

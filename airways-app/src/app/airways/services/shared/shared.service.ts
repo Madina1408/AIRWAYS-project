@@ -24,8 +24,9 @@ export class SharedService implements OnInit {
 
   userId: string = this.userService.getCurrentUserId();
   existingCart: IGotFlightData[][] =
-    this.localStorageService.getTypedStorageItem(this.userId);
-  addToCardNumber = new BehaviorSubject<number>(this.existingCart!.length | 0);
+  this.localStorageService.getTypedStorageItem(this.userId);
+  addToCardNumber = new BehaviorSubject<number>(0);
+
   constructor(
     private userService: UserService,
     private localStorageService: LocalStorageService
@@ -52,3 +53,4 @@ export class SharedService implements OnInit {
     this.selectedBackwardFlight.next(data);
   }
 }
+

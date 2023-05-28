@@ -13,7 +13,7 @@ export class RequestBuilderService {
     return this.http.post<T>(url, data);
   }
 
-  public get<T>(url: string): Observable<T> {
+  public get<T>(url: string, headers?: unknown): Observable<T> {
     return this.http.get<T>(url);
   }
 }

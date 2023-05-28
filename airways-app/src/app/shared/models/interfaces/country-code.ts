@@ -1,4 +1,4 @@
 export interface ICountryCode {
-    name: string;
+    name?: string;
     countryCode: string;
 }

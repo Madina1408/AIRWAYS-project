@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, finalize } from 'rxjs';
 import { PassengersService } from 'src/app/airways/services/passengers/passengers.service';
 import { CountryCodeComponent } from 'src/app/auth/components/country-code/country-code.component';
 import { DateBirthComponent } from 'src/app/auth/components/date-birth/date-birth.component';
@@ -9,8 +9,10 @@ import { EmailComponent } from 'src/app/auth/components/email/email.component';
 import { FirstNameComponent } from 'src/app/auth/components/first-name/first-name.component';
 import { LastNameComponent } from 'src/app/auth/components/last-name/last-name.component';
 import { PhoneNumberComponent } from 'src/app/auth/components/phone-number/phone-number.component';
+import { UserService } from 'src/app/auth/services/user/user.service';
 import { RoutesPaths } from 'src/app/shared/models/enums/routes-paths';
-import { IPassengerContacts, IPassengerData } from 'src/app/shared/models/interfaces/passengers-interface';
+import { ICountryCode } from 'src/app/shared/models/interfaces/country-code';
+import { IPassengerContacts, IPassengerData, IPassengerInfo } from 'src/app/shared/models/interfaces/passengers-interface';
 import { ISearchFlight } from 'src/app/shared/models/interfaces/search-flight-interface';
 
 
@@ -42,51 +44,68 @@ export class PassengersPageComponent implements OnInit {
   infantCount: number = 0;
   passengers: IPassengerData[] = [];
   contactDetails: IPassengerContacts | undefined = undefined;
-
-  subscriptions: Subscription[] = [];
-
   initialCountryCode = '';
   initialPhoneNumber = '';
   initialEmail = '';
+
+  subscriptions: Subscription[] = [];
+
+  registeredUser: IPassengerInfo = {
+    email: '',
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    gender: '',
+    countryCode: '',
+    phone: '',
+    citizenship: ''
+  };
 
   passengersForm = new FormGroup({});
 
   isValidForm = false;
 
+  loadingPassengers = true;
+
   constructor(
     private activateRoute: ActivatedRoute,
     private router: Router,
     private passengerService: PassengersService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.subscriptions.push(
-    this.activateRoute.queryParams.subscribe((res) => {
-      this.queryParams.backDate = res['backDate'];
-      this.queryParams.forwardDate = res['forwardDate'];
-      this.queryParams.toCity = res['toCity'];
-      this.queryParams.fromCity = res['fromCity'];
-      this.queryParams.toKey = res['toKey'];
-      this.queryParams.fromKey = res['fromKey'];
-      this.queryParams.passengers = res['passengers'];
-    }),
+      this.activateRoute.queryParams.subscribe((res) => {
+        this.queryParams.backDate = res['backDate'];
+        this.queryParams.forwardDate = res['forwardDate'];
+        this.queryParams.toCity = res['toCity'];
+        this.queryParams.fromCity = res['fromCity'];
+        this.queryParams.toKey = res['toKey'];
+        this.queryParams.fromKey = res['fromKey'];
+        this.queryParams.passengers = res['passengers'];
+      }),
+      this.userService.getCurrentUserData()!
+      .pipe(finalize(() => this.loadingPassengers = false))
+      .subscribe(data => {
+        this.registeredUser = data;
+        this.parsePassengerString( this.queryParams.passengers);
+      })
     );
-
-    this.parsePassengerString( this.queryParams.passengers);
   }
 
-  parsePassengerString(passengersString: string) {
+  private parsePassengerString(passengersString: string) {
     let passengersList: string[] = [];
     if (!passengersString.includes(',')) {
       passengersList = passengersString.split('');
     }
-    passengersList = passengersString.split(", ");
+    passengersList = passengersString.split(', ');
     let index = 1;
 
     passengersList.forEach(passenger => {
-      const [count, type] = passenger.split(" ");
+      const [count, type] = passenger.split(' ');
 
-      if (type.toLowerCase() === "adult") {
+      if (type.toLowerCase() === 'adult') {
         this.adultsCount = parseInt(count);
         for (let i = 1; i <= this.adultsCount; i++) {
           const existingPassengerAdult = this.passengerService.getPassengerByIndex(index);
@@ -97,7 +116,7 @@ export class PassengersPageComponent implements OnInit {
           }
           index++;
         }
-      } else if (type.toLowerCase() === "child") {
+      } else if (type.toLowerCase() === 'child') {
         this.childCount = parseInt(count);
         for (let i = 1; i <= this.childCount; i++) {
           const existingPassengerChild = this.passengerService.getPassengerByIndex(index);
@@ -108,7 +127,7 @@ export class PassengersPageComponent implements OnInit {
           }
           index++;
         }
-      } else if (type.toLowerCase() === "infant") {
+      } else if (type.toLowerCase() === 'infant') {
         this.infantCount = parseInt(count);
         for (let i = 1; i <= this.infantCount; i++) {
           const existingPassengerInfant = this.passengerService.getPassengerByIndex(index);
@@ -121,28 +140,45 @@ export class PassengersPageComponent implements OnInit {
         }
       }
       this.contactDetails = this.passengerService.getContactDetails();
-      if (this.contactDetails) {
-        this.setInitialContactDetailsValues(this.contactDetails);
-      } else {
-        this.contactDetails = { countryName: '', countryCode: '', phoneNumber: '', email: '' };
-      }
+      if (!this.contactDetails) {
+        this.contactDetails = {
+          countryName: this.registeredUser.citizenship,
+          countryCode: this.registeredUser.countryCode,
+          phoneNumber: this.registeredUser.phone,
+          email: this.registeredUser.email };
+
+      };
+      this.setInitialContactDetailsValues(this.contactDetails);
     });
   }
 
-  createPassengersArray(index: number, type: string) {
-    this.passengers.push({
-      index: index,
-      type: type,
-      firstName: '',
-      lastName: '',
-      gender: 'Male',
-      dateBirth: '',
-      needAssistance: false,
-      needCheckedBaggage: false
-    });
+  private createPassengersArray(index: number, type: string) {
+    if (index === 1) {
+      this.passengers.push({
+        index: index,
+        type: type,
+        firstName: this.registeredUser.firstName,
+        lastName: this.registeredUser.lastName,
+        gender: this.registeredUser.gender || 'Male',
+        dateBirth: this.registeredUser.dateOfBirth,
+        needAssistance: false,
+        needCheckedBaggage: false
+      });
+    } else {
+      this.passengers.push({
+        index: index,
+        type: type,
+        firstName: '',
+        lastName: '',
+        gender: 'Male',
+        dateBirth: '',
+        needAssistance: false,
+        needCheckedBaggage: false
+      });
+    }
   }
 
-  setInitialContactDetailsValues(contactDetails: IPassengerContacts) {
+  private setInitialContactDetailsValues(contactDetails: IPassengerContacts) {
     this.initialCountryCode = `${contactDetails.countryName} ${contactDetails.countryCode}`;
     this.initialPhoneNumber = contactDetails.phoneNumber;
     this.initialEmail = contactDetails.email;

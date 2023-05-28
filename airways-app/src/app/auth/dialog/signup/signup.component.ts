@@ -172,6 +172,8 @@ export class SignupComponent {
       citizenship: this.citizenshipControl?.value!,
     };
 
+    console.log(userData);
+
     this.authService.signUp(userData).subscribe({
       next: () => {
         this.notification.openSuccessSnackBar('Registration is successful! You can sign in.');
