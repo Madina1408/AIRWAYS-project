@@ -19,22 +19,44 @@ import { DurationPipe } from './pipes/duration.pipe';
 import { AuthGuard } from '../core/guards/auth/auth.guard';
 import { RoutesPaths } from '../shared/models/enums/routes-paths';
 import { SummaryPassengersComponent } from './components/summary-passengers/summary-passengers.component';
-import { UserAccountPageComponent } from './pages/user-account-page/user-account-page/user-account-page.component';
-import { UserAccountComponent } from './components/user-account/user-account/user-account.component';
+import { UserAccountPageComponent } from './pages/user-account-page/user-account-page.component';
 import { AuthModule } from '../auth/auth.module';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 
 const routes: Routes = [
   { path: '', redirectTo: RoutesPaths.MainPage, pathMatch: 'full' },
   { path: RoutesPaths.MainPage, component: MainPageComponent },
-  { path: RoutesPaths.BookingPage, redirectTo: RoutesPaths.MainPage, pathMatch: 'full' },
-  { path: RoutesPaths.BookingPageStep1, component: SelectFlightPageComponent,
-    resolve: { flights:FlightDataResolver },
-    runGuardsAndResolvers:'paramsOrQueryParamsChange'
+  {
+    path: RoutesPaths.BookingPage,
+    redirectTo: RoutesPaths.MainPage,
+    pathMatch: 'full',
   },
-  { path: RoutesPaths.BookingPageStep2, component: PassengersPageComponent, canActivate: [ AuthGuard ] },
-  { path: RoutesPaths.BookingPageStep3, component: SummaryPageComponent, canActivate: [ AuthGuard ] },
-  { path: RoutesPaths.ShoppingCart, component: ShoppingCartPageComponent, canActivate: [ AuthGuard ] },
-  { path: RoutesPaths.UserAccountPage, component: UserAccountPageComponent, canActivate: [ AuthGuard ] }
+  {
+    path: RoutesPaths.BookingPageStep1,
+    component: SelectFlightPageComponent,
+    resolve: { flights: FlightDataResolver },
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+  },
+  {
+    path: RoutesPaths.BookingPageStep2,
+    component: PassengersPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: RoutesPaths.BookingPageStep3,
+    component: SummaryPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: RoutesPaths.ShoppingCart,
+    component: ShoppingCartPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: RoutesPaths.UserAccountPage,
+    component: UserAccountPageComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
@@ -54,7 +76,7 @@ const routes: Routes = [
     DurationPipe,
     SummaryPassengersComponent,
     UserAccountPageComponent,
-    UserAccountComponent
+    ShoppingCartComponent,
   ],
   imports: [
     CommonModule,
@@ -70,4 +92,4 @@ const routes: Routes = [
     ShoppingCartPageComponent,
   ],
 })
-export class AirwaysModule { }
+export class AirwaysModule {}

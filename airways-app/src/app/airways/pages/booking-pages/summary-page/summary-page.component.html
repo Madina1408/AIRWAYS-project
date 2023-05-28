@@ -24,14 +24,14 @@
         <div class="heading">
           <h6>{{adultNumber}} x Adult(s) Fare</h6>
           <h6>
-            {{currencySign}}{{adultTotalFare+adultTotalTax}}
+            {{currencySign}}{{(adultTotalFare+adultTotalTax)|number:'1.1-2'}}
           </h6>
         </div>
         <div class="fare-devision">
           <div class="fare-type">
             <p>Fare</p>
             <p>
-              {{currencySign}}{{adultTotalFare}}
+              {{currencySign}}{{adultTotalFare|number:'1.1-2'}}
             </p>
           </div>
           <div class="fare-type">
@@ -44,14 +44,14 @@
         <div class="heading">
           <h6>{{childNumber}} x Child Fare</h6>
           <h6>
-            {{currencySign}}{{childTotalFare+childTotalTax}}
+            {{currencySign}}{{(childTotalFare+childTotalTax)|number:'1.1-2'}}
           </h6>
         </div>
         <div class="fare-devision">
           <div class="fare-type">
             <p>Fare</p>
             <p>
-              {{currencySign}}{{childTotalFare}}
+              {{currencySign}}{{childTotalFare|number:'1.1-2'}}
             </p>
           </div>
           <div class="fare-type">
@@ -64,14 +64,14 @@
         <div class="heading">
           <h6>{{infantNumber}} x Infant Fare</h6>
           <h6>
-            {{currencySign}}{{infantTotalFare+infantTotalTax}}
+            {{currencySign}}{{(infantTotalFare+infantTotalTax)|number:'1.1-2'}}
           </h6>
         </div>
         <div class="fare-devision">
           <div class="fare-type">
             <p>Fare</p>
             <p>
-              {{currencySign}}{{infantTotalFare}}
+              {{currencySign}}{{infantTotalFare|number:'1.1-2'}}
             </p>
           </div>
           <div class="fare-type">

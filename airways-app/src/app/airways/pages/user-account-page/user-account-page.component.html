@@ -52,7 +52,34 @@
       <span class="example-list-section"> </span>
       <span class="example-list-section">
         <ul>
-          <li></li>
+          <li *ngFor="let item of anyTypedOrderedItems; let i = index">
+            <div class="firstest" >
+              <div class="first">
+                <p class="fight-number" style="color: #0090bd;">
+                  {{item[2].flightNumber}}
+                </p>
+                <div class="infos">
+                  <p>{{item[2].form.city}} - {{item[2].to.city}}</p>
+                  <p *ngIf="item[3].to!==undefined">{{item[3].form.city}} - {{item[3].to.city}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="first">
+              <p>Round Trip</p>
+              <div class="infos">
+                <p>{{item[2].takeoffDate|date:'d MMM, y, h:mm'}}</p>
+                <p *ngIf="item[3].to!==undefined">{{item[3].landingDate|date:'d MMM, y, h:mm'}}</p>
+              </div>
+            </div>
+            <div class="first" style="margin-left: 55px; gap: 40px;">
+              <div class="infos">
+                <p>{{item[0]}}</p>
+              </div>
+              <p class="price" style="color: #7f8906;">
+                {{selecteCurrency}}{{+item[1]|number:'1.1-2'}}
+              </p>
+            </div>
+          </li>
         </ul>
       </span>
     </section>
