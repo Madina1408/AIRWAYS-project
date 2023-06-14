@@ -11,7 +11,6 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage/local
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { SessionStorageService } from 'src/app/shared/services/session-storage/session-storage.service';
 
-
 export type WrappedCartItem = {
   selected: boolean;
   cartData: IGotFlightData[];
@@ -22,11 +21,11 @@ export type WrappedCartItem = {
   styleUrls: ['./shopping-cart.component.scss'],
 })
 export class ShoppingCartComponent implements OnInit {
-  userId: string='';
+  userId: string = '';
   passengers: string = '';
   wrappedCartItems: WrappedCartItem[] | null = null;
   selectedItems: WrappedCartItem[] | null = null;
-  cartItemsFromLocalStorage:IGotFlightData[][]|null=null;
+  cartItemsFromLocalStorage: IGotFlightData[][] | null = null;
   selectedItemCount: number = 0;
   selectedTotalPrice: number = 0;
   selecteCurrency!: string;
@@ -43,7 +42,7 @@ export class ShoppingCartComponent implements OnInit {
     private sharedService: SharedService,
     private router: Router,
     private sessionStorageService: SessionStorageService,
-    private notificationService:NotificationService
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -60,10 +59,14 @@ export class ShoppingCartComponent implements OnInit {
     this.queryParams = this.sessionStorageService.getQueryParamsFromStorage()!;
     this.userId = this.userService.getCurrentUserId();
     this.wrappedCartItems = [];
+    if (this.cartItemsFromLocalStorage) {
+    }
     this.cartItemsFromLocalStorage =
       this.localStorageService.getTypedStorageItem(this.userId);
-    for (let cartItem of this.cartItemsFromLocalStorage) {
-      this.wrappedCartItems.push({ cartData: cartItem, selected: false });
+    if (this.cartItemsFromLocalStorage) {
+      for (let cartItem of this.cartItemsFromLocalStorage) {
+        this.wrappedCartItems.push({ cartData: cartItem, selected: false });
+      }
     }
   }
   updateAllComplete() {
@@ -108,34 +111,47 @@ export class ShoppingCartComponent implements OnInit {
     }
   }
 
-  deleteItemFromCart(index:number) {
-    this.cartItemsFromLocalStorage?.splice(index,1);
-    this.wrappedCartItems?.splice(index,1);
-    console.log(this.wrappedCartItems);
-    this.localStorageService.setTypedStorageItem(this.userId,this.cartItemsFromLocalStorage!);
-    this.sharedService.getAddToCardNumber(this.cartItemsFromLocalStorage!.length)
+  deleteItemFromCart(index: number) {
+    this.cartItemsFromLocalStorage?.splice(index, 1);
+    this.wrappedCartItems?.splice(index, 1);
+    // console.log(this.wrappedCartItems);
+    this.localStorageService.setTypedStorageItem(
+      this.userId,
+      this.cartItemsFromLocalStorage!
+    );
+    this.sharedService.getAddToCardNumber(
+      this.cartItemsFromLocalStorage!.length
+    );
   }
 
-  buyNow(){
-    const selected:IGotFlightData[][]=this.wrappedCartItems!.filter(t=>t.selected).map(t=>t.cartData);
-    const unSelected:IGotFlightData[][]=this.wrappedCartItems!.filter(t=>!t.selected).map(t=>t.cartData);
-    this.wrappedCartItems=this.wrappedCartItems!.filter(t=>!t.selected);
+  buyNow() {
+    const selected: IGotFlightData[][] = this.wrappedCartItems!.filter(
+      (t) => t.selected
+    ).map((t) => t.cartData);
+    const unSelected: IGotFlightData[][] = this.wrappedCartItems!.filter(
+      (t) => !t.selected
+    ).map((t) => t.cartData);
+    this.wrappedCartItems = this.wrappedCartItems!.filter((t) => !t.selected);
     this.localStorageService.setTypedStorageItem(this.userId, unSelected);
-    this.sharedService.getAddToCardNumber(unSelected.length)
+    this.sharedService.getAddToCardNumber(unSelected.length);
     const existingCart = this.localStorageService.getTypedStorageItem(
-      this.userId+'order'
+      this.userId + 'order'
     );
     if (existingCart === null) {
-      this.localStorageService.setTypedStorageItem(
-        this.userId+'order',
-        [...selected]
-      );
+      this.localStorageService.setTypedStorageItem(this.userId + 'order', [
+        ...selected,
+      ]);
     } else {
       existingCart.push(...selected);
-      this.localStorageService.setTypedStorageItem(this.userId+'order', existingCart);
+      this.localStorageService.setTypedStorageItem(
+        this.userId + 'order',
+        existingCart
+      );
     }
     this.router.navigateByUrl(RoutesPaths.UserAccountPage);
-    this.notificationService.openSuccessSnackBar('Thank you for your purchase! Your payment is successfull!')
+    this.notificationService.openSuccessSnackBar(
+      'Thank you for your purchase! Your payment is successfull!'
+    );
     this.sessionStorageService.sessionStorageClear();
   }
 
